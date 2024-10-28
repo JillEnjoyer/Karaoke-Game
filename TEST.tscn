@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6wt88sg755vi"]
+
+[ext_resource type="Script" path="res://Scripts/SaveFIleCreator-TXTxPNG.gd" id="1_7dtbi"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_7dtbi")

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://q5npe0y1ub53"]
+
+[ext_resource type="Script" path="res://Scripts/menu_1.gd" id="1_tj2kb"]
+
+[node name="Control" type="Node2D"]
+script = ExtResource("1_tj2kb")
+
+[node name="TextEdit" type="TextEdit" parent="."]
+offset_right = 1507.0
+offset_bottom = 561.0
+theme_override_font_sizes/font_size = 292
+text = "ShitShitShit"

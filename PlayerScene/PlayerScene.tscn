@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnk5hessaqj4"]
+
+[ext_resource type="Script" path="res://PlayerScene/PlayerSceneControl.gd" id="1_sx2dm"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_nqge2"]
+
+[node name="PlayerScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sx2dm")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(640, 480)
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = SubResource("ImageTexture_nqge2")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 1320.0
+offset_right = 1920.0
+offset_bottom = 300.0
+theme_override_constants/separation = 100
