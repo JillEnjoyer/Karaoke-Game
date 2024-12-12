@@ -4,7 +4,7 @@ extends Control
 @onready var audio_node = $AudioStreamPlayer
 
 # Настройки таймера и логика кадров
-var timer = 1.0 / 37.0  # Частота обновления для вывода кадров
+var timer = 1.0 / 30.0  # Частота обновления для вывода кадров
 var time_passed = 0.0
 var playback_speed = 1.0  # Начальная скорость воспроизведения
 var is_playing = false
@@ -13,6 +13,10 @@ var playtime = 0.0
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("stop"):
 		is_playing = !is_playing
+		if is_playing == true:
+			play_video()
+		else:
+			pause_video()
 		print(is_playing)
 	elif event.is_action_pressed("left"):
 		seek_video(-5.0)
@@ -22,6 +26,8 @@ func _input(event: InputEvent) -> void:
 func _ready():
 	# Открытие видеофайла
 	var result = video_node.open("W:/Projects/Godot/Karaoke/karaoke-game/Catalog/Hazbin Hotel/Respectless/[Video]Respectless.ogv")
+	var arr = video_node.get_file_meta("W:/Projects/Godot/Karaoke/karaoke-game/Catalog/Hazbin Hotel/Respectless/[Video]Respectless.ogv")
+	print(arr)
 	if result == OK:
 		print("Видео успешно открыто!")
 	else:
@@ -37,18 +43,16 @@ func _process(delta: float) -> void:
 		time_passed += delta * playback_speed
 		playtime += delta * playback_speed
 		if time_passed >= timer:
-			time_passed = 0.0
+			time_passed -= timer
 			# Получение следующего кадра видео и установка его на TextureRect
 			$TextureRect.texture.set_image(video_node.next_frame())
 
 # Команды для управления видео
 func play_video():
-	is_playing = true
-	audio_node.play()
+	audio_node.stream_paused = false
 
 func pause_video():
-	is_playing = false
-	audio_node.stop()
+	audio_node.stream_paused = true
 
 func set_playback_speed(speed: float):
 	# Изменение скорости воспроизведения

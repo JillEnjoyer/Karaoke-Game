@@ -44,6 +44,21 @@ func _on_catalog_button_pressed():
 		else:
 			print("Ошибка: не удалось загрузить сцену Каталога!")
 
+func _on_prepare_da_song_btn_pressed() -> void:
+	var preparation_scene = load("res://Scenes/SongPreparationScene.tscn").instantiate()
+	if preparation_scene:
+		var current_scene = get_tree().current_scene
+		print(current_scene)
+		if current_scene:
+			current_scene.queue_free()  # Удаляем текущую сцену
+			
+			get_tree().root.add_child(preparation_scene)
+			get_tree().set_current_scene(preparation_scene)  # Явно указываем новую сцену
+			print(current_scene)
+			#preparation_scene.initial("Franchise")
+		else:
+			print("Ошибка: не удалось загрузить сцену Подготовки!")
+
 func _on_settings_button_pressed():
 	# Логика открытия настроек через основной хаб
 	var main_hub = get_tree().root.get_node("MainHub")

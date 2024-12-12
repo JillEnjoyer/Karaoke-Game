@@ -46,7 +46,7 @@ theme_override_font_sizes/font_size = 24
 text = "Choose da Song
 "
 
-[node name="STH" type="Button" parent="VBoxContainer"]
+[node name="prepare_da_song_btn" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
@@ -72,6 +72,6 @@ theme_override_font_sizes/font_size = 24
 text = "Exit"
 
 [connection signal="pressed" from="VBoxContainer/catalog_button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/STH" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="VBoxContainer/prepare_da_song_btn" to="." method="_on_prepare_da_song_btn_pressed"]
 [connection signal="pressed" from="VBoxContainer/settings_button" to="." method="_on_button_3_pressed"]
 [connection signal="pressed" from="VBoxContainer/quit_button" to="." method="_on_button_4_pressed"]
