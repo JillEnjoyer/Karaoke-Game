@@ -3,23 +3,25 @@ extends Node
 var PreferedSaveLoc = "res://Preferences/"
 
 var BaseSettingsList = {
-	"ResolutionX": Vector2(1920, 1080),
-	"Language": "ENG",
-	"WindowMode": "Window",
-	"OverallVolume": 100,
-	"MicStatus": "Unsupported",
-	"FramerateLock": 75,
-	"CountDownTime": 4
+	"resolution": Vector2(1920, 1080),
+	"language": "ENG",
+	"window_mode": "Window",
+	"overall_volume": 100,
+	"mic_status": "Unsupported",
+	"framerate_lock": 75,
+	"countdown_time": 4,
+	"debugger_enabled": false
 }
 
 var SettingsList = {
-	"ResolutionX": Vector2(1920, 1080),
-	"Language": "ENG",
-	"WindowMode": "Window",
-	"OverallVolume": 100,
-	"MicStatus": "Unsupported",
-	"FramerateLock": 75,
-	"CountDownTime": 4
+	"resolution": Vector2(1920, 1080),
+	"language": "ENG",
+	"window_mode": "Window",
+	"overall_volume": 100,
+	"mic_status": "Unsupported",
+	"framerate_lock": 75,
+	"countdown_time": 4,
+	"debugger_enabled": true
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -36,6 +38,12 @@ func getData(Setting: String):
 	
 	print(value)
 	return value
+
+func setData(Setting: String):
+	if not SettingsList and not SettingsList[Setting]:
+		RestoreData()
+		
+	if 
 
 func RestoreData():
 	SettingsList = BaseSettingsList

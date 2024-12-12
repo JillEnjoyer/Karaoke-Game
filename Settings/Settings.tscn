@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://bvxlx8fn8n0y4"]
+[gd_scene load_steps=2 format=3 uid="uid://bvxlx8fn8n0y4"]
+
+[ext_resource type="Script" path="res://Settings/Settings.gd" id="1_iq1v3"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -7,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_iq1v3")
 
 [node name="ResolutionOptBtn" type="OptionButton" parent="."]
 layout_mode = 0
@@ -117,3 +120,21 @@ offset_top = 671.0
 offset_right = 1332.0
 offset_bottom = 696.0
 scale = Vector2(4, 4)
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 353.0
+offset_top = 934.0
+offset_right = 953.0
+offset_bottom = 1034.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 934.0
+offset_right = 310.0
+offset_bottom = 1034.0
+theme_override_font_sizes/font_size = 36
+text = "Catalog path:"
+horizontal_alignment = 1
+vertical_alignment = 1
