@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bs16sf7vjh55t"]
+
+[node name="Timeline" type="Control"]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 0.333
+offset_bottom = 0.359985
+grow_horizontal = 2
+grow_vertical = 2

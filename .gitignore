@@ -13,6 +13,5 @@ bin/
 Extensions/
 
 # Игнорировать пользовательский контент
-Catalog/
 MainMenu/Audio/
 Preferences/

@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw5tpf27wmwcs"]
+
+[ext_resource type="Script" path="res://PlayerScene/PauseMenu/PauseMenu.gd" id="1_g2osp"]
+[ext_resource type="Texture2D" uid="uid://bsqajtne3u7qq" path="res://BlackSquare.png" id="2_bdx1d"]
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g2osp")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.254902)
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_bdx1d")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 220.0
+offset_right = 710.0
+offset_bottom = 900.0
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="ContinueBtn" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Continue"
+
+[node name="RestartBtn" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Restart"
+
+[node name="SettingsBtn" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+
+[node name="MenuBtn" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Back to Menu"
+
+[node name="DesktopBtn" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Back to Desktop"
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 41.0
+offset_right = 124.0
+offset_bottom = 141.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 835.0
+offset_top = 75.0
+offset_right = 1085.0
+offset_bottom = 175.0
+theme_override_font_sizes/font_size = 64
+text = "Paused"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/ContinueBtn" to="." method="_on_continue_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/RestartBtn" to="." method="_on_restart_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsBtn" to="." method="_on_settings_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/MenuBtn" to="." method="_on_menu_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/DesktopBtn" to="." method="_on_desktop_btn_pressed"]

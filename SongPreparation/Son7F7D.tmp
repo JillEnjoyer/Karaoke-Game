@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://cydkaxapl5a0x"]
+
+[ext_resource type="Script" path="res://SongPreparation/song_preparation_scene.gd" id="1_pl6y0"]
+[ext_resource type="PackedScene" uid="uid://bnk5hessaqj4" path="res://PlayerScene/PlayerScene/PlayerScene.tscn" id="2_xcy35"]
+[ext_resource type="PackedScene" uid="uid://dfn5wxdejq08f" path="res://SongPreparation/SearchSystem.tscn" id="3_gjxm4"]
+
+[node name="SongPreparationScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pl6y0")
+
+[node name="PlayerScene" parent="." instance=ExtResource("2_xcy35")]
+layout_mode = 1
+offset_left = 640.0
+offset_bottom = -360.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 645.0
+offset_top = 5.0
+offset_right = 745.0
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 30
+text = "Layout"
+
+[node name="SearchSystem" parent="." instance=ExtResource("3_gjxm4")]
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 1
+anchor_right = 0.333
+anchor_bottom = 0.667
+offset_left = -6.10352e-05
+offset_top = -6.10352e-05
+offset_right = 0.639954
+offset_bottom = -0.360107
