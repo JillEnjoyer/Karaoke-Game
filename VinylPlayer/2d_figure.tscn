@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://dffhf4rm16261"]
+
+[ext_resource type="Script" path="res://VinylPlayer/2d_figure.gd" id="1_xfri5"]
+
+[node name="2dFigure" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xfri5")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 106.0
+offset_right = 1185.0
+offset_bottom = 877.0
+expand_mode = 1
+
+[node name="HSlider" type="HSlider" parent="."]
+layout_mode = 0
+offset_left = 522.0
+offset_top = 896.0
+offset_right = 1382.0
+offset_bottom = 1080.0
+max_value = 34.0
+
+[connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]

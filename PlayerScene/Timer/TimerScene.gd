@@ -4,7 +4,7 @@ extends Control
 @onready var TimerNode = $Timer  # Предположим, что Timer это твой таймер элемент
 
 # Получаем значение из глобального скрипта
-var countdown_time = Core.get_node("PreferencesData").getData("CountDownTime")
+var countdown_time = Core.get_node("PreferencesData").getData("countdown_time")
 
 signal ready_to_start
 

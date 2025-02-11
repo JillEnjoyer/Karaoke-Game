@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://gi8k4k4si3c0"]
+
+[ext_resource type="Script" path="res://WebSocket/web_socket_TCP.gd" id="1_igj4j"]
+
+[node name="WebSocket" type="Node"]
+script = ExtResource("1_igj4j")

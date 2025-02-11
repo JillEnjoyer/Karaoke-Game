@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://gi8k4k4si3c0"]
+
+[ext_resource type="Script" path="res://WebSocket/web_socket_TCP.gd" id="1_igj4j"]
+[ext_resource type="Texture2D" uid="uid://dsoogxlxhm6l4" path="res://icon.svg" id="2_d3cuy"]
+
+[node name="WebSocket" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_igj4j")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+render_target_update_mode = 4
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport"]
+offset_top = 100.0
+offset_right = 384.0
+offset_bottom = 484.0
+texture = ExtResource("2_d3cuy")

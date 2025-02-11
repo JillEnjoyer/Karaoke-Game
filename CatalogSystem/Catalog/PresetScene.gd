@@ -5,7 +5,6 @@ extends Control
 @onready var NameLbl = $SongNameLbl
 @onready var SongIcon = $SongIcon
 
-var BasePath = "res://Catalog/"
 var EndPath = ""
 var Franchise = ""
 var Song = ""
@@ -16,7 +15,7 @@ var log = Core.get_node("Debugger")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass  # Replace with function body.
+	pass
 
 func _on_back_btn_pressed() -> void:
 	self.queue_free()
@@ -33,10 +32,10 @@ func _on_start_btn_pressed() -> void:
 		print("Выберите акапеллу перед запуском!")
 
 func CollectNames(FranchiseName: String, SongName: String):
-	
 	Franchise = FranchiseName
-	log.debug("Presetting.gd", "CollectNames()", "FrName = " + FranchiseName)
+	log.debug("Presetting.gd", "CollectNames()", "FrPath = " + Franchise)
 	Song = SongName
+	log.debug("Presetting.gd", "CollectNames()", "SnName = " + Song)
 	Init()
 
 func Init():
@@ -50,7 +49,7 @@ func Init():
 
 func ScanFolder():
 	# Путь к папке для сканирования
-	var path = BasePath + Franchise + "/" + Song + "/Audio"
+	var path = Franchise + "/" + Song + "/Audio"
 	print("Путь = " + path)
 	FolderData = {}  # Очищаем предыдущие данные
 
@@ -78,7 +77,7 @@ func start_karaoke(franchise: String, song: String, acapella: String, mode: Stri
 	print("Песня: ", song)
 	print("Акапелла: ", acapella)
 	print("Режим: ", mode)
-	var PlayerScene = load("res://PlayerScene/PlayerScene.tscn").instantiate()
+	var PlayerScene = load("res://PlayerScene/PlayerScene/PlayerScene.tscn").instantiate()
 	#self.queue_free()
 	
 	var root = get_tree().root # Получаем корневой узел (весь Viewport)

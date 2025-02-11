@@ -23,8 +23,8 @@ func _ready() -> void:
 
 
 func add_word(word: String, position: Vector2, size: Vector2, font_size: int) -> void:
-	position = PreferencesData.percent_to_pixels(position)
-	size = PreferencesData.percent_to_pixels(size)
+	position = Core.get_node("PreferencesData").percent_to_pixels(position)
+	size = Core.get_node("PreferencesData").percent_to_pixels(size)
 	print(str(position) + str(size))
 	var current_word = default_WordCell_path.instantiate()
 	

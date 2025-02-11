@@ -12,22 +12,25 @@ const LOG_LEVELS := {
 }
 
 var debugger_active: bool = true
-var log_to_file: bool = true
+var log_to_file: bool = false
 var log_file_path: String = "logs/log"
-var msg_struct: String = "{0} | {1} | {2}->{3}: {4}"
+var msg_struct: String = "[{0}] [{1}] [{2}->{3}]: {4}"
 var current_log_level: int = LOG_LEVELS["DEBUG"]
 var log_buffer: Array = []
 var current_index: int = 0
 
 func _init():
-	# Инициализация лог-файла с текущей датой
+	# Инициализация буфера лога
+	log_buffer.resize(MAX_LINES)
+	for i in range(MAX_LINES):
+		log_buffer[i] = ""
+
+	# Инициализация лог-файла (если включено)
 	if log_to_file:
 		var datetime = get_datetime()
 		var date_string = "{year}-{month}-{day}".format({"year": datetime.year, "month": datetime.month, "day": datetime.day})
 		log_file_path = "{file_path}_{date_string}.log".format({"file_path": log_file_path, "date_string": date_string})
-		log_buffer.resize(MAX_LINES)
-		for i in range(MAX_LINES):
-			log_buffer[i] = ""
+
 
 
 func logger(level: String, file_name: String, method_name: String, message: String) -> void:

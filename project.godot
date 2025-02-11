@@ -11,7 +11,13 @@ config_version=5
 [application]
 
 config/name="Karaoke Game"
-run/main_scene="res://MainMenu/MainMenu.tscn"
+config/description="A game, where is possible to create, edit, play and capture musical composition.
+Different languages?
+Lots of subtitles?
+Wish to maintain a whole Karaoke bar with one video broadcaster through the room with internet? 
+- It is it"
+config/version="0.3.37"
+run/main_scene="res://CORE/viewport_base.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 

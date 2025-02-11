@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Godot Image Viewer</title>
+</head>
+<body>
+    <h2>Godot Image Receiver</h2>
+    <img id="image" width="1280" height="720" />
+    
+    <script>
+        // Устанавливаем соединение с сервером
+        const ws = new WebSocket('http://192.168.10.112:8082');
+
+        // Обработка входящих сообщений
+        ws.onmessage = function(event) {
+            const blob = new Blob([event.data], { type: 'image/png' });
+            const url = URL.createObjectURL(blob);
+            document.getElementById('image').src = url;
+
+            // Отправляем подтверждение серверу
+            ws.send("received");
+        };
+
+        ws.onopen = function() {
+            console.log('WebSocket connected');
+        };
+    </script>
+</body>
+</html>

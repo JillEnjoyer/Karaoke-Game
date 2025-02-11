@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Godot Image Viewer</title>
+</head>
+<body>
+    <h2>Godot Image Receiver</h2>
+    <canvas id="canvas" width="640" height="360"></canvas>
+
+    <script>
+        ws.onmessage = function(event) {
+            const blob = new Blob([event.data], { type: 'image/png' });
+            const url = URL.createObjectURL(blob);
+            const img = new Image();
+            
+            img.onload = function() {
+                // Устанавливаем размеры канваса, чтобы они соответствовали изображению
+                canvas.width = img.width;
+                canvas.height = img.height;
+                
+                // Загружаем новое изображение в ImageData
+                ctx.drawImage(img, 0, 0);
+    
+                // Получаем данные пикселей с canvas
+                let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    
+                if (previousImageData) {
+                    // Сравниваем старые и новые данные пикселей, чтобы обновить только изменённые пиксели
+                    for (let i = 0; i < imageData.data.length; i += 4) {
+                        const r = imageData.data[i];     // Красный канал
+                        const g = imageData.data[i + 1]; // Зелёный канал
+                        const b = imageData.data[i + 2]; // Синий канал
+                        const a = imageData.data[i + 3]; // Альфа канал
+    
+                        // Если текущие пиксели изменились (не пустые)
+                        if (r !== previousImageData.data[i] || g !== previousImageData.data[i + 1] || b !== previousImageData.data[i + 2] || a !== previousImageData.data[i + 3]) {
+                            // Можно обновить пиксель
+                            imageData.data[i] = r;
+                            imageData.data[i + 1] = g;
+                            imageData.data[i + 2] = b;
+                            imageData.data[i + 3] = a;
+                        }
+                    }
+                }
+    
+                // Применяем обновлённые данные на canvas
+                ctx.putImageData(imageData, 0, 0);
+    
+                // Отправляем подтверждение серверу
+                ws.send("received");
+                // Сохраняем текущие данные пикселей для будущего сравнения
+                previousImageData = imageData;
+            };
+            
+            img.src = url;
+        };
+    </script>
+</body>
+</html>

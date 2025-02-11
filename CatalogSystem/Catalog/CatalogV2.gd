@@ -1,7 +1,10 @@
 extends Control
 
+@onready var root = get_node("/root/ViewportBase/SubViewportContainer/SubViewport")
+@onready var catalog_base = root.get_node("Catalog")
+
 var card_size = Vector2(550, 700)
-var focused_card_index = 0
+var focused_card_index = 1
 
 var base_path = Core.get_node("PreferencesData").getData("catalog_path")
 var current_path = base_path
@@ -39,7 +42,7 @@ func load_cards_at_path(path: String):
 func create_cards():
 	for i in range(song_list.size()):
 		var card = create_card(song_list[i], i)
-		add_child(card)
+		catalog_base.add_child(card)
 
 
 func create_card(song_name: String, index: int) -> Control:
@@ -64,24 +67,23 @@ func create_card(song_name: String, index: int) -> Control:
 func load_texture_or_placeholder(file_path: String) -> Texture2D:
 	var texture = load_texture(file_path)
 	if texture == null:
-		#print("Using placeholder for missing texture:", file_path)
 		return preload("res://icon.svg")  # Путь к заглушке
 	return texture
 
 
 func load_texture(file_path: String):
-	var image = ImageTexture.new()
+	#var image = ImageTexture.new()
 	if FileAccess.file_exists(file_path):
 		var img = Image.new()
 		if img.load(file_path) == OK:
-			return (image.create_from_image(img))
+			return (ImageTexture.create_from_image(img))
 		return null
 
 
 func clear_cards():
-	for child in get_children():
+	for child in catalog_base.get_children():
 		if child is Control:
-			remove_child(child)
+			catalog_base.remove_child(child)
 			child.queue_free()
 
 
@@ -101,20 +103,23 @@ func _input(event):
 
 func move_focus(direction):
 	focused_card_index += direction
-	focused_card_index = clamp(focused_card_index, 0, song_list.size() - 1)
+	if focused_card_index < 0:
+		focused_card_index = song_list.size() - 1  # Go to the last element
+	elif focused_card_index >= song_list.size():
+		focused_card_index = 0  # Go to the first element
 	update_card_positions()
 
 
 func update_card_positions():
-	var center_x = get_viewport().size.x / 2
-	var center_y = get_viewport().size.y / 2
+	var center_x = catalog_base.get_viewport().size.x / 2
+	var center_y = catalog_base.get_viewport().size.y / 2
 	var base_spacing = card_size.x * 0.8
 	var depth_factor = 0.3  # Коэффициент для создания эффекта глубины
 	var scaling_factor = 0.25  # Коэффициент для изменения масштаба
 	var offset_factor = card_size.y * 0.1  # Отступ по вертикали
 
 	for i in range(song_list.size()):
-		var card = get_child(i)
+		var card = catalog_base.get_child(i)
 		var distance_from_center = abs(i - focused_card_index)
 		var offset_x = (i - focused_card_index) * base_spacing
 		var offset_y = distance_from_center * offset_factor
@@ -131,7 +136,7 @@ func update_card_positions():
 			card.get_meta("tween").kill()
 
 		# Создаем новый Tween для плавного перехода
-		var tween = get_tree().create_tween()
+		var tween = catalog_base.create_tween()
 		card.set_meta("tween", tween)
 
 		tween.tween_property(card, "position", target_position, 0.3)
@@ -139,7 +144,6 @@ func update_card_positions():
 
 		# Используем z_index для управления глубиной отображения
 		card.z_index = int(z_offset * 10)
-
 
 
 func navigate_up():
@@ -155,7 +159,8 @@ func navigate_down():
 		
 		if FileAccess.file_exists(new_path + "/config.txt"):
 			show_settings_panel(selected_folder)
-		if DirAccess.open(new_path):
+			print("Entered settings panel")
+		elif DirAccess.open(new_path):
 			path_stack.append(current_path)
 			current_path = new_path
 			load_cards_at_path(current_path)
@@ -163,5 +168,6 @@ func navigate_down():
 
 func show_settings_panel(folder_name: String):
 	var settings_panel = preload("res://CatalogSystem/Catalog/Presetting.tscn").instantiate()
-	add_child(settings_panel)
+	catalog_base.add_child(settings_panel)
+	print("Sent cp/fn:", current_path, " / ", folder_name)
 	settings_panel.CollectNames(current_path, folder_name)

@@ -51,7 +51,7 @@ func _ready() -> void:
 func init(franchise_name: String, song_name: String, performer_name: String, mode: String) -> void:
 	print("Init Launched")
 	
-	var main_path = "res://Catalog/" + franchise_name + "/" + song_name + "/"
+	var main_path = franchise_name + "/" + song_name + "/"
 	var base_audio_path = main_path + "Audio/"
 	var base_acapella_path = base_audio_path + performer_name + "/"
 	var main_file = main_path + "Config.txt"
@@ -86,13 +86,13 @@ func parse_config(config_path: String) -> void:
 		print(line)
 		
 		if line.begins_with("[Video]"):
-			video_link = line.replace("[Video]", "").strip_edges()
+			video_link = line.replace("[Video]", "[Video]").strip_edges()
 			print("VideoLink extracted: ", video_link)
 		elif line.begins_with("[Instrumental]"):
-			instrumental_link = line.replace("[Instrumental]", "").strip_edges()
+			instrumental_link = line.replace("[Instrumental]", "[Instrumental]").strip_edges()
 			print("InstrumentalLink extracted: ", instrumental_link)
 		elif line.begins_with("[Acapella]"):
-			current_acapella_group = line.replace("[Acapella]", "").strip_edges()
+			current_acapella_group = line.replace("[Acapella]", "[Acapella]").strip_edges()
 			acapella_list[current_acapella_group] = []  
 			print("Acapella group found: ", current_acapella_group)
 		elif line.begins_with("[Character]") and current_acapella_group != "":
@@ -109,8 +109,8 @@ func parse_config(config_path: String) -> void:
 
 
 func load_video(franchise_name: String, song_name: String) -> void:
-	var video_path = "res://Catalog/" + franchise_name + "/" + song_name + "/" + video_link
-	var absolute_video_path = ProjectSettings.globalize_path(video_path)
+	var video_path = franchise_name + "/" + song_name + "/" + video_link
+	var absolute_video_path = video_path#ProjectSettings.globalize_path(video_path)
 	print("Trying to load video from: ", absolute_video_path)
 	
 	if FileAccess.file_exists(absolute_video_path):
@@ -129,9 +129,10 @@ func load_video(franchise_name: String, song_name: String) -> void:
 	else:
 		print("Video file not found: ", absolute_video_path)
 
-
+"""
 func load_instrumental(path: String) -> void:
 	var instrumental_file = path + instrumental_link
+	print(path, " / ", instrumental_link)
 	print("Trying to load instrumental from: ", instrumental_file)  # Отладочное сообщение
 	if FileAccess.file_exists(instrumental_file):
 		instrumental_player = AudioStreamPlayer.new()
@@ -141,6 +142,25 @@ func load_instrumental(path: String) -> void:
 		print(str(instrumental_player.playing))
 	else:
 		print("Instrumental file not found: ", instrumental_file)
+
+"""
+func load_instrumental(path: String) -> void:
+	var instrumental_file = path + instrumental_link
+	print("Trying to load instrumental from: ", instrumental_file)
+	
+	var file: FileAccess = FileAccess.open(instrumental_file, FileAccess.ModeFlags.READ)
+	if file != null:
+		var stream = AudioStreamMP3.new()
+		stream.data = file.get_buffer(file.get_length())
+		if stream:
+			instrumental_player = AudioStreamPlayer.new()
+			instrumental_player.stream = stream
+			add_child(instrumental_player)
+			#instrumental_player.play()
+		else:
+			print("Ошибка обработки буфера:", file)
+	else:
+		print("Файл не найден:", instrumental_file)
 
 
 func load_acapella(base_path: String) -> void:
