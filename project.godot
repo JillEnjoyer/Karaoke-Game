@@ -17,13 +17,15 @@ Lots of subtitles?
 Wish to maintain a whole Karaoke bar with one video broadcaster through the room with internet? 
 - It is it"
 config/version="0.3.37"
-run/main_scene="res://CORE/viewport_base.tscn"
+run/main_scene="res://CORE/ViewportBase/viewport_base.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
+Debugger="*res://Debug/Debugger.gd"
 Core="*res://CORE/Core.gd"
+UIManager="*res://CORE/Preloader/ui_manager.gd"
 
 [display]
 

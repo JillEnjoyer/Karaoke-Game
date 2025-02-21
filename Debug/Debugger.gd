@@ -1,6 +1,6 @@
 extends Node
 
-class_name Logger
+class_name logger
 
 const MAX_LINES: int = 1000
 const LOG_LEVELS := {

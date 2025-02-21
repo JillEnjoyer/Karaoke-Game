@@ -3,6 +3,8 @@ extends Control
 @onready var root = get_node("/root/ViewportBase/SubViewportContainer/SubViewport")
 @onready var catalog_base = root.get_node("Catalog")
 
+var audio_player_init = audio_player_instance.new()
+
 var card_size = Vector2(550, 700)
 var focused_card_index = 1
 

@@ -9,7 +9,6 @@ extends Control
 
 
 func _ready():
-	#get_tree().set_current_scene(self)
 	var vbox_container = $VBoxContainer
 	if vbox_container:
 		print("VBoxContainer найден!")

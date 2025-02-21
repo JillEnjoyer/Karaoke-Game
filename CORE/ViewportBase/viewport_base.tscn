@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://k08o14xemmr3"]
 
-[ext_resource type="Script" path="res://CORE/viewport_base.gd" id="1_f3u4m"]
+[ext_resource type="Script" path="res://CORE/ViewportBase/viewport_base.gd" id="1_f3u4m"]
 
 [node name="ViewportBase" type="Control"]
 z_index = 100

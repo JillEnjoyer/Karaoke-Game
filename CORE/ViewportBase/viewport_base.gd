@@ -3,8 +3,10 @@ extends Control
 @onready var scene_root = $SubViewportContainer/SubViewport 
 
 func _ready() -> void:
-	var menu = preload("res://MainMenu/MainMenu.tscn").instantiate()
-	scene_root.call_deferred("add_child", menu)
+	#var menu = preload("res://MainMenu/MainMenu.tscn").instantiate()
+	#scene_root.call_deferred("add_child", menu)
+	UIManager.show_ui("main_menu")
+	
 	
 	await get_tree().create_timer(1).timeout
 	
