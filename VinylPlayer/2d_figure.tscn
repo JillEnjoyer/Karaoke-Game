@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dffhf4rm16261"]
 
-[ext_resource type="Script" path="res://VinylPlayer/2d_figure.gd" id="1_xfri5"]
+[ext_resource type="Script" uid="uid://efchpnpt5ng3" path="res://VinylPlayer/2d_figure.gd" id="1_xfri5"]
 
 [node name="2dFigure" type="Control"]
 layout_mode = 3

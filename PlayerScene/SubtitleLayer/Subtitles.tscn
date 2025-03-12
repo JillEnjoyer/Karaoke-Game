@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://rl20x4sogyk"]
 
-[ext_resource type="Script" path="res://PlayerScene/SubtitleLayer/subtitles.gd" id="1_4d2r4"]
+[ext_resource type="Script" uid="uid://baix7lsbohxj0" path="res://PlayerScene/SubtitleLayer/subtitles.gd" id="1_4d2r4"]
 [ext_resource type="Texture2D" uid="uid://dsoogxlxhm6l4" path="res://icon.svg" id="2_8bnt0"]
 
 [node name="Subtitles" type="Control"]
@@ -13,6 +13,6 @@ grow_vertical = 2
 script = ExtResource("1_4d2r4")
 
 [node name="Icon" type="Sprite2D" parent="."]
-position = Vector2(160, 114)
 scale = Vector2(2.9375, 2.125)
 texture = ExtResource("2_8bnt0")
+centered = false

@@ -4,47 +4,39 @@ var baseImage = load("res://BlackSquare.png")
 @onready var imageSize = Vector2(64, 64)
 var targetSaveLoc = "res://Preferences/"
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GenerateGeneralSaveFile()
 	ReadGeneralSaveFile()
 
-
-# Генерация общего файла настроек
 func GenerateGeneralSaveFile() -> void:
-	var data_string = getSaveString()  # Получаем строку с настройками
+	var data_string = getSaveString()
 	var save_path = targetSaveLoc + "game_settings.png"
 	
-	var image = Image.create(int(imageSize.x), int(imageSize.y), false, Image.FORMAT_RGB8) # Проверь, что imageSize корректен
-	print("Created image with size: ", image.get_width(), "x", image.get_height())  # Проверим размер изображения
-	#image.create(int(imageSize.x), int(imageSize.y), false, Image.FORMAT_RGB8)  # Проверь, что imageSize корректен
+	var image = Image.create(int(imageSize.x), int(imageSize.y), false, Image.FORMAT_RGB8)
+	print("Created image with size: ", image.get_width(), "x", image.get_height())
+	#image.create(int(imageSize.x), int(imageSize.y), false, Image.FORMAT_RGB8)
 	
 	if image.get_width() == 0 or image.get_height() == 0:
 		print("Ошибка: Неверный размер изображения.")
-		return  # Прерываем, если изображение имеет некорректный размер
+		return
 	
-	var data_binary = data_string.to_utf8_buffer()  # Преобразуем строку в бинарный буфер
+	var data_binary = data_string.to_utf8_buffer()
 	var data_index = 0
 	
-	# Преобразуем строку в пиксели
 	for y in range(imageSize.y):
 		for x in range(imageSize.x):
 			if data_index + 2 < data_binary.size():
-				# Извлекаем 3 байта для одного пикселя напрямую через []
 				var r = data_binary[data_index]
 				var g = data_binary[data_index + 1]
 				var b = data_binary[data_index + 2]
 				image.set_pixel(x, y, Color(r / 255.0, g / 255.0, b / 255.0))
 				data_index += 3
 			else:
-				# Если данные закончились, заполняем пиксели черным
 				image.set_pixel(x, y, Color(0, 0, 0))
 	
-	# Сохраняем изображение
 	image.save_png(save_path)
 
 
-# Чтение файла настроек
 func ReadGeneralSaveFile() -> void:
 	var file_path = targetSaveLoc + "game_settings.png"
 	var image = Image.new()
@@ -52,7 +44,6 @@ func ReadGeneralSaveFile() -> void:
 	#image.lock()
 	var binary_data = PackedByteArray()
 	
-	# Извлекаем данные из пикселей
 	for y in range(imageSize.y):
 		for x in range(imageSize.x):
 			var color = image.get_pixel(x, y)
@@ -62,13 +53,11 @@ func ReadGeneralSaveFile() -> void:
 	
 	#image.unlock()
 	
-	# Преобразуем PoolByteArray в строку
 	var data_string = binary_data.get_string_from_utf8()
 	print("Restored Data: ", data_string)
 
-# Генерация файла настроек для песни
 func GenerateSongSaveFile(ParametrList: Dictionary) -> void:
-	var data_string = getSaveStringFromDict(ParametrList)  # Получаем строку с параметрами песни
+	var data_string = getSaveStringFromDict(ParametrList)
 	var save_path = targetSaveLoc + "song_settings.png"
 	
 	var image = Image.new()
@@ -77,7 +66,6 @@ func GenerateSongSaveFile(ParametrList: Dictionary) -> void:
 	var data_binary = data_string.to_utf8_buffer()
 	var data_index = 0
 	
-	# Преобразуем строку в пиксели
 	for y in range(imageSize.y):
 		for x in range(imageSize.x):
 			if data_index + 2 < data_binary.size():
@@ -92,7 +80,6 @@ func GenerateSongSaveFile(ParametrList: Dictionary) -> void:
 	image.save_png(save_path)
 
 
-# Чтение файла настроек для песни
 func ReadSongSaveFile() -> void:
 	var file_path = targetSaveLoc + "song_settings.png"
 	var image = Image.new()
@@ -110,12 +97,10 @@ func ReadSongSaveFile() -> void:
 	
 	image.unlock()
 	
-	# Преобразуем PoolByteArray в строку
 	var data_string = binary_data.get_string_from_utf8()
 	print("Restored Song Data: ", data_string)
 
 
-# Получение строки с данными для сохранения (основные настройки)
 func getSaveString() -> String:
 	var data_string = ""
 	data_string += "ResolutionX:" + str(PreferencesData.getData("ResolutionX")) + "\n"
@@ -129,7 +114,6 @@ func getSaveString() -> String:
 	return data_string
 
 
-# Получение строки с данными для сохранения (настройки песни)
 func getSaveStringFromDict(ParametrList: Dictionary) -> String:
 	var data_string = ""
 	for key in ParametrList.keys():

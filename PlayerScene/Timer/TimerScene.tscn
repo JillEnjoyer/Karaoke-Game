@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cwtxohha6jul6"]
 
-[ext_resource type="Script" path="res://PlayerScene/Timer/TimerScene.gd" id="1_1rwi1"]
+[ext_resource type="Script" uid="uid://c0uevucdp1n3t" path="res://PlayerScene/Timer/TimerScene.gd" id="1_1rwi1"]
 
 [node name="TimerScene" type="Control"]
 custom_minimum_size = Vector2(150, 150)

@@ -1,7 +1,5 @@
 extends Control
 
-@onready var log = Core.get_node("Debugger")
-
 var player_scene_fullscreen = false
 
 @onready var PlayerScene = $PlayerScene
@@ -24,7 +22,7 @@ func _input(event):
 	if Input.is_action_just_pressed("pause"):
 		leave_scene()
 	elif Input.is_action_just_pressed("expand"):
-		log.debug("", "", "")
+		Debugger.debug("song_preparation_scene.gd", "_input()", "Screen expanded")
 		switch_player_scene_mode()
 
 
@@ -40,13 +38,8 @@ func leave_scene():
 
 
 func _on_yes_pressed():
-	var main_menu = preload("res://MainMenu/MainMenu.tscn").instantiate()
-	var current_scene = get_tree().get_current_scene()
-	if current_scene:
-		current_scene.queue_free()
-
-	get_tree().root.add_child(main_menu)
-	get_tree().set_current_scene(main_menu)
+	UIManager.cleanup_tree()
+	UIManager.show_ui("main_menu")
 
 
 func switch_player_scene_mode():
@@ -94,6 +87,7 @@ func _on_right_click(event):
 	"""
 	Проверяем, был ли клик правой кнопкой мыши.
 	"""
+	print("RRRRR")
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		context_menu.set_position(event.global_position)  # Устанавливаем позицию меню
 		context_menu.popup()  # Показываем меню

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bfg0842qf81jg"]
 
-[ext_resource type="Script" path="res://CatalogSystem/Catalog/CatalogV2.gd" id="1_wv15j"]
+[ext_resource type="Script" uid="uid://c4hmgohoteox6" path="res://CatalogSystem/Catalog/CatalogV2.gd" id="1_wv15j"]
 
 [node name="Catalog" type="Control"]
 layout_mode = 3

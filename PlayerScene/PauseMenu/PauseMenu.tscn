@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bw5tpf27wmwcs"]
 
-[ext_resource type="Script" path="res://PlayerScene/PauseMenu/PauseMenu.gd" id="1_g2osp"]
+[ext_resource type="Script" uid="uid://ov0w5hw58b0x" path="res://PlayerScene/PauseMenu/PauseMenu.gd" id="1_g2osp"]
 [ext_resource type="Texture2D" uid="uid://bsqajtne3u7qq" path="res://BlackSquare.png" id="2_bdx1d"]
 
 [node name="PauseMenu" type="Control"]

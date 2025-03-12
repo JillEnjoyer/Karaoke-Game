@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bnk5hessaqj4"]
 
-[ext_resource type="Script" path="res://PlayerScene/PlayerScene/PlayerSceneControl.gd" id="1_sx2dm"]
+[ext_resource type="Script" uid="uid://c5a38upmc8shv" path="res://PlayerScene/PlayerScene/PlayerSceneControl.gd" id="1_sx2dm"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_nqge2"]
 
@@ -22,12 +22,17 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("ImageTexture_nqge2")
 
-[node name="HBox" type="HBoxContainer" parent="."]
+[node name="Voice_Channel_HBox" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.687
 anchor_right = 1.0
 anchor_bottom = 0.278
-offset_left = 0.959961
-offset_bottom = -0.240021
+offset_left = 0.959839
+offset_bottom = -0.240051
 theme_override_constants/separation = 100
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

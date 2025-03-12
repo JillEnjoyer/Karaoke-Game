@@ -11,4 +11,4 @@ func _ready() -> void:
 	debugger.set_script(load("res://Debug/Debugger.gd"))
 	add_child(debugger)
 	
-	Core.get_node("Debugger").info("Core.gd", "_ready()", "PreferencesData и Debugger added!")
+	Debugger.info("Core.gd", "_ready()", "PreferencesData и Debugger added!")

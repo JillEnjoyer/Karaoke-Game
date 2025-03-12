@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d0ehj5jr6elq0"]
 
-[ext_resource type="Script" path="res://MainMenu/bgm_scene.gd" id="1_2i6x8"]
+[ext_resource type="Script" uid="uid://bmbxmgapejg7d" path="res://MainMenu/bgm_scene.gd" id="1_2i6x8"]
 
 [sub_resource type="AudioStreamMP3" id="AudioStreamMP3_vah5u"]
 loop = true

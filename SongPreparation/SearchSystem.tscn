@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dfn5wxdejq08f"]
 
-[ext_resource type="Script" path="res://SongPreparation/SearchSystem.gd" id="1_advtc"]
+[ext_resource type="Script" uid="uid://cg2ml2dit4dpi" path="res://SongPreparation/SearchSystem.gd" id="1_advtc"]
 
 [node name="ChoosenItems" type="Control"]
 layout_mode = 3

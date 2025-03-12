@@ -1,7 +1,7 @@
 extends Control
 
 @onready var video_node = Video.new()
-@onready var voice_channel_container = $HBox # Контейнер для управления каналами
+@onready var Voice_Channel_HBox = $Voice_Channel_HBox
 @onready var slider_control = $TimeSlider
 
 var audio_init = audio_player_instance.new()
@@ -12,11 +12,16 @@ var acapella_list = {}
 var subtitles_list = []
 var character_list = {}
 
+var POSITIONS = {
+	
+}
 
 var video_position = 0.0
 var instrumental_position = 0.0
 var acapella_positions = {}
 var current_subtitle_line = 0
+
+
 
 var instrumental_player: AudioStreamPlayer = null
 #var instrumental_player = {}
@@ -34,6 +39,8 @@ var metadata_array = {}
 var procent = 0.0
 
 var debugging: bool = false
+
+var time_slider
 
 func _ready() -> void:
 	var screen_size = DisplayServer.window_get_size()
@@ -59,7 +66,8 @@ func init(franchise_name: String, song_name: String, performer_name: String, mod
 	load_instrumental(base_audio_path)
 	load_acapella(base_acapella_path)
 	
-	var time_slider = UIManager.show_ui("time_slider")
+	time_slider = UIManager.show_ui("time_slider")
+	time_slider.position = Vector2(0, 1080)
 	
 	time_slider.connect("h_slider_value_changed_signal", Callable(self, "on_slider_value_changed"))
 	
@@ -136,6 +144,7 @@ func load_acapella(base_path: String) -> void:
 #////////////////////////////////////////////////////
 func _process(delta: float) -> void:
 	if is_playing:
+		time_slider.slider.value += (delta/length)*100.0
 		time_passed += delta * playback_speed
 		playtime += delta * playback_speed
 		if time_passed >= timer:
@@ -153,18 +162,17 @@ func seek(time: float) -> void:
 		player.seek(time)
 
 
-func set_playback_speed(speed: float):
-	# Изменение скорости воспроизведения
-	playback_speed = speed
-	#audio_node.pitch_scale = playback_speed  # Синхронизация звука с видео
-
 func seek_video(seconds: float):
-	# Перемотка на заданное время
 	var ss = seconds * framerate
 	video_node.seek_frame(ss)
 	Debugger.info("PlayerSceneControl.gd", "resume_all()", "seeked time:" + str(ss))
 	#audio_node.seek(seconds)
 	playtime += seconds
+
+
+func set_playback_speed(speed: float):
+	playback_speed = speed
+	#audio_node.pitch_scale = playback_speed  # Синхронизация звука с видео
 
 
 func get_current_subtitle_line(time: float) -> int:
@@ -226,18 +234,13 @@ func start_all() -> void:
 
 
 func create_voice_channel_control(character_name: String) -> void:
-	var instance = UIManager.show_ui("voice_channel_control_scene", "voice_channel_container")
+	var instance = UIManager.show_ui("voice_channel_control_scene", "PlayerScene/Voice_Channel_HBox")
+	print(instance.name)
 	instance.get_node("Ch_NameLbl").text = character_name
 	instance.connect("value_changed_signal", Callable(self, "on_value_changed"))
-"""
-func create_voice_channel_control(character_name: String) -> void:
-	var control_instance = voice_channel_control_scene.instantiate()
-	control_instance.get_node("Ch_NameLbl").text = character_name
-	voice_channel_container.add_child(control_instance)
-	control_instance.connect("value_changed_signal", Callable(self, "on_value_changed"))
-"""
-func on_value_changed(value) -> void:
-	Debugger.info("PlayerSceneControl.gd", "resume_all()", "value changed" + value)
+func on_value_changed(value, ChName) -> void:
+	Debugger.info("PlayerSceneControl.gd", "create_voice_channel_control()", "value changed for " + ChName + ": " + str(value))
+	acapella_players[ChName].volume_db = -10 + value/10#-80 to 9
 
 
 func _input(event: InputEvent) -> void:

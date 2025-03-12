@@ -1,13 +1,13 @@
 extends Control
 
-var current_path: String = "res://Catalog/Hazbin Hotel/"
+
+var current_path: String = "res://Catalog/"
 var dir: DirAccess
 var chosen_files: Dictionary = {}
 
 
 func _ready():
 	pass
-	
 
 func clear_children(container: Control):
 	for child in container.get_children():
@@ -15,7 +15,6 @@ func clear_children(container: Control):
 		child.queue_free()
 
 func update_file_list():
-	# Очистка списка
 	clear_children($ScrollContainer_FM/VBoxContainer)
 
 	if dir == null:
@@ -32,7 +31,6 @@ func create_tile(file_name: String, is_folder: bool) -> Button:
 	button.text = file_name
 	button.custom_minimum_size = Vector2(600, 50)
 
-	# Настройка размера текста
 	var font = FontFile.new()
 	#font.font_data = load("res://your_font.ttf")
 	font.fixed_size = 48

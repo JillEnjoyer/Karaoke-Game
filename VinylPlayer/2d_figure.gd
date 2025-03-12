@@ -4,20 +4,16 @@ extends Control
 
 @onready var figure_path = "W:/Projects/Godot/Karaoke/Mat/Ext"
 @onready var state = true
-@onready var tex_path = []  # Массив для хранения путей
-@onready var tex = []  # Массив загруженных текстур
+@onready var tex_path = []
+@onready var tex = []
 
 func _ready() -> void:
 	tex_init()
 	anim_exec()
 
 func tex_init():
-	"""
-	Загружает текстуры из указанной папки.
-	"""
 	var file_count = count_files_in_directory(figure_path)
 	if file_count > 0:
-		# Сортируем файлы по числовому значению имени
 		tex_path.sort_custom(func(a, b): return extract_number(a) < extract_number(b))
 
 		for n in range(file_count):
@@ -27,40 +23,32 @@ func tex_init():
 					var texture = ImageTexture.create_from_image(image)
 					if texture:
 						tex.append(texture)
-						print("Загружено:", tex_path[n])
+						print("Loaded:", tex_path[n])
 					else:
-						print("Ошибка при создании текстуры:", tex_path[n])
+						print("Error with texture creation:", tex_path[n])
 				else:
-					print("Ошибка при загрузке изображения:", tex_path[n])
+					print("Error with image loading:", tex_path[n])
 
 func extract_number(filename: String) -> int:
-	"""
-	Извлекает числовую часть имени файла перед ".png".
-	"""
 	var regex = RegEx.new()
-	regex.compile("\\d+")  # Ищем числа в строке
+	regex.compile("\\d+")
 	var result = regex.search(filename)
 	if result:
 		return result.get_string().to_int()
-	return 0  # Если нет чисел, возвращаем 0
+	return 0
 
 
 func anim_exec():
 	while state:
-		for n in range(tex.size()):  # Используем размер массива tex
+		for n in range(tex.size()):
 			print(n)
-			texture_rect.texture = tex[n]  # Обновляем текстуру
+			texture_rect.texture = tex[n]
 			await get_tree().create_timer(0.075).timeout
 
 func count_files_in_directory(path: String) -> int:
-	"""
-	Считает файлы в указанной папке и сохраняет пути в tex_path.
-	Input: path (String) - путь к директории
-	Output: (int) - количество файлов
-	"""
 	var dir = DirAccess.open(path)
 	if dir == null:
-		print("Ошибка: не удалось открыть директорию", path)
+		print("Error: failed to open directory", path)
 		return 0
 	
 	dir.list_dir_begin()
@@ -68,7 +56,7 @@ func count_files_in_directory(path: String) -> int:
 	var file_name = dir.get_next()
 	while file_name != "":
 		if not dir.current_is_dir() and file_name.ends_with(".png"):
-			tex_path.append(path + "/" + file_name)  # Добавляем путь в массив
+			tex_path.append(path + "/" + file_name)
 			count += 1
 		file_name = dir.get_next()
 	
@@ -76,7 +64,4 @@ func count_files_in_directory(path: String) -> int:
 	return count
 
 func anim_stop():
-	"""
-	Останавливает анимацию.
-	"""
 	state = false

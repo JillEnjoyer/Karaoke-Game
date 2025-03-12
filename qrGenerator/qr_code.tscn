@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://delnhnp5pmeh1"]
 
-[ext_resource type="Script" path="res://qrGenerator/qr_code.gd" id="1_b6fnt"]
+[ext_resource type="Script" uid="uid://erjht62jjmdl" path="res://qrGenerator/qr_code.gd" id="1_b6fnt"]
 
 [node name="qrCode" type="Control"]
 layout_mode = 3

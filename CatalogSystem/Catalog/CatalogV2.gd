@@ -4,6 +4,7 @@ extends Control
 @onready var catalog_base = root.get_node("Catalog")
 
 var audio_player_init = audio_player_instance.new()
+var text_loader = texture_loader.new()
 
 var card_size = Vector2(550, 700)
 var focused_card_index = 1
@@ -56,30 +57,14 @@ func create_card(song_name: String, index: int) -> Control:
 	
 	#print("Загружаемый путь:", icon_path)
 	
-	card.album_art = load_texture_or_placeholder(icon_path)
-	card.background = load_texture_or_placeholder(bg_path)
+	card.album_art = text_loader.load_texture_or_placeholder(icon_path)
+	card.background = text_loader.load_texture_or_placeholder(bg_path)
 
 	card.custom_minimum_size = card_size
 	card.pivot_offset = card_size / 2
 	card.position = Vector2((index - focused_card_index) * (card_size.x * 0.75), 0)
 	
 	return card
-
-
-func load_texture_or_placeholder(file_path: String) -> Texture2D:
-	var texture = load_texture(file_path)
-	if texture == null:
-		return preload("res://icon.svg")  # Путь к заглушке
-	return texture
-
-
-func load_texture(file_path: String):
-	#var image = ImageTexture.new()
-	if FileAccess.file_exists(file_path):
-		var img = Image.new()
-		if img.load(file_path) == OK:
-			return (ImageTexture.create_from_image(img))
-		return null
 
 
 func clear_cards():

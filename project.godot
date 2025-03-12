@@ -18,7 +18,7 @@ Wish to maintain a whole Karaoke bar with one video broadcaster through the room
 - It is it"
 config/version="0.3.37"
 run/main_scene="res://CORE/ViewportBase/viewport_base.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -26,6 +26,7 @@ config/icon="res://icon.svg"
 Debugger="*res://Debug/Debugger.gd"
 Core="*res://CORE/Core.gd"
 UIManager="*res://CORE/Preloader/ui_manager.gd"
+PreferencesData="*res://Preferences/PreferencesData.gd"
 
 [display]
 
@@ -34,6 +35,10 @@ window/size/viewport_height=1080
 window/size/resizable=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[dotnet]
+
+project/assembly_name="Karaoke Game"
 
 [input]
 

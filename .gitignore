@@ -1,17 +1,18 @@
-# Игнорировать папку .godot, если она есть
+# Ignore base .godot folder
 .godot/
 
-# Игнорировать данные, созданные для импорта ресурсов
+# Ignore engine related recources
 .import/
 *.import
+*.uid
 
-# Игнорировать файлы настроек, уникальные для локального компьютера
+# Ignore settings configs, that are unique for every pc
 .settings/
 
-# Игнорировать скомпилированные бинарные файлы (если они присутствуют)
+# Ignore compiled files (If they exist)
 bin/
 Extensions/
 
-# Игнорировать пользовательский контент
+# Ignore user content
 MainMenu/Audio/
-Preferences/
+Preferences/*

@@ -124,7 +124,7 @@ func change_game_parameters(parameter, parameter_value) -> void:
 			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 		else:
 			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-			print(DisplayServer.VSyncMode)
+			print(DisplayServer.window_get_vsync_mode())
 		print("v-sync ", DisplayServer.window_get_vsync_mode())
 
 

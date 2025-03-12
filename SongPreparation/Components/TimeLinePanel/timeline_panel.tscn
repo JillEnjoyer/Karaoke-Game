@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjvc80u3e0bq4"]
+
+[ext_resource type="Script" uid="uid://b2kjc42llqo7f" path="res://SongPreparation/Components/TimeLinePanel/timeline_panel_class.gd" id="1_llgej"]
+
+[node name="TimelinePanel" type="Control"]
+layout_mode = 3
+anchor_right = 0.026
+anchor_bottom = 0.046
+offset_right = 0.079998
+offset_bottom = 0.319996
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_llgej")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

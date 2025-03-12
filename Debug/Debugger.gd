@@ -1,7 +1,5 @@
 extends Node
 
-class_name logger
-
 const MAX_LINES: int = 1000
 const LOG_LEVELS := {
 	"DEBUG": 0,
@@ -20,17 +18,14 @@ var log_buffer: Array = []
 var current_index: int = 0
 
 func _init():
-	# Инициализация буфера лога
 	log_buffer.resize(MAX_LINES)
 	for i in range(MAX_LINES):
 		log_buffer[i] = ""
 
-	# Инициализация лог-файла (если включено)
 	if log_to_file:
 		var datetime = get_datetime()
 		var date_string = "{year}-{month}-{day}".format({"year": datetime.year, "month": datetime.month, "day": datetime.day})
 		log_file_path = "{file_path}_{date_string}.log".format({"file_path": log_file_path, "date_string": date_string})
-
 
 
 func logger(level: String, file_name: String, method_name: String, message: String) -> void:
@@ -46,15 +41,12 @@ func logger(level: String, file_name: String, method_name: String, message: Stri
 		"4": message
 	})
 
-	# Вывод в консоль
 	if debugger_active:
 		print(formatted_message)
 
-	# Запись в буфер
 	log_buffer[current_index] = formatted_message
 	current_index = (current_index + 1) % MAX_LINES
 
-	# Запись в файл
 	if log_to_file:
 		write_to_file(formatted_message)
 
@@ -91,5 +83,4 @@ func get_timestamp() -> String:
 	})
 
 func get_datetime() -> Dictionary:
-	# Получает текущую дату и время как словарь
 	return Time.get_datetime_dict_from_system()
