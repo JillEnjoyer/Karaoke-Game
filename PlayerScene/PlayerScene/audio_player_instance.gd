@@ -10,7 +10,7 @@ func get_audio_player(file_path):
 		if stream:
 			return stream
 		else:
-			print("Error during buffer interaction:", file)
+			Debugger.error("", "", "Error during buffer interaction: " + str(file))
 	else:
-		print("File is not found:", file_path)
+		Debugger.error("", "", "File is not found: " + str(file_path))
 	return null

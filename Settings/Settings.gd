@@ -86,19 +86,8 @@ func _on_additional_btn_pressed() -> void:
 
 
 func _on_back_btn_pressed() -> void:
-	var scene = load("res://MainMenu/MainMenu.tscn").instantiate()
-	if scene:
-		var current_scene = get_tree().current_scene
-		print(current_scene)
-		if current_scene:
-			current_scene.queue_free()
-			
-			get_tree().root.add_child(scene)
-			get_tree().set_current_scene(scene)
-			print(current_scene)
-			#scene.initial("Franchise")
-		else:
-			print("Ошибка: не удалось загрузить")
+	UIManager.cleanup_tree()
+	UIManager.show_ui("main_menu")
 
 
 func _on_apply_settings_btn_pressed() -> void:

@@ -26,12 +26,15 @@ func _ready():
 
 
 func _on_catalog_button_pressed():
+	UIManager.cleanup_tree()
 	UIManager.show_ui("catalog")
 
 func _on_prepare_da_song_btn_pressed() -> void:
+	UIManager.cleanup_tree()
 	UIManager.show_ui("song_prep_scene")
 
 func _on_settings_button_pressed():
+	UIManager.cleanup_tree()
 	UIManager.show_ui("settings")
 
 func _on_quit_button_pressed():

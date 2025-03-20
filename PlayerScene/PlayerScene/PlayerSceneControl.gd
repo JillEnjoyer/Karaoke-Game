@@ -1,30 +1,25 @@
 extends Control
 
-@onready var video_node = Video.new()
-@onready var Voice_Channel_HBox = $Voice_Channel_HBox
-@onready var slider_control = $TimeSlider
-
-var audio_init = audio_player_instance.new()
+@onready var VideoRenderer = $VideoRenderer
+@onready var AudioDecoder = $AudioDecoder
+@onready var Voice_Channel_HBox = $PlayerSceneUi/Voice_Channel_HBox
+@onready var slider_control = $PlayerSceneUi/TimeSlider
 
 var video_link = ""
 var instrumental_link = ""
+var instrumental_list = {}
 var acapella_list = {}
 var subtitles_list = []
 var character_list = {}
 
-var POSITIONS = {
-	
-}
 
 var video_position = 0.0
-var instrumental_position = 0.0
+var instrumental_positions = {}
 var acapella_positions = {}
 var current_subtitle_line = 0
 
 
-
-var instrumental_player: AudioStreamPlayer = null
-#var instrumental_player = {}
+var instrumental_players = {}
 var acapella_players = {}
 
 
@@ -40,38 +35,47 @@ var procent = 0.0
 
 var debugging: bool = false
 
-var time_slider
+var song_counter = 0
+var playlist: Dictionary
 
 func _ready() -> void:
 	var screen_size = DisplayServer.window_get_size()
-	
 	print("Screen Size: ", screen_size)
 
 
-func init(franchise_name: String, song_name: String, performer_name: String, mode: String) -> void:
-	print("Init Launched")
+func import_playlist(imported_playlist: Dictionary) -> void: # when module first startup
+	# playlist dict holds songs like an array: playlist = {0: [franchise_name, song_name, performer_name, mode]}
+	playlist = imported_playlist
+	
+	start_song()
 
-	var main_path = franchise_name + "/" + song_name + "/"
+
+# every new song in playlist calls it
+func init(data: Array) -> void:
+	var main_path = data[0] + "/" + data[1] + "/"
 	var base_audio_path = main_path + "Audio/"
-	var base_acapella_path = base_audio_path + performer_name + "/"
+	var base_acapella_path = base_audio_path + data[2] + "/"
 	var main_file = main_path + "Config.txt"
 	var base_subtitle_path = main_path + "Subtitles/"
-
+	var absolute_video_path = data[0] + "/" + data[1] + "/" + video_link
+	
 	if not FileAccess.file_exists(main_file):
-		print("Main file does not exist: ", main_file)
+		Debugger.error("PlayerSceneControl.gd", "init()", "Config file does not exist: " + str(main_file))
 		return
 	
 	parse_config(main_file)
-	load_video(franchise_name, song_name)
-	load_instrumental(base_audio_path)
-	load_acapella(base_acapella_path)
 	
-	time_slider = UIManager.show_ui("time_slider")
-	time_slider.position = Vector2(0, 1080)
+	VideoRenderer.load_video(absolute_video_path)
+	AudioDecoder.load_instrumental(base_audio_path)
+	AudioDecoder.load_acapella(base_acapella_path)
 	
-	time_slider.connect("h_slider_value_changed_signal", Callable(self, "on_slider_value_changed"))
-	
+	#time_slider.connect("h_slider_value_changed_signal", Callable(self, "on_slider_value_changed"))
 	start_timer_before_play()
+
+
+func start_song() -> void:
+	init(playlist[song_counter])
+	song_counter += 1
 
 
 func on_slider_value_changed(value: float) -> void:
@@ -85,94 +89,35 @@ func parse_config(config_path: String) -> void:
 	var parsed_data = parser.get_parsed_data(config_path)
 	
 	video_link = parsed_data["video_link"]
-	instrumental_link = parsed_data["instrumental_link"]
-	#instrumental_list = parsed_data["acapella_list"]
+	#instrumental_link = parsed_data["instrumental_link"]
+	instrumental_list = parsed_data["instrumental_list"]
 	acapella_list = parsed_data["acapella_list"]
 	character_list = parsed_data["character_list"]
 	subtitles_list = parsed_data["subtitles_list"]
 
 
-func load_video(franchise_name: String, song_name: String) -> void:
-	var video_path = franchise_name + "/" + song_name + "/" + video_link
-	var absolute_video_path = video_path
-	Debugger.info("PlayerSceneControl.gd", "load_video()", "Trying to load video from: " + absolute_video_path)
-	
-	if FileAccess.file_exists(absolute_video_path):
-		metadata_array = video_node.get_file_meta(absolute_video_path)
-		Debugger.debug("PlayerSceneControl.gd", "load_video()", "metadata array: \n" + str(metadata_array))
-		
-		length = float(metadata_array.duration)
-		framerate = float(metadata_array.fps)
-		timer = timer/framerate
-		
-		var result = video_node.open(absolute_video_path)
-		if result == OK:
-			Debugger.debug("PlayerSceneControl.gd", "load_video()", "Video opened successfully!")
-		else:
-			Debugger.error("PlayerSceneControl.gd", "load_video()", "Error with video opening: " + result)
-	else:
-		Debugger.error("PlayerSceneControl.gd", "load_video()", "Video file not found: " + absolute_video_path)
-
-
-func load_instrumental(path: String) -> void:
-	var instrumental_file = path + instrumental_link
-	Debugger.info("PlayerSceneControl.gd", "load_instrumental()", "Trying to load instrumental from: " + instrumental_file)
-	
-	instrumental_player = AudioStreamPlayer.new()
-	
-	instrumental_player.stream = audio_init.get_audio_player(instrumental_file)
-	UIManager.default_parent.add_child(instrumental_player)
-
-
-func load_acapella(base_path: String) -> void:
-	Debugger.info("PlayerSceneControl.gd", "resume_all()", "Acapella list: " + str(acapella_list))
-	for acapella_group in acapella_list.keys():
-		for character_name in acapella_list[acapella_group]:
-			var acapella_file = base_path + character_name + ".mp3"
-			Debugger.info("PlayerSceneControl.gd", "resume_all()", "Trying to load acapella for character " + character_name + " from: " + acapella_file)
-			
-			var acapella_player = AudioStreamPlayer.new()
-			acapella_player.stream = audio_init.get_audio_player(acapella_file)
-			add_child(acapella_player)
-			
-			Debugger.info("PlayerSceneControl.gd", "resume_all()", "Acapella " + acapella_file + " loaded successfully.")
-			acapella_players[character_name] = acapella_player
-				
-			create_voice_channel_control(character_name)
-
-
-#////////////////////////////////////////////////////
 func _process(delta: float) -> void:
 	if is_playing:
-		time_slider.slider.value += (delta/length)*100.0
+		#time_slider.slider.value += (delta/length)*100.0
 		time_passed += delta * playback_speed
 		playtime += delta * playback_speed
 		if time_passed >= timer:
 			time_passed -= timer
-			$TextureRect.texture.set_image(video_node.next_frame())
-#////////////////////////////////////////////////////
+			VideoRenderer.update_frame()
 
 
 func seek(time: float) -> void:
 	if Video:
-		seek_video(time)
-	if instrumental_player:
+		VideoRenderer.seek_video(time)
+	for instrumental_player in instrumental_players.values():
 		instrumental_player.seek(time)
 	for player in acapella_players.values():
 		player.seek(time)
 
 
-func seek_video(seconds: float):
-	var ss = seconds * framerate
-	video_node.seek_frame(ss)
-	Debugger.info("PlayerSceneControl.gd", "resume_all()", "seeked time:" + str(ss))
-	#audio_node.seek(seconds)
-	playtime += seconds
-
-
 func set_playback_speed(speed: float):
 	playback_speed = speed
-	#audio_node.pitch_scale = playback_speed  # Синхронизация звука с видео
+	#audio_node.pitch_scale = playback_speed
 
 
 func get_current_subtitle_line(time: float) -> int:
@@ -195,10 +140,11 @@ func show_pause_menu() -> void:
 
 func pause_all() -> void:
 	is_playing = false
-
-	instrumental_player.stream_paused = true
-	instrumental_position = instrumental_player.get_playback_position()
-
+	
+	for instrumental_player in instrumental_players.values():
+		instrumental_player.stream_paused = true
+		instrumental_positions[instrumental_player] = instrumental_player.get_playback_position()
+	
 	for player in acapella_players.values():
 		player.stream_paused = true
 		acapella_positions[player] = player.get_playback_position()
@@ -209,12 +155,8 @@ func pause_all() -> void:
 func resume_all() -> void:
 	is_playing = true
 
-	if instrumental_player:
-		#instrumental_player.play(instrumental_position)
-		Debugger.info("PlayerSceneControl.gd", "resume_all()", "<Before> Instrumental instrumental_position = " + str(instrumental_position))
-		instrumental_player.seek(instrumental_position)
-		Debugger.info("PlayerSceneControl.gd", "resume_all()", "<After> Instrumentral playback position = " + str(instrumental_player.get_playback_position()))
-		instrumental_player.get_playback_position()
+	for instrumental_player in instrumental_players.values():
+		instrumental_player.seek(instrumental_positions[instrumental_player])
 		instrumental_player.stream_paused = false
 
 	for player in acapella_players.values():
@@ -224,23 +166,12 @@ func resume_all() -> void:
 
 func start_all() -> void:
 	is_playing = true
-	if instrumental_player:
-		instrumental_player.seek(instrumental_position)
-		instrumental_player.get_playback_position()
+	
+	for instrumental_player in acapella_players.values():
 		instrumental_player.playing = true
-
+	
 	for player in acapella_players.values():
 		player.playing = true
-
-
-func create_voice_channel_control(character_name: String) -> void:
-	var instance = UIManager.show_ui("voice_channel_control_scene", "PlayerScene/Voice_Channel_HBox")
-	print(instance.name)
-	instance.get_node("Ch_NameLbl").text = character_name
-	instance.connect("value_changed_signal", Callable(self, "on_value_changed"))
-func on_value_changed(value, ChName) -> void:
-	Debugger.info("PlayerSceneControl.gd", "create_voice_channel_control()", "value changed for " + ChName + ": " + str(value))
-	acapella_players[ChName].volume_db = -10 + value/10#-80 to 9
 
 
 func _input(event: InputEvent) -> void:
@@ -260,7 +191,5 @@ func _on_pause_menu_continue() -> void:
 
 func _on_timer_ready_to_start() -> void:
 	Debugger.info("PlayerSceneControl.gd", "resume_all()", "Timer finished, starting playback.")
-	if instrumental_player.playing == false:
-		start_all()
-	else:
-		resume_all()
+	start_all()
+	#resume_all()

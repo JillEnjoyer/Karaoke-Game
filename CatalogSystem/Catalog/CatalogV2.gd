@@ -15,7 +15,7 @@ var path_stack = []
 
 var song_list = []
 
-var return_speed = 5.0  # Card Returning speed
+var return_speed = 5.0
 
 var TestFeature: bool = false
 
@@ -101,9 +101,9 @@ func update_card_positions():
 	var center_x = catalog_base.get_viewport().size.x / 2
 	var center_y = catalog_base.get_viewport().size.y / 2
 	var base_spacing = card_size.x * 0.8
-	var depth_factor = 0.3  # Коэффициент для создания эффекта глубины
-	var scaling_factor = 0.25  # Коэффициент для изменения масштаба
-	var offset_factor = card_size.y * 0.1  # Отступ по вертикали
+	var depth_factor = 0.3 
+	var scaling_factor = 0.25
+	var offset_factor = card_size.y * 0.1
 
 	for i in range(song_list.size()):
 		var card = catalog_base.get_child(i)
@@ -118,18 +118,15 @@ func update_card_positions():
 
 		var target_position = Vector2(center_x + offset_x - card_size.x / 2, center_y - offset_y - card_size.y / 2)
 
-		# Удаляем старый Tween, если он есть
 		if card.has_meta("tween"):
 			card.get_meta("tween").kill()
 
-		# Создаем новый Tween для плавного перехода
 		var tween = catalog_base.create_tween()
 		card.set_meta("tween", tween)
 
 		tween.tween_property(card, "position", target_position, 0.3)
 		tween.tween_property(card, "scale", Vector2(target_scale, target_scale), 0.3)
 
-		# Используем z_index для управления глубиной отображения
 		card.z_index = int(z_offset * 10)
 
 

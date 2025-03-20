@@ -39,8 +39,12 @@ func parse_config(config_path: String) -> void:
 	file.close()
 
 func get_parsed_data(config_path: String) -> Dictionary:
+	# link to video: LINK_TO_SONG_FOLDER/video
+	# link to instrumental/acapella: LINK_TO_SONG_FOLDER/audio
 	
 	parse_config(config_path)
+	
+	
 	
 	Debugger.debug("config_parser.gd", "get_parsed_data()", "video_link: " + video_link)
 	Debugger.debug("config_parser.gd", "get_parsed_data()", "instrumental_link: " + instrumental_link)

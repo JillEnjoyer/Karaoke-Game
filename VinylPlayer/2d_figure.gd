@@ -7,9 +7,11 @@ extends Control
 @onready var tex_path = []
 @onready var tex = []
 
+
 func _ready() -> void:
 	tex_init()
 	anim_exec()
+
 
 func tex_init():
 	var file_count = count_files_in_directory(figure_path)
@@ -23,11 +25,12 @@ func tex_init():
 					var texture = ImageTexture.create_from_image(image)
 					if texture:
 						tex.append(texture)
-						print("Loaded:", tex_path[n])
+						Debugger.info("2d_figure.gd", "tex_init()", "Loaded:" + str(tex_path[n]))
 					else:
-						print("Error with texture creation:", tex_path[n])
+						Debugger.error("2d_figure.gd", "tex_init()", "Error with texture creation:" + str(tex_path[n]))
 				else:
-					print("Error with image loading:", tex_path[n])
+					Debugger.error("2d_figure.gd", "tex_init()", "Error with image loading:" + str(tex_path[n]))
+
 
 func extract_number(filename: String) -> int:
 	var regex = RegEx.new()
@@ -43,12 +46,13 @@ func anim_exec():
 		for n in range(tex.size()):
 			print(n)
 			texture_rect.texture = tex[n]
-			await get_tree().create_timer(0.075).timeout
+			await get_tree().create_timer(0.01528).timeout
+
 
 func count_files_in_directory(path: String) -> int:
 	var dir = DirAccess.open(path)
 	if dir == null:
-		print("Error: failed to open directory", path)
+		Debugger.info("2d_figure.gd", "count_files_in_directory()", "Error: failed to open directory" + str(path))
 		return 0
 	
 	dir.list_dir_begin()
@@ -62,6 +66,7 @@ func count_files_in_directory(path: String) -> int:
 	
 	dir.list_dir_end()
 	return count
+
 
 func anim_stop():
 	state = false

@@ -41,7 +41,7 @@ func Init():
 	for folder_name in FolderData.keys():
 		AcapellaCheckBox.add_item(folder_name)
 	
-	print(EndPath," / ", Franchise," / ", Song," / ", Acapella)
+	Debugger.debug("PresetScene.gd", "Init()", EndPath + " / " + Franchise + " / " + Song + " / " + Acapella)
 	
 	NameLbl.text = Song
 	SongIcon.texture = text_load.load_texture(Franchise + "/" + Song + "/" + "Icon.png")
@@ -73,5 +73,5 @@ func start_karaoke(franchise: String, song: String, acapella: String, mode: Stri
 	Debugger.info("PresetScene.gd", "start_karaoke()", "Song: " + song)
 	Debugger.info("PresetScene.gd", "start_karaoke()", "Acapella: " + acapella)
 	Debugger.info("PresetScene.gd", "start_karaoke()", "Mode: " + mode)
-
-	UIManager.show_ui("player_scene").init(franchise, song, acapella, mode)
+	var playlist = {0: [franchise, song, acapella, mode]}
+	UIManager.show_ui("player_scene").import_playlist(playlist)

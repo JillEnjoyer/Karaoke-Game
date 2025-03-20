@@ -45,6 +45,7 @@ func _on_yes_pressed():
 func switch_player_scene_mode():
 	if not player_scene_fullscreen:
 		animation_player.play("Expand")
+		
 		print("animation played forward")
 		print("size :", PlayerScene.size)
 	elif player_scene_fullscreen:
@@ -54,61 +55,38 @@ func switch_player_scene_mode():
 	player_scene_fullscreen = not player_scene_fullscreen
 
 func file_dialog_init():
-	"""
-	Настраиваем FileDialog для выбора нескольких файлов из любой папки.
-	"""
-	add_child(file_dialog)  # Добавляем в сцену
-	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILES  # Разрешаем выбирать несколько файлов
-	file_dialog.access = FileDialog.ACCESS_FILESYSTEM  # Разрешаем глобальные пути (например, C:/)
-	#file_dialog.add_filter("*.png ; PNG Images")  # Фильтры для изображений
+	add_child(file_dialog)
+	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILES
+	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	#file_dialog.add_filter("*.png ; PNG Images")
 	#file_dialog.add_filter("*.jpg ; JPG Images")
-	#file_dialog.title = "Выберите изображения"
+	file_dialog.title = "Choose the project files"
 	file_dialog.visible = true
 	
-	# Подключаем сигнал для обработки выбранных файлов
+
 	file_dialog.files_selected.connect(_on_files_selected)
-	# Теперь контейнер ловит клики мыши
+
 	control_container.mouse_filter = Control.MOUSE_FILTER_STOP
 	control_container.gui_input.connect(_on_right_click)
 
 func open_dialog():
-	"""
-	Открываем FileDialog вручную.
-	"""
 	file_dialog.popup_centered_ratio(0.8)
 
 func _on_files_selected(paths: PackedStringArray):
-	"""
-	Обрабатываем выбранные файлы.
-	"""
-	print("Выбраны файлы:", paths)
+	Debugger.debug("song_preparation_scene.gd", "_on_right_click()", "Choosen files: " + str(paths))
 
 func _on_right_click(event):
-	"""
-	Проверяем, был ли клик правой кнопкой мыши.
-	"""
-	print("RRRRR")
+	Debugger.debug("song_preparation_scene.gd", "_on_right_click()", "RMC detected")
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		context_menu.set_position(event.global_position)  # Устанавливаем позицию меню
-		context_menu.popup()  # Показываем меню
+		context_menu.set_position(event.global_position)
+		context_menu.popup()
 
 func _on_menu_selected(id: int):
-	"""
-	Выполняем действие в зависимости от выбранного пункта контекстного меню.
-	"""
 	match id:
-		0:
-			print("Открываем файл...")
-		1:
-			print("Скопировали путь!")
-		2:
-			print("Удаляем файл...")
+		0: Debugger.info("song_preparation_scene.gd", "_on_menu_selected()", "Opening file...")
+		1: Debugger.info("song_preparation_scene.gd", "_on_menu_selected()", "Path is copied!")
+		2: Debugger.info("song_preparation_scene.gd", "_on_menu_selected()", "Deleting the file...")
 
 func handle_selected_files(files: PackedStringArray):
-	"""
-	Функция для обработки выбранных файлов.
-	Можно сделать с ними что угодно.
-	"""
 	for file in files:
-		print("Обрабатываем файл:", file)
-		# Здесь можно добавить свою логику обработки файла
+		Debugger.debug("song_preparation_scene.gd", "handle_selected_files()", "Handling the file: " + str(file))

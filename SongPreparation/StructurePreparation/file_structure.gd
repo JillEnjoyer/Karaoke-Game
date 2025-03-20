@@ -7,16 +7,16 @@ func folder_init(root_folder_path: String) -> String:
 		if dir.get_parent_files().size() > 0:
 			var confirmation = await show_confirmation_dialog()
 			if confirmation == false:
-				print("Rejected.")
+				Debugger.debug("file__structure.gd", "folder_init()", "Rejected")
 				return ""
 			else:
 				dir.remove_subdirectory(root_folder_path, true)
-				print("Folder deleted.")
+				Debugger.debug("file__structure.gd", "folder_init()", "Folder deleted")
 		dir = FileAccess.open(root_folder_path, FileAccess.READ)
 	else:
 		var result = dir.make_dir_recursive(root_folder_path)
 		if result != OK:
-			print("New folder creation failed!")
+			Debugger.error("file__structure.gd", "folder_init()", "New folder creation failed!")
 			return ""
 
 	var franchise_folder = root_folder_path + "/Francise"
@@ -46,7 +46,7 @@ func create_file_if_not_exists(file_path: String) -> void:
 		return
 	var new_file = FileAccess.open(file_path, FileAccess.WRITE)
 	if new_file.error() != OK:
-		print("Failed creation of file: " + file_path)
+		Debugger.error("file__structure.gd", "folder_init()", "Failed creation of file: " + file_path)
 	new_file.close()
 
 
@@ -73,9 +73,9 @@ func show_confirmation_dialog() -> bool:
 
 
 func _on_confirmed():
-	print("User confirmed the action")
+	Debugger.debug("file__structure.gd", "folder_init()", "User confirmed the action")
 	complete_action()
 func _on_canceled():
-	print("User canceled the action")
+	Debugger.debug("file__structure.gd", "folder_init()", "User canceled the action")
 func complete_action():
-	print("Action completed!")
+	Debugger.debug("file__structure.gd", "folder_init()", "Action completed!")
