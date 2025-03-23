@@ -1,7 +1,7 @@
 extends Control
 
 @onready var video_texture = $TextureRect
-var video = Video.new()
+@onready var video = Video.new()
 #
 var is_playing = false
 var metadata_array = {}
@@ -28,11 +28,6 @@ func _ready() -> void:
 func get_video_metadata():
 	pass
 
-func get_video_path(global_path):
-	video.install(global_path)
-	video.seek(video_offset_start)
-	pass
-
 
 func load_video(absolute_video_path) -> void: # only if during edit/album was choosen other video
 	#var absolute_video_path = franchise_name + "/" + song_name + "/" + video_link
@@ -47,6 +42,7 @@ func load_video(absolute_video_path) -> void: # only if during edit/album was ch
 		timer = timer/framerate
 		
 		var result = video.open(absolute_video_path)
+		print(result)
 		if result == OK:
 			Debugger.debug("PlayerSceneControl.gd", "load_video()", "Video opened successfully!")
 		else:

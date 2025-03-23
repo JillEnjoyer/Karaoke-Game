@@ -19,7 +19,8 @@ const SCENES = {
 	"player_scene": "res://PlayerScene/PlayerScene/PlayerScene.tscn",
 	"catalog": "res://CatalogSystem/Catalog/Catalog.tscn",
 	"song_prep_scene": "res://SongPreparation/SongPreparationScene.tscn",
-	"settings": "res://Settings/Settings.tscn"
+	"settings": "res://Settings/Settings.tscn",
+	"preset_panel": "res://CatalogSystem/Catalog/Presetting.tscn"
 }
 
 func show_ui(scene_name: String, desired_parent: String = "") -> Node:

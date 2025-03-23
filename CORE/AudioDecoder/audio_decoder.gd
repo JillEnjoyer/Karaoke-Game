@@ -3,31 +3,34 @@ extends Node
 var audio_init = audio_player_instance.new()
 
 var instrumental_link = ""
-#var instrumental_list = {}
+var instrumental_list = {}
 var acapella_list = {}
 
 var instrumental_position = 0.0
 var acapella_positions = {}
 
 var instrumental_player: AudioStreamPlayer = null
-#var instrumental_players = {}
+var instrumental_players = {}
 var acapella_players = {}
 
-
+"""
 
 func load_instrumental_file(file_path: String) -> AudioStreamPlayer:
 	var player = AudioStreamPlayer.new()
 	player.stream = audio_init.get_audio_player(file_path)
 	UIManager.add_child(player)
-	return player
+	
+	#create_voice_channel_control(character_name)
 func load_acapella_file(file_path: String, character_name: String) -> AudioStreamPlayer:
-	var player = AudioStreamPlayer.new()
-	player.stream = audio_init.get_audio_player(file_path)
-	add_child(player)
+
 	acapella_players[character_name] = player
-	create_voice_channel_control(character_name)
-	return player
+	#create_voice_channel_control(character_name)
+
 func load_audio_files(base_path: String, audio_type: String) -> void:
+	var player = AudioStreamPlayer.new()
+	player.stream = audio_init.get_audio_player(base_path)
+	UIManager.add_child(player)
+	
 	
 	
 	if audio_type == "instrumental":
@@ -64,3 +67,4 @@ func set_pause_state(audio_lists: Array, paused: bool):
 		for key in audio_list:
 			if audio_list[key] is AudioStreamPlayer:
 				audio_list[key].stream_paused = paused
+"""

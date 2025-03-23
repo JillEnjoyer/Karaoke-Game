@@ -24,7 +24,7 @@ func _ready():
 
 
 func load_cards_at_path(path: String):
-	clear_cards()  # Удаляем старые карточки
+	clear_cards()
 	song_list.clear()
 	var dir_access = DirAccess.open(path)
 	if dir_access:
@@ -34,7 +34,7 @@ func load_cards_at_path(path: String):
 			if file_name != "." and file_name != "..":
 				var full_path = path + "/" + file_name
 				if DirAccess.open(full_path):
-					song_list.append(file_name)  # Добавляем папку в список
+					song_list.append(file_name)
 			file_name = dir_access.get_next()
 		dir_access.list_dir_end()
 	
@@ -141,17 +141,19 @@ func navigate_down():
 		var selected_folder = song_list[focused_card_index]
 		var new_path = current_path + "/" + selected_folder
 		
-		if FileAccess.file_exists(new_path + "/config.txt"):
-			show_settings_panel(selected_folder)
-			print("Entered settings panel")
+		if FileAccess.file_exists(new_path + "/config.json"):
+			show_settings_panel(selected_folder, "single")
+			print("Entered song settings panel")
+		elif selected_folder == "[Playlists]":
+			show_settings_panel(selected_folder, "playlist")
 		elif DirAccess.open(new_path):
 			path_stack.append(current_path)
 			current_path = new_path
 			load_cards_at_path(current_path)
 
 
-func show_settings_panel(folder_name: String):
-	var settings_panel = preload("res://CatalogSystem/Catalog/Presetting.tscn").instantiate()
-	catalog_base.add_child(settings_panel)
-	print("Sent cp/fn:", current_path, " / ", folder_name)
+func show_settings_panel(folder_name: String, type: String):
+	var settings_panel = UIManager.show_ui("preset_panel")
+	print("Sent current_path/folder_name:", current_path, "/", folder_name)
+	settings_panel.setup_mode(type)
 	settings_panel.CollectNames(current_path, folder_name)

@@ -115,6 +115,7 @@ func change_game_parameters(parameter, parameter_value) -> void:
 			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 			print(DisplayServer.window_get_vsync_mode())
 		print("v-sync ", DisplayServer.window_get_vsync_mode())
+		
 
 
 func _on_resolution_opt_btn_item_selected(index: int) -> void:
@@ -124,20 +125,15 @@ func _on_resolution_opt_btn_item_selected(index: int) -> void:
 	
 	print(data_dict["resolution"])
 
-
 func _on_frametime_opt_btn_item_selected(index: int) -> void:
 	data_dict["framerate"] = int(object_links["framerate"].get_item_text(index))
 	print(data_dict["framerate"])
 
-
 func _on_hz_btn_item_selected(index: int) -> void:
 	pass
 
-
 func _on_v_sync_cb_toggled(toggled_on: bool) -> void:
 	data_dict["v_sync"] = object_links["v-sync"].button_pressed
-	print(object_links["v-sync"].button_pressed)
-
 
 func _on_catalog_path_le_text_changed(new_text: String) -> void:
 	data_dict["catalog_path"] = new_text

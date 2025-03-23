@@ -15,10 +15,8 @@ func _ready():
 		
 		if catalog_button:
 			catalog_button.connect("pressed", Callable(self, "_on_catalog_button_pressed"))
-		
 		if settings_button:
 			settings_button.connect("pressed", Callable(self, "_on_settings_button_pressed"))
-		
 		if quit_button:
 			quit_button.connect("pressed", Callable(self, "_on_quit_button_pressed"))
 	else:
