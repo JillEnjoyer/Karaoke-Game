@@ -5,10 +5,6 @@ extends Node
 
 var preloaded_scenes = {}
 
-func _ready():
-	for key in SCENES.keys():
-		preloaded_scenes[key] = load(SCENES[key])
-
 const SCENES = {
 	"main_menu": "res://MainMenu/MainMenu.tscn",
 	"voice_channel_control_scene": "res://PlayerScene/VoiceChannelControl/VoiceChannelControl.tscn",
@@ -23,13 +19,32 @@ const SCENES = {
 	"preset_panel": "res://CatalogSystem/Catalog/Presetting.tscn"
 }
 
+
+func _ready():
+	for key in SCENES.keys():
+		preloaded_scenes[key] = load(SCENES[key])
+
+
 func show_ui(scene_name: String, desired_parent: String = "") -> Node:
 	if not preloaded_scenes.has(scene_name):
 		Debugger.error("ss", "show_ui()", "Error: Scene is not found in the list!")
 		return null
 	
-	var parent
-	
+	var parent = get_needed_parent(desired_parent)
+
+	var scene_instance = preloaded_scenes[scene_name].instantiate()
+	parent.add_child(scene_instance)
+	scene_instance.owner = parent
+	return scene_instance
+
+
+func new_child(node, desired_parent: String = ""):
+	var parent = get_needed_parent(desired_parent)
+	parent.add_child(node)
+
+
+func get_needed_parent(desired_parent):
+	var parent = ""
 	if desired_parent == "core":
 		parent = core
 	else:
@@ -41,11 +56,7 @@ func show_ui(scene_name: String, desired_parent: String = "") -> Node:
 		else:
 			Debugger.error("ss", "show_ui()", "Error: Parent object '" + desired_parent + "' is not found!")
 			return null
-
-	var scene_instance = preloaded_scenes[scene_name].instantiate()
-	parent.add_child(scene_instance)
-	scene_instance.owner = parent
-	return scene_instance
+	return parent
 
 
 func remove_child_from_tree(removable_node: String, node_path: String = "") -> void:

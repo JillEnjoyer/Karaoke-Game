@@ -7,15 +7,15 @@ var player_scene_fullscreen = false
 @onready var animation_player = $AnimationPlayer
 @onready var file_dialog = FileDialog.new()
 @onready var context_menu = PopupMenu.new()
-@onready var control_container = Control.new()  # Контейнер для событий
+@onready var control_container = Control.new()
 
 const PLAYER_SCENE_WINDOW_RATIO = 1.5
 
 func _ready() -> void:
 	file_dialog_init()
-	PlayerScene.size = PlayerScene.size * PLAYER_SCENE_WINDOW_RATIO
+	PlayerScene.size = PlayerScene.size# * PLAYER_SCENE_WINDOW_RATIO
 	PlayerScene.debugging = true
-	PlayerScene.get_node("TextureRect").texture = preload("res://icon.svg")
+	PlayerScene.get_node("VideoRenderer/TextureRect").texture = preload("res://icon.svg")
 
 
 func _input(event):
@@ -54,6 +54,7 @@ func switch_player_scene_mode():
 		print("size :", PlayerScene.size)
 	player_scene_fullscreen = not player_scene_fullscreen
 
+
 func file_dialog_init():
 	add_child(file_dialog)
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILES
@@ -69,11 +70,18 @@ func file_dialog_init():
 	control_container.mouse_filter = Control.MOUSE_FILTER_STOP
 	control_container.gui_input.connect(_on_right_click)
 
+
 func open_dialog():
 	file_dialog.popup_centered_ratio(0.8)
 
+
 func _on_files_selected(paths: PackedStringArray):
-	Debugger.debug("song_preparation_scene.gd", "_on_right_click()", "Choosen files: " + str(paths))
+	Debugger.debug("song_preparation_scene.gd", "_on_files_selected()", "Choosen files: " + str(paths))
+	
+	for file in paths:
+		#add item to whole choosen list
+		pass
+
 
 func _on_right_click(event):
 	Debugger.debug("song_preparation_scene.gd", "_on_right_click()", "RMC detected")
@@ -81,11 +89,13 @@ func _on_right_click(event):
 		context_menu.set_position(event.global_position)
 		context_menu.popup()
 
+
 func _on_menu_selected(id: int):
 	match id:
 		0: Debugger.info("song_preparation_scene.gd", "_on_menu_selected()", "Opening file...")
 		1: Debugger.info("song_preparation_scene.gd", "_on_menu_selected()", "Path is copied!")
 		2: Debugger.info("song_preparation_scene.gd", "_on_menu_selected()", "Deleting the file...")
+
 
 func handle_selected_files(files: PackedStringArray):
 	for file in files:

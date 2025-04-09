@@ -1,0 +1,21 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://b5rwnmy0fedkv"]
+
+[ext_resource type="FontFile" uid="uid://bdjpgmt4b73op" path="res://Fonts/ComicSansMS.ttf" id="1_k6mwf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ixhg"]
+bg_color = Color(0, 0.48, 0.448, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[resource]
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(0.258662, 0.93476, 0.999998, 1)
+Button/colors/font_hover_color = Color(0.0930137, 0.73548, 0.707016, 1)
+Button/colors/font_hover_pressed_color = Color(0, 0.333786, 0.335141, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(0.716581, 0.596058, 1, 1)
+Button/font_sizes/font_size = 24
+Button/fonts/font = ExtResource("1_k6mwf")
+Button/styles/normal = SubResource("StyleBoxFlat_7ixhg")

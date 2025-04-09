@@ -3,55 +3,30 @@ extends Control
 @onready var VideoRenderer = $VideoRenderer
 @onready var AudioDecoder = $AudioDecoder
 @onready var Voice_Channel_HBox = $PlayerSceneUi/Voice_Channel_HBox
-@onready var slider_control = $PlayerSceneUi/TimeSlider
+#@onready var slider_control = $PlayerSceneUi/TimeSlider
 
-var video_list = []
+var debugging = false
+var playlist = {}
+var song_counter = 1
+
+var video_list = {}
 var instrumental_list = {}
 var acapella_list = {}
-var subtitles_list = []
-var character_list = {}
+var subtitles_list = {}
+var character_list = []
 
-var video_paths = {}
-var instrumental_paths = {}
-var acapella_paths = {}
-var subtitle_paths = {}
-
-var video_position = 0.0
-var instrumental_positions = {}
-var acapella_positions = {}
-var current_subtitle_line = 0
-
-var instrumental_players = {}
-var acapella_players = {}
-
-var framerate = 30.0
-var length = 1.0
-var timer = 1.0
-var time_passed = 0.0
-var playback_speed = 1.0
 var is_playing = false
 var playtime = 0.0
-var metadata_array = {}
-var procent = 0.0
-
-var debugging: bool = false
-
-
-var song_counter = 0
-var playlist: Dictionary
-
+var length = 1.0
 
 var main_path
 var config_file
-var base_instrumental_path
-var base_acapella_path
-var base_subtitle_path
-var absolute_video_path
 
 
 func _ready() -> void:
 	var screen_size = DisplayServer.window_get_size()
 	print("Screen Size: ", screen_size)
+	
 
 
 func import_playlist(imported_playlist: Dictionary) -> void:
@@ -60,98 +35,74 @@ func import_playlist(imported_playlist: Dictionary) -> void:
 
 
 func start_song() -> void:
-	init(playlist[song_counter])
+	print(playlist)
+	init(playlist[str(song_counter)])
 	song_counter += 1
 
 
-func init(data: Array) -> void: # 0: global link to the song, 1: song_name, 2: choosen option, 3: mode]
-	main_path = data[0] + "/" + data[1] + "/"
-	config_file = main_path + "Config.json"
-	base_instrumental_path = main_path + "/Audio"
-	
+func init(data: Dictionary) -> void:
+	main_path = data["path"]
+	config_file = main_path + "/Config.json"
 	
 	if not FileAccess.file_exists(config_file):
 		Debugger.error("PlayerSceneControl.gd", "init()", "Config file does not exist: " + str(config_file))
 		return
+	parse_config(config_file, data["video"], data["instrumental"], data["acapella"])
 	
-	parse_config(config_file)
+	VideoRenderer.init(video_list)
+	VideoRenderer.connect("video_ended", Callable(self, "_handle_video_ended"))
 	
-	var first_video_id = video_list[0]["id"] if video_list.size() > 0 else null
-	if first_video_id and video_paths.has(first_video_id):
-		VideoRenderer.load_video(video_paths[first_video_id])
+	AudioDecoder.init(instrumental_list, "instrumental")
+	AudioDecoder.init(acapella_list, "acapella")
+	AudioDecoder.connect("last_audio_ended", Callable(self, "_handle_audio_ended"))
 	
-	for track_id in instrumental_paths.keys():
-		AudioDecoder.load_instrumental(instrumental_paths[track_id])
-	
-	for track_id in acapella_paths.keys():
-		AudioDecoder.load_acapella(acapella_paths[track_id])
-	
-	# Тут можно подгружать субтитры, если нужно
+	# Subtitle loading is here
 	
 	start_timer_before_play()
 
 
-func on_slider_value_changed(value: float) -> void:
-	print("recieved value: " + str(value))
-	seek((length / 100.0) * value)
-
-
-func parse_config(config_path: String) -> void:
+func parse_config(config_path: String, desired_video: String, desired_instrumental: String, desired_acapella: String) -> void:
 	var parser = ConfigParser.new()
-	var parsed_data = parser.get_parsed_data(config_path)
+	var parsed_data = parser.get_parsed_data(config_path, desired_video, desired_instrumental, desired_acapella)
 	
-	video_list = parsed_data["video_list"]
-	instrumental_list = parsed_data["instrumental_list"]
-	acapella_list = parsed_data["acapella_list"]
+	Debugger.debug("PlayerSceneControl.gd", "parse_config()", str(parsed_data))
+	
+	video_list = parsed_data["video_dict"]
+	instrumental_list = parsed_data["instrumental_dict"]
+	acapella_list = parsed_data["acapella_dict"]
 	character_list = parsed_data["character_list"]
-	subtitles_list = parsed_data["subtitles_list"]
+	subtitles_list = parsed_data["subtitle_dict"]
+	
 	
 	for video in video_list:
-		var video_id = str(video["id"])
-		video_paths[video_id] = str(main_path) + "Video/" + video["version"] + video["type"]
+		video_list[video]["path"] = str(main_path) + "/Video/" + video_list[video]["path"]
 	
 	for instrumental in instrumental_list:
-		pass
-		#print(instrumental)
-		#var track_id = str(instrumental["id"])
-		#instrumental_paths[track_id] = base_audio_path + track_id + ".mp3"
+		for file in instrumental_list[instrumental]:
+			instrumental_list[instrumental][file]["path"] = str(main_path) + "/Audio/Instrumental/" + instrumental + "/" + instrumental_list[instrumental][file]["path"]
 	
 	for acapella in acapella_list:
-		pass
-		#print(acapella)
-		#var track_id = str(acapella["id"])
-		#acapella_paths[track_id] = base_acapella_path + track_id + ".mp3"
+		for file in acapella_list[acapella]:
+			acapella_list[acapella][file]["path"] = str(main_path) + "/Audio/Instrumental/" + acapella + "/" + acapella_list[acapella][file]["path"]
 
-	for subtitle in subtitles_list:
-		var subtitle_id = str(subtitle["id"])
-		subtitle_paths[subtitle_id] = base_subtitle_path + subtitle_id + ".srt"
-
-	Debugger.debug("PlayerSceneControl.gd", "parse_config()", "video_paths: " + str(video_paths))
-	Debugger.debug("PlayerSceneControl.gd", "parse_config()", "instrumental_paths: " + str(instrumental_paths))
-	Debugger.debug("PlayerSceneControl.gd", "parse_config()", "acapella_paths: " + str(acapella_paths))
-	Debugger.debug("PlayerSceneControl.gd", "parse_config()", "subtitle_paths: " + str(subtitle_paths))
+	#for subtitle in subtitles_list:
+		#var subtitle_id = str(subtitle["id"])
+		#subtitle_paths[subtitle_id] = base_subtitle_path + subtitle_id + ".srt"
 
 
 func _process(delta: float) -> void:
 	if is_playing:
-		time_passed += delta * playback_speed
-		playtime += delta * playback_speed
-		if time_passed >= timer:
-			time_passed -= timer
-			VideoRenderer.update_frame()
+		playtime += delta
+		if playtime > length:
+			pause_all()
+			Debugger.warning("PlayerSceneControl.gd", "_process()", "Playtime exceeds length: " + str(playtime) + " > " + str(length))
 
 
 func seek(time: float) -> void:
-	if Video:
-		VideoRenderer.seek_video(time)
-	for instrumental_player in instrumental_players.values():
-		instrumental_player.seek(time)
-	for player in acapella_players.values():
-		player.seek(time)
-
-
-func set_playback_speed(speed: float):
-	playback_speed = speed
+	#var accessible_time = SubtitleProcessor.seek_to_closest_line(time) # = time - 0.25 secs
+	#VideoRenderer.seek_video(accessible_time)
+	#AudioDecoder.seek_to(accessible_time)
+	pass
 
 
 func get_current_subtitle_line(time: float) -> int:
@@ -163,7 +114,8 @@ func get_current_subtitle_line(time: float) -> int:
 
 
 func show_pause_menu() -> void:
-	if get_node("/root/ViewportBase/SubViewportContainer/SubViewport/PlayerScene").has_node("PauseMenu"):
+	
+	if UIManager.default_parent.has_node("PauseMenu"):
 		Debugger.info("PlayerSceneControl.gd", "show_pause_menu()", "Pause menu already exists, not spawning a new one.")
 		return
 
@@ -174,47 +126,43 @@ func show_pause_menu() -> void:
 
 func pause_all() -> void:
 	is_playing = false
-	for instrumental_player in instrumental_players.values():
-		instrumental_player.stream_paused = true
-		instrumental_positions[instrumental_player] = instrumental_player.get_playback_position()
-	for player in acapella_players.values():
-		player.stream_paused = true
-		acapella_positions[player] = player.get_playback_position()
+	#VideoRenderer.pause()
+	#AudioDecoder.pause_all()
+	#SubtitleProcessor.pause()
+	pass
 
 
 func resume_all() -> void:
 	is_playing = true
-	for instrumental_player in instrumental_players.values():
-		instrumental_player.seek(instrumental_positions[instrumental_player])
-		instrumental_player.stream_paused = false
-	for player in acapella_players.values():
-		player.seek(acapella_positions[player])
-		player.stream_paused = false
+	#VideoRenderer.resume()
+	#AudioDecoder.resume_all()
+	#SubtitleProcessor.resume()
+	pass
 
 
-func start_all() -> void:
-	is_playing = true
-	for instrumental_player in acapella_players.values():
-		instrumental_player.playing = true
-	for player in acapella_players.values():
-		player.playing = true
-
-# Обработка нажатий (например, для паузы)
 func _input(event: InputEvent) -> void:
 	if not debugging and event.is_action_pressed("pause"):
 		show_pause_menu()
 
-# Таймер перед стартом воспроизведения
+
 func start_timer_before_play() -> void:
 	var timer_instance = UIManager.show_ui("timer_scene")
 	timer_instance.connect("ready_to_start", Callable(self, "_on_timer_ready_to_start"))
 
-# Сигнал продолжения после паузы
+
+func on_slider_value_changed(value: float) -> void:
+	print("recieved value: " + str(value))
+	seek((length / 100.0) * value)
+
+
 func _on_pause_menu_continue() -> void:
 	Debugger.info("PlayerSceneControl.gd", "resume_all()", "Continue signal received, resuming playback.")
 	start_timer_before_play()
 
-# Готовность таймера к запуску
+
 func _on_timer_ready_to_start() -> void:
 	Debugger.info("PlayerSceneControl.gd", "resume_all()", "Timer finished, starting playback.")
-	start_all()
+	resume_all()
+
+func _handle_video_ended() -> void:
+	Debugger.info("PlayerSceneControl.gd", "_handle_video_ended()", "VideoRenderer sent signal: Video ended")

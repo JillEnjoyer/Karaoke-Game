@@ -1,6 +1,6 @@
 extends Control
 
-@onready var root = get_node("/root/ViewportBase/SubViewportContainer/SubViewport")
+@onready var root = UIManager.default_parent
 @onready var catalog_base = root.get_node("Catalog")
 
 var audio_player_init = audio_player_instance.new()
@@ -54,8 +54,6 @@ func create_card(song_name: String, index: int) -> Control:
 
 	var icon_path = current_path + "/" + song_name + "/Icon.png"
 	var bg_path = current_path + "/" + song_name + "/Background.png"
-	
-	#print("Загружаемый путь:", icon_path)
 	
 	card.album_art = text_loader.load_texture_or_placeholder(icon_path)
 	card.background = text_loader.load_texture_or_placeholder(bg_path)
@@ -143,7 +141,7 @@ func navigate_down():
 		
 		if FileAccess.file_exists(new_path + "/config.json"):
 			show_settings_panel(selected_folder, "single")
-			print("Entered song settings panel")
+			Debugger.debug("CatalogV2.gd", "navigate_down()", "Entered song settings panel")
 		elif selected_folder == "[Playlists]":
 			show_settings_panel(selected_folder, "playlist")
 		elif DirAccess.open(new_path):
@@ -154,6 +152,6 @@ func navigate_down():
 
 func show_settings_panel(folder_name: String, type: String):
 	var settings_panel = UIManager.show_ui("preset_panel")
-	print("Sent current_path/folder_name:", current_path, "/", folder_name)
+	Debugger.debug("CatalogV2.gd", "show_settings_panel()", "Sent current_path/folder_name:" + current_path + "/" + folder_name)
 	settings_panel.setup_mode(type)
 	settings_panel.CollectNames(current_path, folder_name)

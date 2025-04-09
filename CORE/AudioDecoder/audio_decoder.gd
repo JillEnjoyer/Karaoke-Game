@@ -1,52 +1,42 @@
 extends Node
 
+signal last_audio_ended
+
 var audio_init = audio_player_instance.new()
 
-var instrumental_link = ""
-var instrumental_list = {}
-var acapella_list = {}
+# awaited sth like positions["instrumental"/"acapella"][filename] => link
 
-var instrumental_position = 0.0
-var acapella_positions = {}
+var positions = {}
+var players = {}
+var offset_start = {}
+var offset_end = {}
+var gain = {}
+var pitch = {}
+var speed = {}
 
-var instrumental_player: AudioStreamPlayer = null
-var instrumental_players = {}
-var acapella_players = {}
 
-"""
+func init(data_list: Dictionary, type: String):
+	var file_paths = {}
+	print("/////\n" + str(data_list))
+	for version in data_list:
+		for file in data_list[version]:
+			file_paths[file] = data_list[version][file]["path"]
+			
+			load_files(file_paths, type)
 
-func load_instrumental_file(file_path: String) -> AudioStreamPlayer:
-	var player = AudioStreamPlayer.new()
-	player.stream = audio_init.get_audio_player(file_path)
-	UIManager.add_child(player)
+
+func load_files(file_paths: Dictionary, file_type: String):
+	reset_variables()
 	
-	#create_voice_channel_control(character_name)
-func load_acapella_file(file_path: String, character_name: String) -> AudioStreamPlayer:
-
-	acapella_players[character_name] = player
-	#create_voice_channel_control(character_name)
-
-func load_audio_files(base_path: String, audio_type: String) -> void:
-	var player = AudioStreamPlayer.new()
-	player.stream = audio_init.get_audio_player(base_path)
-	UIManager.add_child(player)
-	
-	
-	
-	if audio_type == "instrumental":
-		var instrumental_file = base_path
-		Debugger.info("audio_decoder.gd", "load_audio_files()", "Trying to load instrumental from: " + instrumental_file)
-		instrumental_player = load_instrumental_file(instrumental_file)
-		Debugger.info("audio_decoder.gd", "load_audio_files()", "Instrumental loaded successfully.")
-	elif audio_type == "acapella":
-		Debugger.info("audio_decoder.gd", "load_audio_files()", "Acapella list: " + str(acapella_list))
-		for acapella_group in acapella_list.keys():
-			for character_name in acapella_list[acapella_group]:
-				var acapella_file = base_path + character_name + ".mp3"
-				Debugger.info("audio_decoder.gd", "load_audio_files()", "Trying to load acapella for character " + character_name + " from: " + acapella_file)
-				load_acapella_file(acapella_file, character_name)
-				Debugger.info("audio_decoder.gd", "load_audio_files()", "Acapella " + acapella_file + " loaded successfully.")
-
+	for file_name in file_paths:
+		var player = AudioStreamPlayer.new()
+		player.name = file_name
+		player.stream = audio_init.get_audio_player(file_paths[file_name])
+		UIManager.new_child(player)
+		
+		if not players.has(file_type):
+			players[file_type] = {}
+		players[file_type][file_name] = player
 
 
 func create_voice_channel_control(character_name: String) -> void:
@@ -56,10 +46,11 @@ func create_voice_channel_control(character_name: String) -> void:
 	instance.connect("value_changed_signal", Callable(self, "on_value_changed"))
 func on_value_changed(value, ChName) -> void:
 	Debugger.info("audio_decoder.gd", "create_voice_channel_control()", "value changed for " + ChName + ": " + str(value))
-	acapella_players[ChName].volume_db = -10 + value/10#-80 to 9
+	#acapella_players[ChName].volume_db = -10 + value/10#-80 to 9
 
 func pause_state_command(paused: bool):
-	set_pause_state([instrumental_player, acapella_players], true)
+	#set_pause_state([instrumental_player, acapella_players], true)
+	pass
 
 
 func set_pause_state(audio_lists: Array, paused: bool):
@@ -67,4 +58,13 @@ func set_pause_state(audio_lists: Array, paused: bool):
 		for key in audio_list:
 			if audio_list[key] is AudioStreamPlayer:
 				audio_list[key].stream_paused = paused
-"""
+
+
+func reset_variables() -> void:
+	positions = {}
+	players = {}
+	offset_start = {}
+	offset_end = {}
+	gain = {}
+	pitch = {}
+	speed = {}

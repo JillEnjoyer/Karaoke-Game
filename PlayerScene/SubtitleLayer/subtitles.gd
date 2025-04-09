@@ -2,82 +2,79 @@ extends Control
 
 # num 0-x: "Name"
 var id_objects: Dictionary = {}
-# num 0-x: path
+# num 0-x: word instance
 var word_objects: Dictionary = {}
 
-#@onready var main_HBox = $HBoxContainer
-
 var default = {
-	"default_font_path" = "res://Fonts/ComicSansMS.ttf",
-	"default_font_size" = 36,
-	"default_font_color" = Color(1, 1, 1)
+	"font_path": "res://Fonts/ComicSansMS.ttf",
+	"font_size": 36,
+	"font_color": Color(1, 1, 1)
 }
-@onready var default_WordCell_path = preload("res://PlayerScene/SubtitleLayer/WordCell.tscn")
 
-var last_avaliable_id = 0
+@onready var default_WordCell_path = preload("res://PlayerScene/SubtitleLayer/WordCell.tscn")
+var last_available_id = 0
+
 
 func _ready() -> void:
-	# add_word(word, position, size, font_size, hbox)
-	add_word("Привет", Vector2(0.1, 0.2), Vector2(0.015, 0.020), 1)
-	add_word("Мир", Vector2(0.30, 0.20), Vector2(0.015, 0.020), 1)
+	add_word("HELLO", Vector2(0.1, 0.2), Vector2(0.15, 0.05))
+	await get_tree().create_timer(1).timeout
+	add_word("WORLD", Vector2(0.3, 0.2), Vector2(0.15, 0.05))
 
 
-func add_word(word: String, position: Vector2, size: Vector2, font_size: int) -> void:
-	position = Core.get_node("PreferencesData").percent_to_pixels(position)
-	size = Core.get_node("PreferencesData").percent_to_pixels(size)
-	print(str(position) + str(size))
+func add_word(word: String, position: Vector2, size: Vector2) -> void:
 	var current_word = default_WordCell_path.instantiate()
 	
-	current_word.get_node("TextLayer").text = word
-	current_word.position = position
-	current_word.size = size
+	var label = current_word.get_node("TextLayer")
+	label.text = word
 	
-	word_objects[last_avaliable_id] = current_word
-	id_objects[last_avaliable_id] = word
+	current_word.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	
+	current_word.anchor_left = position.x
+	current_word.anchor_top = position.y
+	current_word.anchor_right = position.x + size.x
+	current_word.anchor_bottom = position.y + size.y
+	
+	current_word.size_flags_horizontal = Control.SIZE_FILL
+	current_word.size_flags_vertical = Control.SIZE_FILL
+	
+	current_word.set_offsets_preset(Control.PRESET_MODE_MINSIZE, Control.PRESET_TOP_LEFT)
+	
+	word_objects[last_available_id] = current_word
+	id_objects[last_available_id] = word
 	
 	add_child(current_word)
-	last_avaliable_id += 1
+	last_available_id += 1
 
 
 func remove_word(word: String) -> void:
 	var id = get_id(word)
-	print("remove_word = " + str(id))
 	if id == -1:
-		print("Word not found: ", word)
+		push_warning("Word not found: %s" % word)
 		return
 	
-	if id in word_objects:
+	if word_objects.has(id):
 		var object = word_objects[id]
 		remove_child(object)
 		object.queue_free()
 		word_objects.erase(id)
 		id_objects.erase(id)
-		print("Word removed: ", word, ", ID: ", id)
-	else:
-		print("Object not found for ID: ", id)
 
 
 func get_id(word: String) -> int:
-	var searchable_id = 0
-	for id in id_objects.keys():
+	for id in id_objects:
 		if id_objects[id] == word:
 			return id
-		searchable_id += 1
 	return -1
 
 
-func get_object(word: String):
+func get_object(word: String) -> Control:
 	var id = get_id(word)
-	
-	return word_objects[id]
+	return word_objects.get(id)
 
 
 func clear_all_words() -> void:
-	var local_id_objects = id_objects.duplicate()
-	for id in local_id_objects:
-		print(id)
-		print(local_id_objects[id])
-		remove_word(id_objects[id])
+	for word in id_objects.values():
+		remove_word(word)
 	word_objects.clear()
 	id_objects.clear()
-	last_avaliable_id = 0
+	last_available_id = 0

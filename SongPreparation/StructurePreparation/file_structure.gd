@@ -1,5 +1,8 @@
 extends Node
 
+class_name FileStructurePrep
+
+
 func folder_init(root_folder_path: String) -> String:
 	var dir = FileAccess.open(root_folder_path, FileAccess.READ)
 	

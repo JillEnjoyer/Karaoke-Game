@@ -13,3 +13,16 @@ script = ExtResource("1_jlbrn")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 autoplay = true
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.364
+anchor_top = 0.28
+anchor_right = 0.589
+anchor_bottom = 0.417
+offset_left = 0.119934
+offset_top = -0.399994
+offset_right = -0.880127
+offset_bottom = -0.360016
+text = "Button"

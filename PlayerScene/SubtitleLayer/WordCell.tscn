@@ -1,10 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://8ddpy35vy3j4"]
 
-[ext_resource type="Shader" uid="uid://codr3n325pudv" path="res://PlayerScene/SubtitleLayer/blur.gdshader" id="1_jn3au"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4avuy"]
-shader = ExtResource("1_jn3au")
-shader_parameter/blur_size = 0
+[ext_resource type="Shader" uid="uid://codr3n325pudv" path="res://PlayerScene/SubtitleLayer/Shaders/blur.gdshader" id="1_jn3au"]
+[ext_resource type="Script" uid="uid://tmir5ikq2lut" path="res://PlayerScene/SubtitleLayer/word_cell.gd" id="1_kpxr1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_reyd0"]
 resource_local_to_scene = true
@@ -19,19 +16,26 @@ offset_right = 0.47998
 offset_bottom = -0.240021
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_kpxr1")
 
-[node name="BlurLayer" type="Control" parent="."]
-material = SubResource("ShaderMaterial_4avuy")
-anchors_preset = 0
-offset_right = 300.0
-offset_bottom = 300.0
+[node name="BlurTexture" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_reyd0")
-layout_mode = 0
-offset_right = 300.0
-offset_bottom = 300.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 3.05176e-05
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="TextLayer" type="Label" parent="."]
 layout_mode = 1
@@ -39,6 +43,8 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_bottom = 3.05176e-05
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_font_sizes/font_size = 36
 horizontal_alignment = 1
 vertical_alignment = 1
