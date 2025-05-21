@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0mqe0rimjryd"]
+
+[ext_resource type="Script" uid="uid://b7jxtfttm61lo" path="res://Components/SongPreparation/Components/OffsetController/Generators/thumbnail generator.gd" id="1_t05di"]
+
+[node name="Test" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_t05di")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 192.0
+offset_bottom = 108.0
+expand_mode = 1

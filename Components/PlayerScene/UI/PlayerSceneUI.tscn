@@ -1,0 +1,148 @@
+[gd_scene load_steps=6 format=3 uid="uid://bpuwn2vfuwf2s"]
+
+[ext_resource type="Script" uid="uid://bbiv7ub2str4" path="res://Components/PlayerScene/UI/player_scene_ui.gd" id="1_lvqbk"]
+[ext_resource type="Texture2D" uid="uid://bd4vhemr1jjxm" path="res://up-arrow.png" id="2_0ltlg"]
+
+[sub_resource type="Animation" id="Animation_lvqbk"]
+resource_name = "UP"
+step = 0.0168
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TimeSlider:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.983333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1080), Vector2(0, 1020)]
+}
+
+[sub_resource type="Animation" id="Animation_7rw3d"]
+resource_name = "show_voice_channel"
+step = 0.0168
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0166667, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1360, -300), Vector2(1360, 10)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j4juy"]
+_data = {
+&"UP": SubResource("Animation_lvqbk"),
+&"show_voice_channel": SubResource("Animation_7rw3d")
+}
+
+[node name="PlayerSceneUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lvqbk")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_j4juy")
+}
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+anchor_left = 0.708
+anchor_top = 0.009
+anchor_right = 0.969
+anchor_bottom = 0.287
+offset_left = 0.640015
+offset_top = -309.72
+offset_right = -0.480103
+offset_bottom = -309.96
+
+[node name="Voice_Channel_HBox" type="HBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="HoverArea" type="Control" parent="Panel"]
+layout_mode = 1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.11
+grow_vertical = 0
+
+[node name="HoverAppearBtn" type="Button" parent="Panel"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.425
+anchor_top = 1.0
+anchor_right = 0.575
+anchor_bottom = 1.083
+offset_right = -3.05176e-05
+offset_bottom = 0.0999756
+
+[node name="TextureRect" type="TextureRect" parent="Panel/HoverAppearBtn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_0ltlg")
+expand_mode = 1
+flip_v = true
+
+[node name="TimeSlider" type="Node2D" parent="."]
+position = Vector2(0, 1080)
+
+[node name="VisibilityPanel" type="Panel" parent="TimeSlider"]
+offset_left = 927.5
+offset_top = -30.0
+offset_right = 1002.5
+
+[node name="TextureRect" type="TextureRect" parent="TimeSlider/VisibilityPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("2_0ltlg")
+expand_mode = 1
+
+[node name="Button" type="Button" parent="TimeSlider/VisibilityPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SliderPanel" type="Panel" parent="TimeSlider"]
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.065
+offset_right = 1920.0
+offset_bottom = 60.0
+
+[node name="HSlider" type="HSlider" parent="TimeSlider/SliderPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+step = 0.1
+
+[connection signal="mouse_entered" from="Panel/HoverArea" to="." method="_on_hover_area_mouse_entered"]
+[connection signal="mouse_exited" from="Panel/HoverArea" to="." method="_on_hover_area_mouse_exited"]
+[connection signal="pressed" from="Panel/HoverAppearBtn" to="." method="_on_hover_appear_btn_pressed"]
+[connection signal="pressed" from="TimeSlider/VisibilityPanel/Button" to="." method="_on_button_pressed"]

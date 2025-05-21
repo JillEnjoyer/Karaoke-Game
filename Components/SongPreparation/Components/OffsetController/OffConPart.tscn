@@ -1,0 +1,93 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhlgyb7r0pja"]
+
+[ext_resource type="Script" uid="uid://323oba561pta" path="res://Components/SongPreparation/Components/OffsetController/offset_part_controller.gd" id="1_0io5f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fejya"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kkyt"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4vig"]
+bg_color = Color(0.98, 0.98, 0.98, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[node name="OffsetController" type="Control"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 3
+anchor_right = 0.026
+anchor_bottom = 0.065
+offset_right = 0.079998
+offset_bottom = -0.200005
+script = ExtResource("1_0io5f")
+
+[node name="ThumbnailContainer" type="Control" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ThumbnailContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="DragBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_fejya")
+theme_override_styles/normal = SubResource("StyleBoxFlat_fejya")
+
+[node name="LeftHandle" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.443
+anchor_bottom = 0.443
+offset_top = -0.00999451
+offset_right = 15.0
+offset_bottom = 14.99
+theme_override_styles/normal = SubResource("StyleBoxFlat_0kkyt")
+
+[node name="RightHandle" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.329
+anchor_right = 1.0
+anchor_bottom = 0.329
+offset_left = -15.0
+offset_top = -0.029995
+offset_bottom = 14.97
+theme_override_styles/normal = SubResource("StyleBoxFlat_i4vig")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="gui_input" from="DragBtn" to="." method="_on_drag_btn_gui_input"]
+[connection signal="gui_input" from="LeftHandle" to="." method="_on_left_handle_gui_input"]
+[connection signal="gui_input" from="RightHandle" to="." method="_on_right_handle_gui_input"]

@@ -10,23 +10,23 @@ config_version=5
 
 [application]
 
-config/name="Karaoke Game"
+config/name="VocaLume"
 config/description="A game, where is possible to create, edit, play and capture musical composition.
 Different languages?
 Lots of subtitles?
 Wish to maintain a whole Karaoke bar with one video broadcaster through the room with internet? 
 - It is it"
 config/version="0.3.37"
-run/main_scene="res://CORE/ViewportBase/viewport_base.tscn"
+run/main_scene="res://Components/CORE/ViewportBase/viewport_base.tscn"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Debugger="*res://Debug/Debugger.gd"
-Core="*res://CORE/Core.gd"
-UIManager="*res://CORE/Preloader/ui_manager.gd"
-PreferencesData="*res://Preferences/PreferencesData.gd"
+Debugger="*res://Components/Debug/Debugger.gd"
+Core="*res://Components/CORE/Core.gd"
+UIManager="*res://Components/CORE/Preloader/ui_manager.gd"
+PreferencesData="*res://Components/Preferences/PreferencesData.gd"
 
 [display]
 

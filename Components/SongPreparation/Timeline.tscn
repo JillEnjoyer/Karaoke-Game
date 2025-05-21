@@ -1,0 +1,120 @@
+[gd_scene load_steps=3 format=3 uid="uid://bs16sf7vjh55t"]
+
+[ext_resource type="Script" uid="uid://vpqan8b0k40a" path="res://Components/SongPreparation/timeline.gd" id="1_n2tlh"]
+[ext_resource type="PackedScene" uid="uid://cc6x5ow7djqim" path="res://Components/SongPreparation/Components/TimePointer/TimePointer.tscn" id="2_hl8mn"]
+
+[node name="Timeline" type="Control"]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 0.333
+offset_bottom = 0.359985
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n2tlh")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.996
+anchor_bottom = 0.922
+offset_right = -9.31995
+offset_bottom = 0.0799866
+
+[node name="NamePanel" type="Panel" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/NamePanel"]
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxNames" type="VBoxContainer" parent="HSplitContainer/NamePanel/ScrollContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TimelinePanel" type="Panel" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/TimelinePanel"]
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 3
+
+[node name="VBoxTimelines" type="VBoxContainer" parent="HSplitContainer/TimelinePanel/ScrollContainer"]
+layout_mode = 2
+
+[node name="TimeBar" type="Control" parent="HSplitContainer/TimelinePanel"]
+layout_mode = 1
+anchor_top = 0.991
+anchor_right = 1.006
+anchor_bottom = 1.075
+offset_top = -0.0119934
+offset_right = -0.346069
+offset_bottom = 0.0999756
+
+[node name="HScrollBar" type="HScrollBar" parent="HSplitContainer/TimelinePanel/TimeBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.96
+anchor_top = 0.25
+anchor_right = 0.96
+anchor_bottom = 0.821
+offset_left = -1753.92
+offset_top = 2.38419e-05
+offset_right = -876.766
+offset_bottom = -7.988
+scale = Vector2(2, 2)
+
+[node name="TimeLabelStart" type="Label" parent="HSplitContainer/TimelinePanel/TimeBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.002
+anchor_top = 0.071
+anchor_right = 0.037
+anchor_bottom = 1.0
+offset_left = 0.804
+offset_top = 0.0120305
+offset_right = 0.625999
+theme_override_font_sizes/font_size = 18
+text = "0:00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimeLabelEnd" type="Label" parent="HSplitContainer/TimelinePanel/TimeBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.961
+anchor_top = 0.036
+anchor_right = 0.961
+anchor_bottom = 0.964
+offset_left = 0.177979
+offset_top = -0.0079695
+offset_right = 74.178
+offset_bottom = 0.00802994
+theme_override_font_sizes/font_size = 18
+text = "9:99:99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimePointer" parent="HSplitContainer/TimelinePanel" instance=ExtResource("2_hl8mn")]
+visible = false
+layout_mode = 2
+anchors_preset = 0
+anchor_top = -0.048
+anchor_right = 0.054
+anchor_bottom = 0.916
+offset_top = -0.0640011
+offset_right = -0.606003
+offset_bottom = -0.112
+
+[node name="VScrollBar" type="VScrollBar" parent="."]
+layout_mode = 2
+anchor_left = 0.992
+anchor_right = 1.0
+anchor_bottom = 0.922
+offset_left = -0.640259
+offset_right = -8.00012
+offset_bottom = -165.92
+scale = Vector2(2, 2)

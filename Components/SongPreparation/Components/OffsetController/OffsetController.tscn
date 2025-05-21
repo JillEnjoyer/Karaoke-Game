@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://i1brabghjr8g"]
+
+[ext_resource type="Script" uid="uid://chqiyl3bnmqck" path="res://Components/SongPreparation/Components/OffsetController/Classes/track_data.gd" id="1_i4vig"]
+
+[node name="OffsetController" type="Control"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 3
+anchor_right = 0.026
+anchor_bottom = 0.065
+offset_right = 0.079998
+offset_bottom = -0.200005
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i4vig")

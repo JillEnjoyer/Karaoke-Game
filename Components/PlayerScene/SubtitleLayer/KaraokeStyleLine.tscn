@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dng1dkhsxwlrf"]
+
+[ext_resource type="Script" uid="uid://c15m7yw2l6p6a" path="res://Components/PlayerScene/SubtitleLayer/karaoke_style_line.gd" id="1_oo02j"]
+[ext_resource type="Texture2D" uid="uid://dsoogxlxhm6l4" path="res://icon.svg" id="2_geaww"]
+
+[node name="KaraokeStyleLine" type="Control"]
+layout_mode = 3
+anchor_right = 0.729
+anchor_bottom = 0.093
+offset_right = 0.319946
+offset_bottom = -0.440002
+script = ExtResource("1_oo02j")
+max_width = 1400
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.214
+anchor_top = -1.0
+anchor_bottom = 2.0
+offset_left = -0.399963
+texture = ExtResource("2_geaww")
+expand_mode = 1

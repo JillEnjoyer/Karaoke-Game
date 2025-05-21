@@ -1,0 +1,279 @@
+[gd_scene load_steps=4 format=3 uid="uid://cud0dlyfwkae3"]
+
+[ext_resource type="Script" uid="uid://cvm8w6albrvao" path="res://Components/SongPreparation/StructurePreparation/new_project.gd" id="1_gmcuu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gmcuu"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d0qeg"]
+bg_color = Color(0.1938, 0.51, 0.43622, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="NewProject" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gmcuu")
+
+[node name="BGRBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_gmcuu")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_gmcuu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gmcuu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gmcuu")
+theme_override_styles/normal = SubResource("StyleBoxFlat_gmcuu")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.031
+anchor_top = 0.037
+anchor_right = 0.969
+anchor_bottom = 0.963
+offset_left = 0.479996
+offset_top = 0.0400009
+offset_right = -0.480103
+offset_bottom = -0.0400391
+theme_override_styles/panel = SubResource("StyleBoxFlat_d0qeg")
+
+[node name="FranchiseLbl" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.014
+anchor_top = 0.12
+anchor_right = 0.126
+anchor_bottom = 0.155
+offset_left = 0.800001
+offset_right = -0.799988
+theme_override_font_sizes/font_size = 22
+text = "Franchise"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FranchiseTE" type="LineEdit" parent="Panel/FranchiseLbl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.095
+anchor_right = 2.195
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 0.999969
+placeholder_text = "Enter Franchise here"
+
+[node name="AlbumLbl" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.413
+anchor_top = 0.12
+anchor_right = 0.524
+anchor_bottom = 0.157
+offset_left = -0.399963
+offset_top = 1.99999
+offset_right = -0.200012
+theme_override_font_sizes/font_size = 22
+text = "Albums or groups"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FolderListVBox" type="VBoxContainer" parent="Panel/AlbumLbl"]
+layout_mode = 2
+anchor_left = 1.05
+anchor_right = 2.15
+anchor_bottom = 3.429
+offset_left = -1.52588e-05
+offset_right = -3.05176e-05
+offset_bottom = -0.015007
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/AlbumLbl/FolderListVBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/AlbumLbl/FolderListVBox/HBoxContainer"]
+layout_mode = 2
+text = "Folders"
+
+[node name="AddFolderButton" type="Button" parent="Panel/AlbumLbl/FolderListVBox/HBoxContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="FolderInputsVBox" type="VBoxContainer" parent="Panel/AlbumLbl/FolderListVBox"]
+layout_mode = 2
+
+[node name="SongLbl" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 1240.0
+offset_top = 120.0
+offset_right = 1440.0
+offset_bottom = 155.0
+theme_override_font_sizes/font_size = 22
+text = "Song"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SongTE" type="LineEdit" parent="Panel/SongLbl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.1
+anchor_right = 2.2
+anchor_bottom = 1.0
+
+[node name="FranchiseIconLbl" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 67.0
+offset_top = 369.0
+offset_right = 187.0
+offset_bottom = 396.0
+text = "Franchise icon: "
+
+[node name="FranchiseIconBtn" type="Button" parent="Panel/FranchiseIconLbl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.208
+anchor_right = 1.65
+anchor_bottom = 1.148
+offset_left = 0.0399933
+offset_right = -1.52588e-05
+offset_bottom = 0.00399971
+text = "FM"
+
+[node name="FranchiseTextureRect" type="TextureRect" parent="Panel/FranchiseIconLbl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.033
+anchor_top = 2.259
+anchor_right = 2.95
+anchor_bottom = 11.519
+offset_left = 0.04
+offset_top = 0.00699997
+offset_bottom = -0.013031
+expand_mode = 1
+
+[node name="AlbIconLbl" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.416
+anchor_top = 0.368
+anchor_right = 0.482
+anchor_bottom = 0.395
+offset_left = -0.799988
+offset_top = -3.05176e-05
+offset_right = 0.400024
+text = "Album icon(s):"
+
+[node name="AlbumIconBtn" type="Button" parent="Panel/AlbIconLbl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.067
+anchor_right = 1.508
+anchor_bottom = 1.074
+offset_left = -0.0400085
+offset_top = -2.0
+offset_right = 0.0399933
+offset_bottom = 0.00200081
+text = "FM"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/AlbIconLbl"]
+layout_mode = 2
+anchor_left = 1.642
+anchor_right = 2.442
+anchor_bottom = 1.0
+offset_left = -0.0400085
+offset_top = -2.0
+offset_right = -0.0400085
+offset_bottom = 2.0
+
+[node name="Label" type="Label" parent="Panel/AlbIconLbl/HBoxContainer"]
+layout_mode = 2
+text = "Delete all"
+
+[node name="RemoveImagesButton" type="Button" parent="Panel/AlbIconLbl/HBoxContainer"]
+layout_mode = 2
+text = "-"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+layout_mode = 2
+offset_left = 745.0
+offset_top = 400.0
+offset_right = 1045.0
+offset_bottom = 750.0
+
+[node name="AlbumAddIcons" type="VBoxContainer" parent="Panel/ScrollContainer"]
+layout_mode = 2
+
+[node name="SongIconLbl" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.726
+anchor_top = 0.351
+anchor_right = 0.792
+anchor_bottom = 0.378
+offset_left = -0.799927
+offset_right = 0.400024
+offset_bottom = -3.05176e-05
+text = "Song icon: "
+
+[node name="SongIconBtn" type="Button" parent="Panel/SongIconLbl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.208
+anchor_right = 1.65
+anchor_bottom = 1.148
+offset_left = 0.0399933
+offset_right = -1.52588e-05
+offset_bottom = 0.00399971
+text = "FM"
+
+[node name="SongTextureRect" type="TextureRect" parent="Panel/SongIconLbl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 4.481
+anchor_right = 2.942
+anchor_bottom = 13.741
+offset_top = 0.0129852
+offset_right = -0.0400085
+offset_bottom = -0.00701904
+expand_mode = 1
+
+[node name="DiscardBtn" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.683
+anchor_top = 0.88
+anchor_right = 0.822
+anchor_bottom = 0.98
+offset_left = 0.599976
+offset_top = -6.10352e-05
+offset_right = 0.399902
+text = "Discard"
+
+[node name="AcceptBtn" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.839
+anchor_top = 0.88
+anchor_right = 0.978
+anchor_bottom = 0.98
+offset_left = -0.200073
+offset_top = -6.10352e-05
+offset_right = -0.400024
+text = "Accept"
+
+[connection signal="pressed" from="BGRBtn" to="." method="_on_bgr_btn_pressed"]
+[connection signal="pressed" from="Panel/AlbumLbl/FolderListVBox/HBoxContainer/AddFolderButton" to="." method="_on_add_folder_button_pressed"]
+[connection signal="pressed" from="Panel/FranchiseIconLbl/FranchiseIconBtn" to="." method="_on_franchise_icon_btn_pressed"]
+[connection signal="pressed" from="Panel/AlbIconLbl/AlbumIconBtn" to="." method="_on_album_icon_btn_pressed"]
+[connection signal="pressed" from="Panel/AlbIconLbl/HBoxContainer/RemoveImagesButton" to="." method="_on_remove_images_button_pressed"]
+[connection signal="pressed" from="Panel/SongIconLbl/SongIconBtn" to="." method="_on_song_icon_btn_pressed"]
+[connection signal="pressed" from="Panel/DiscardBtn" to="." method="_on_discard_btn_pressed"]
+[connection signal="pressed" from="Panel/AcceptBtn" to="." method="_on_accept_btn_pressed"]

@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://k08o14xemmr3"]
+
+[ext_resource type="Script" uid="uid://dt0yettm37id4" path="res://Components/CORE/ViewportBase/viewport_base.gd" id="1_f3u4m"]
+
+[node name="ViewportBase" type="Control"]
+z_index = 100
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f3u4m")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+size_2d_override_stretch = true
+render_target_update_mode = 4

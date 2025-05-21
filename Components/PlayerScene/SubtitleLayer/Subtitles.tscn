@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://rl20x4sogyk"]
+
+[ext_resource type="Script" uid="uid://baix7lsbohxj0" path="res://Components/PlayerScene/SubtitleLayer/subtitles.gd" id="1_4d2r4"]
+[ext_resource type="PackedScene" uid="uid://clgcgclwhoo1b" path="res://Components/PlayerScene/SubtitleLayer/Components/word_jumper.tscn" id="2_2m3xt"]
+
+[node name="Subtitles" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4d2r4")
+
+[node name="DeleteLineMarker" type="Marker2D" parent="."]
+position = Vector2(960, -150)
+
+[node name="CurrentLineMarker" type="Marker2D" parent="."]
+position = Vector2(960, 440)
+
+[node name="SecondLineMarker" type="Marker2D" parent="."]
+position = Vector2(960, 790)
+
+[node name="ThirdLineMarker" type="Marker2D" parent="."]
+position = Vector2(960, 960)
+
+[node name="LastLineMarker" type="Marker2D" parent="."]
+position = Vector2(960, 1081)
+
+[node name="WordJumper" parent="." instance=ExtResource("2_2m3xt")]
+layout_mode = 1
+anchor_top = 1.0
+anchor_bottom = 1.059
+offset_bottom = 0.280029

@@ -1,0 +1,100 @@
+[gd_scene load_steps=4 format=3 uid="uid://dkke5y2e6v33x"]
+
+[ext_resource type="Script" uid="uid://bxvvcprqomx6j" path="res://Components/CatalogSystem/Card/Card.gd" id="1_ool65"]
+[ext_resource type="Shader" uid="uid://dg0e0j6y6q4rs" path="res://Components/CatalogSystem/Shaders/Card.gdshader" id="2_h3b3g"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tvdq2"]
+shader = ExtResource("2_h3b3g")
+shader_parameter/blur_amount = 5.0
+shader_parameter/resolution = Vector2(512, 512)
+shader_parameter/transparency = 0.8
+shader_parameter/scale = 1.2
+shader_parameter/blur_radius = 0.2
+
+[node name="Card" type="Control"]
+layout_mode = 3
+anchor_right = 0.286
+anchor_bottom = 0.648
+offset_right = 0.880005
+offset_bottom = 0.159973
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(275, 350)
+script = ExtResource("1_ool65")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_tvdq2")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 5
+
+[node name="Thumb" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(512, 512)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.109
+anchor_right = 0.961
+anchor_bottom = 0.84
+offset_left = 0.1667
+offset_top = -0.109505
+offset_right = 0.117004
+offset_bottom = 0.190002
+expand_mode = 1
+
+[node name="NameLbl" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.018
+anchor_top = 0.014
+anchor_right = 0.891
+anchor_bottom = 0.086
+offset_left = 0.0999994
+offset_top = 0.2
+offset_right = -0.0500183
+offset_bottom = -0.200001
+theme_override_font_sizes/font_size = 24
+text = "Hazbin Hotel"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="AboutLbl" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.031
+anchor_top = 0.847
+anchor_right = 0.962
+anchor_bottom = 0.976
+offset_left = -0.0500011
+offset_top = 0.0999756
+offset_right = -0.100037
+offset_bottom = -0.200073
+autowrap_mode = 3
+justification_flags = 195
+
+[node name="Aboutbtn" type="Button" parent="."]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.891
+anchor_top = 0.014
+anchor_right = 0.982
+anchor_bottom = 0.086
+offset_left = -0.0500183
+offset_top = 0.2
+offset_right = -0.100037
+offset_bottom = -0.200001
+text = "(!)"

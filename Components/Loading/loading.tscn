@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4wk4rqjm4qnb"]
+
+[ext_resource type="Texture2D" uid="uid://dsoogxlxhm6l4" path="res://icon.svg" id="1_fe2yg"]
+[ext_resource type="Script" uid="uid://dwrah25oikemw" path="res://Components/Loading/loading_materials_script.gd" id="1_ox35u"]
+
+[node name="Loading" type="Control"]
+layout_mode = 3
+anchor_right = 0.208
+anchor_bottom = 0.213
+offset_right = 0.639984
+offset_bottom = -0.0400238
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ox35u")
+
+[node name="LoadingAnimation" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.214
+anchor_right = 0.786
+anchor_bottom = 0.87
+offset_left = 0.0999908
+offset_right = -0.100006
+offset_bottom = -0.100021
+texture = ExtResource("1_fe2yg")
+
+[node name="LoadingPercent" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.214
+anchor_right = 0.786
+anchor_bottom = 0.87
+offset_left = 0.0999908
+offset_right = -0.100006
+offset_bottom = -0.100021
+theme_override_font_sizes/font_size = 96
+text = "0%"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LoadingFileName" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.87
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.100021
+text = "Loading:"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

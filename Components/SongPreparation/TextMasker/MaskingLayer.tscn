@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://be54ebtgc3xkc"]
+
+[ext_resource type="Script" uid="uid://x4idl42f784b" path="res://Components/SongPreparation/TextMasker/masking_layer.gd" id="1_ievkg"]
+
+[node name="MaskingLayer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ievkg")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+offset_right = 1600.0
+offset_bottom = 1080.0
+
+[node name="ColorPicker" type="ColorPicker" parent="."]
+layout_mode = 0
+offset_left = 1623.0
+offset_top = 6.0
+offset_right = 1921.0
+offset_bottom = 578.0
