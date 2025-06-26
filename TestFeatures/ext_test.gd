@@ -26,7 +26,7 @@ func _input(event: InputEvent) -> void:
 func _ready():
 	# Открытие видеофайла
 	var result = video_node.open("W:/Projects/Godot/Karaoke/karaoke-game/Catalog/Hazbin Hotel/Respectless/[Video]Respectless.ogv")
-	var arr = video_node.get_file_meta("W:/Projects/Godot/Karaoke/karaoke-game/Catalog/Hazbin Hotel/Respectless/[Video]Respectless.ogv")
+	var arr = Video.get_file_meta("W:/Projects/Godot/Karaoke/karaoke-game/Catalog/Hazbin Hotel/Respectless/[Video]Respectless.ogv")
 	print(arr)
 	if result == OK:
 		print("Видео успешно открыто!")

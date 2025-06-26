@@ -1,7 +1,5 @@
 extends Control
 
-var text_load = TextureLoader.new()
-
 @onready var song_ui = $SongUI
 @onready var playlist_ui = $PlaylistUI
 
@@ -64,7 +62,7 @@ func CollectNames(Base: String, Folder: String):
 
 func Init():
 	NameLbl.text = FolderName
-	SongIcon.texture = text_load.load_texture(BasePath + "/" + FolderName + "/" + "Icon.png")
+	SongIcon.texture = TextureLoader.load_texture(BasePath + "/" + FolderName + "/" + "Icon.png")
 	
 	ScanFolder()
 	

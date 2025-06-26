@@ -2,7 +2,6 @@ extends Control
 
 class_name zip_handler
 
-var logger = Core.debugger
 var exe_path = ProjectSettings.globalize_path("res://Extensions/7z.exe")
 
 
@@ -25,9 +24,9 @@ func create_zip(arguments):
 	var args = ["a", output_zip, input_files]
 	var result = OS.execute(exe_path, args, [], true, false)
 	if result == 0:
-		logger.info("7zip.gd", "create_zip()", "Archive created successfully!")
+		Debugger.info("Archive created successfully!")
 	else:
-		logger.error("7zip.gd", "create_zip()", "Error during archive creation!")
+		Debugger.error("Error during archive creation!")
 
 
 func extract_zip(arguments):
@@ -39,6 +38,6 @@ func extract_zip(arguments):
 	var result = OS.execute(exe_path, args, [], true, false)
 	
 	if result == 0:
-		logger.info("7zip.gd", "extract_zip()", "Archive unpacked successfully!")
+		Debugger.info("Archive unpacked successfully!")
 	else:
-		logger.info("7zip.gd", "extract_zip()", "Error during archive unpack!")
+		Debugger.info("Error during archive unpack!")

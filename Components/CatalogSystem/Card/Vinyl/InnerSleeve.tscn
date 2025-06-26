@@ -1,0 +1,75 @@
+[gd_scene load_steps=7 format=3 uid="uid://oc8v0yqtx0yd"]
+
+[ext_resource type="Script" uid="uid://dghmw3gr6kh1k" path="res://Components/CatalogSystem/Card/Vinyl/inner_sleeve.gd" id="1_ry1kg"]
+
+[sub_resource type="Animation" id="Animation_3kv6u"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InnerSleeve")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.000872665, 0, 1)
+
+[sub_resource type="Animation" id="Animation_ry1kg"]
+resource_name = "left_front"
+length = 0.75
+step = 0.0133
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InnerSleeve")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.000872665, 0, 1, 0.75, 1, 0, 1, 0, 4.37114e-08)
+
+[sub_resource type="Animation" id="Animation_3laf8"]
+resource_name = "right_front"
+length = 0.75
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InnerSleeve")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.000872665, 0, 1, 0.75, 1, 0, 1, 0, -4.37114e-08)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3g8fs"]
+_data = {
+&"RESET": SubResource("Animation_3kv6u"),
+&"left_front": SubResource("Animation_ry1kg"),
+&"right_front": SubResource("Animation_3laf8")
+}
+
+[sub_resource type="QuadMesh" id="QuadMesh_lcvqy"]
+size = Vector2(1.2, 1.2)
+
+[node name="InnerSleeve" type="Node3D"]
+script = ExtResource("1_ry1kg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_3g8fs")
+}
+
+[node name="InnerSleeve" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.999998, 0, -0.00174533, 0, 1, 0, 0.00174533, 0, 0.999998, 0, 0, 0)
+
+[node name="InnerSleeveFrontCover" type="MeshInstance3D" parent="InnerSleeve"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.006)
+mesh = SubResource("QuadMesh_lcvqy")
+
+[node name="InnerSleeveBackCover" type="MeshInstance3D" parent="InnerSleeve"]
+transform = Transform3D(-1, 0, -0.000139572, 0, 1, 0, 0.000139572, 0, -1, 0, 0, -0.006)
+mesh = SubResource("QuadMesh_lcvqy")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.23576)
+current = true
+fov = 90.0
+far = 20.0

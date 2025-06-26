@@ -1,0 +1,152 @@
+[gd_scene load_steps=11 format=3 uid="uid://bbn2q554dqfm2"]
+
+[ext_resource type="Script" uid="uid://bu0mqi07dtx44" path="res://Components/CatalogSystem/Card/Vinyl/main_sleeve.gd" id="1_fm4pm"]
+
+[sub_resource type="Animation" id="Animation_fm4pm"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainSleeve/RightHinge")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.00872654, 0, 0.999962)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainSleeve")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_6kyeg"]
+resource_name = "left_front_closed"
+length = 0.75
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainSleeve")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.75, 1, 0, 1, 0, 0.000872687)
+
+[sub_resource type="Animation" id="Animation_mwn2o"]
+resource_name = "left_front_opened"
+length = 0.75
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainSleeve")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.75, 1, 0, 1, 0, 0.000872687)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainSleeve")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0.6, 0, 0, 0.366667, 1, 0, 0, -1.2, 0.75, 1, -0.6, 0, 0)
+
+[sub_resource type="Animation" id="Animation_jv372"]
+resource_name = "main_sleeve_opened_left"
+length = 0.25
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainSleeve")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0.6, 0, 0, 0.25, 1, -0.6, 0, 0)
+
+[sub_resource type="Animation" id="Animation_rgiu1"]
+resource_name = "open_sleeve"
+length = 0.75
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainSleeve/RightHinge")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.00872654, 0, 0.999962, 0.75, 1, 0, 0.999962, 0, -0.00872656)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainSleeve")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.75, 1, 0.6, 0, 0)
+
+[sub_resource type="Animation" id="Animation_s0ral"]
+resource_name = "right_front_closed"
+length = 0.75
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainSleeve")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.75, 1, 0, 1, 0, -4.37114e-08)
+
+[sub_resource type="Animation" id="Animation_luy8d"]
+resource_name = "right_front_opened"
+length = 0.75
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainSleeve")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.00872653, 0, 0.999962, 0.75, 1, 0, 1, 0, -0.000872687)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainSleeve")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0.6, 0, 0, 0.375, 1, 0, 0, -0.6, 0.75, 1, -0.6, 0, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_s0ral"]
+_data = {
+&"RESET": SubResource("Animation_fm4pm"),
+&"left_front_closed": SubResource("Animation_6kyeg"),
+&"left_front_opened": SubResource("Animation_mwn2o"),
+&"main_sleeve_opened_left": SubResource("Animation_jv372"),
+&"open_sleeve": SubResource("Animation_rgiu1"),
+&"right_front_closed": SubResource("Animation_s0ral"),
+&"right_front_opened": SubResource("Animation_luy8d")
+}
+
+[sub_resource type="QuadMesh" id="QuadMesh_rgiu1"]
+size = Vector2(1.2, 1.2)
+
+[node name="MainSleeve" type="Node3D"]
+script = ExtResource("1_fm4pm")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_s0ral")
+}
+
+[node name="MainSleeve" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+
+[node name="RightHinge" type="Node3D" parent="MainSleeve"]
+transform = Transform3D(0.999848, 0, -0.0174524, 0, 1, 0, 0.0174524, 0, 0.999848, -0.6, 0, -0.01)
+
+[node name="MainSleeveFrontCover" type="MeshInstance3D" parent="MainSleeve/RightHinge"]
+transform = Transform3D(0.999962, 0, -0.00872654, 0, 1, 0, 0.00872654, 0, 0.999962, 0.6, 0, 0.01)
+mesh = SubResource("QuadMesh_rgiu1")
+skeleton = NodePath("../..")
+
+[node name="MainSleeveLeftPageInside" type="MeshInstance3D" parent="MainSleeve/RightHinge/MainSleeveFrontCover"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+mesh = SubResource("QuadMesh_rgiu1")
+
+[node name="MainSleeveBackCover" type="MeshInstance3D" parent="MainSleeve"]
+transform = Transform3D(-1, 0, -0.000139572, 0, 1, 0, 0.000139572, 0, -1, 0, 0, -0.01)
+mesh = SubResource("QuadMesh_rgiu1")
+
+[node name="MainSleeveRightPageInside" type="MeshInstance3D" parent="MainSleeve/MainSleeveBackCover"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+mesh = SubResource("QuadMesh_rgiu1")

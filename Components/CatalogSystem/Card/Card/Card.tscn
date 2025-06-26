@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dkke5y2e6v33x"]
 
-[ext_resource type="Script" uid="uid://bxvvcprqomx6j" path="res://Components/CatalogSystem/Card/Card.gd" id="1_ool65"]
+[ext_resource type="Script" uid="uid://bxvvcprqomx6j" path="res://Components/CatalogSystem/Card/Card/Card.gd" id="1_ool65"]
 [ext_resource type="Shader" uid="uid://dg0e0j6y6q4rs" path="res://Components/CatalogSystem/Shaders/Card.gdshader" id="2_h3b3g"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tvdq2"]

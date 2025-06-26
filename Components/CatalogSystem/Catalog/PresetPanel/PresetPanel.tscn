@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://glyejdf6w1kn"]
 
-[ext_resource type="Script" uid="uid://ur6asyo8x0t0" path="res://Components/CatalogSystem/Catalog/PresetScene.gd" id="1_iie1t"]
+[ext_resource type="Script" uid="uid://ur6asyo8x0t0" path="res://Components/CatalogSystem/Catalog/PresetPanel/preset_panel.gd" id="1_iie1t"]
 
 [node name="Preset" type="Control"]
 custom_minimum_size = Vector2(1920, 1080)

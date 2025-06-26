@@ -44,6 +44,8 @@ func _ready():
 	import_initial_data(node_type, initial_path)
 	drag_btn.button_down.connect(_start_drag)
 	drag_btn.button_up.connect(_end_drag)
+	
+	add_child(context_menu)
 
 
 func add_uuid(imported_uuid) -> void:
@@ -169,6 +171,21 @@ func _on_gui_input(event: InputEvent) -> void:
 			emit_signal("offset_changed", new_offset, get_parent())
 
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		context_menu.show_menu(
+			get_viewport().get_mouse_position(),
+			["go to", "split", "copy", "delete"],
+			func(id):
+				match id:
+					0: print("go to")
+					1: print("split")
+					2: print("copy")
+					3: print("delete")
+		)
+
+
+
+func _on_drag_btn_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		context_menu.show_menu(
 			get_viewport().get_mouse_position(),
 			["go to", "split", "copy", "delete"],

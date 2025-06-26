@@ -5,25 +5,24 @@ var data = {}
 func _ready():
 	load_json()
 
-func add_name(name: String):
+func add_name(name: String) -> void:
 	data["Name"] = name
-	print("Добавлено название:", name)
 
-func add_mode(mode_type: String, mode_value: String):
+func add_mode(mode_type: String, mode_value: String) -> void:
 	if not data.has("Modes"):
 		data["Modes"] = {}
 	
 	data["Modes"][mode_type] = mode_value
-	print("Добавлен режим:", mode_type, "->", mode_value)
+	Debugger.info("Added mode: " + mode_type + "->" + mode_value)
 
-func add_videotrack(id: int, filename: String):
+func add_videotrack(id: int, filename: String) -> void:
 	if not data.has("Videotracks"):
 		data["Videotracks"] = {}
 	
 	data["Videotracks"][str(id)] = filename
-	print("Добавлен видеотрек:", filename)
+	Debugger.info("Added videotrack:", filename)
 
-func add_audiotrack(id: int, track_type: String, version: String, language: String = "", file_type: String = ".mp3"):
+func add_audiotrack(id: int, track_type: String, version: String, language: String = "", file_type: String = ".mp3") -> void:
 	if not data.has("Audiotracks"):
 		data["Audiotracks"] = {}
 	
@@ -44,27 +43,27 @@ func add_audiotrack(id: int, track_type: String, version: String, language: Stri
 		}
 	}
 	data["Audiotracks"][track_type].append(track)
-	print("Добавлен аудиотрек:", track)
+	Debugger.info("Added audiotrack:", track)
 
-func add_character(name: String):
+func add_character(name: String) -> void:
 	if not data.has("Characters"):
 		data["Characters"] = []
 	
 	if name not in data["Characters"]:
 		data["Characters"].append(name)
-		print("Добавлен персонаж:", name)
+		Debugger.info("Character added:", name)
 
-func save_json():
+func save_json() -> void:
 	var json_string = JSON.stringify(data, "\t")
 	var file = FileAccess.open("user://data.json", FileAccess.WRITE)
 	if file:
 		file.store_string(json_string)
 		file.close()
-		print("JSON сохранён!")
+		Debugger.info("JSON is saved!")
 	else:
-		print("Ошибка сохранения JSON!")
+		Debugger.error("Error with JSON saving")
 
-func load_json():
+func load_json() -> void:
 	var file = FileAccess.open("user://data.json", FileAccess.READ)
 	if file:
 		var json_string = file.get_as_text()
@@ -73,9 +72,9 @@ func load_json():
 		var parsed = JSON.parse_string(json_string)
 		if parsed:
 			data = parsed
-			print("JSON загружен:", data)
+			Debugger.debug("JSON loaded:" + data)
 		else:
-			print("Ошибка парсинга JSON!")
+			Debugger.error("Error with JSON parsing")
 	else:
-		print("Файл не найден, создаём новый JSON.")
+		Debugger.info("File is not found, creating nef JSON")
 		data = {}

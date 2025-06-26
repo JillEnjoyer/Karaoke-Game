@@ -1,0 +1,129 @@
+[gd_scene load_steps=12 format=3 uid="uid://c8wh2qtjlvt6v"]
+
+[ext_resource type="Script" uid="uid://dhi4tuoy3anrd" path="res://Components/CatalogSystem/Card/Vinyl/vinyl_box.gd" id="1_u8xxn"]
+
+[sub_resource type="Animation" id="Animation_nvovq"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Box")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_uvv5e"]
+resource_name = "back_left"
+length = 0.375
+step = 0.0133333
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Box")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0, -0.000872687, 0.375, 1, 0, -0.707107, 0, 0.707107)
+
+[sub_resource type="Animation" id="Animation_mqsj0"]
+resource_name = "back_right"
+length = 0.375
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Box")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0, 0.000872687, 0.375, 1, 0, 0.707107, 0, 0.707107)
+
+[sub_resource type="Animation" id="Animation_u8xxn"]
+resource_name = "front_left"
+length = 0.375
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Box")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.375, 1, 0, 0.707107, 0, 0.707107)
+
+[sub_resource type="Animation" id="Animation_wb8ye"]
+resource_name = "front_right"
+length = 0.375
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Box")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.375, 1, 0, -0.70707, 0, 0.707144)
+
+[sub_resource type="Animation" id="Animation_p2ff0"]
+resource_name = "left_left"
+length = 0.375
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Box")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.707107, 0, 0.707107, 0.375, 1, 0, 1, 0, 0.000872687)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nvovq"]
+_data = {
+&"RESET": SubResource("Animation_nvovq"),
+&"back_left": SubResource("Animation_uvv5e"),
+&"back_right": SubResource("Animation_mqsj0"),
+&"front_left": SubResource("Animation_u8xxn"),
+&"front_right": SubResource("Animation_wb8ye"),
+&"left_left": SubResource("Animation_p2ff0")
+}
+
+[sub_resource type="BoxMesh" id="BoxMesh_s21of"]
+size = Vector3(1.2, 1.2, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u8xxn"]
+albedo_color = Color(0, 0, 0, 1)
+metallic = 1.0
+metallic_specular = 1.0
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.1
+refraction_scale = -1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_wb8ye"]
+size = Vector2(1.2, 1.2)
+
+[node name="VinylBox" type="Node3D"]
+script = ExtResource("1_u8xxn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_nvovq")
+}
+
+[node name="Box" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_s21of")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_u8xxn")
+
+[node name="BoxFrontCover" type="MeshInstance3D" parent="Box"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.101)
+mesh = SubResource("QuadMesh_wb8ye")
+
+[node name="BoxBackCover" type="MeshInstance3D" parent="Box"]
+transform = Transform3D(-1, 0, -0.000139572, 0, 1, 0, 0.000139572, 0, -1, 0, 0, -0.101)
+mesh = SubResource("QuadMesh_wb8ye")
+
+[node name="BoxNameLbl" type="Label3D" parent="Box"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, -0.601, 0, 0)
+text = "Name"
+font_size = 20
+outline_size = 8
+autowrap_mode = 3
+
+[node name="RecAmountLbl" type="Label3D" parent="Box"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.601, 0, 0)
+text = "100"
+font_size = 20
+outline_size = 8
+autowrap_mode = 3

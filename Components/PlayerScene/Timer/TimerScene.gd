@@ -3,7 +3,7 @@ extends Control
 @onready var TimeLbl = $TimeLbl
 @onready var TimerNode = $Timer
 
-var countdown_time = Core.get_node("PreferencesData").getData("countdown_time")
+var countdown_time = PreferencesData.getData("countdown_time")
 
 signal ready_to_start
 

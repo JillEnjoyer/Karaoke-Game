@@ -77,7 +77,7 @@ func format_bbcode(timestamp: String, level: String, file_name: String, method_n
 
 	var level_text = "[color=%s][%s][/color]" % [level_color, level]
 	var time_text = "[color=%s][%s][/color]" % [tstamp_color, timestamp]
-	var filefunc_text = "[color=%s][%s->%s][/color]" % [filefunc_color, file_name, method_name]
+	var filefunc_text = "[color=%s][%s->%s()][/color]" % [filefunc_color, file_name, method_name]
 
 	return "%s %s %s: %s" % [time_text, level_text, filefunc_text, message]
 

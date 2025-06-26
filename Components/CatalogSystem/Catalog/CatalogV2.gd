@@ -4,12 +4,11 @@ extends Control
 @onready var catalog_base = root.get_node("Catalog")
 
 var audio_player_init = audio_player_instance.new()
-var text_loader = TextureLoader.new()
 
 var card_size = Vector2(550, 700)
 var focused_card_index = 1
 
-var base_path = Core.get_node("PreferencesData").getData("catalog_path")
+var base_path = PreferencesData.getData("catalog_path")
 var current_path = base_path
 var path_stack = []
 
@@ -55,8 +54,8 @@ func create_card(song_name: String, index: int) -> Control:
 	var icon_path = current_path + "/" + song_name + "/Icon.png"
 	var bg_path = current_path + "/" + song_name + "/Background.png"
 	
-	card.album_art = text_loader.load_texture_or_placeholder(icon_path)
-	card.background = text_loader.load_texture_or_placeholder(bg_path)
+	card.album_art = TextureLoader.load_texture_or_placeholder(icon_path)
+	card.background = TextureLoader.load_texture_or_placeholder(bg_path)
 
 	card.custom_minimum_size = card_size
 	card.pivot_offset = card_size / 2

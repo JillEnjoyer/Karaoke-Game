@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://b7crhjnuflppp"]
+
+[ext_resource type="Script" uid="uid://cplqgbtcmid2m" path="res://Components/CatalogSystem/Catalog/catalog_3d.gd" id="1_k4ecj"]
+[ext_resource type="Texture2D" uid="uid://bmlcil8fx5n4a" path="res://GlobalAssets/Starfield 1 - 1024x1024.png" id="2_ib75y"]
+[ext_resource type="PackedScene" uid="uid://c8wh2qtjlvt6v" path="res://Components/CatalogSystem/Card/Vinyl/VinylBox.tscn" id="3_dpft4"]
+
+[sub_resource type="Animation" id="Animation_ib75y"]
+resource_name = "Introduction"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dpft4"]
+_data = {
+&"Introduction": SubResource("Animation_ib75y")
+}
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_dpft4"]
+panorama = ExtResource("2_ib75y")
+
+[sub_resource type="Sky" id="Sky_1klhx"]
+sky_material = SubResource("PanoramaSkyMaterial_dpft4")
+
+[sub_resource type="Environment" id="Environment_qqtei"]
+background_mode = 2
+sky = SubResource("Sky_1klhx")
+sky_custom_fov = 123.2
+
+[node name="Catalog3d" type="Node3D"]
+script = ExtResource("1_k4ecj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_dpft4")
+}
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qqtei")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+light_energy = 0.0
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.4)
+current = true
+fov = 90.0
+far = 20.0
+
+[node name="OtherSlotsMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+
+[node name="VinylBox" parent="OtherSlotsMarker" instance=ExtResource("3_dpft4")]
+
+[node name="PreviousItemMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -1)
+
+[node name="VinylBox" parent="PreviousItemMarker" instance=ExtResource("3_dpft4")]
+
+[node name="CurrentLayerMarker" type="Marker3D" parent="."]
+
+[node name="VinylBox" parent="CurrentLayerMarker" instance=ExtResource("3_dpft4")]
+
+[node name="PreparingSlotMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 0)
+
+[node name="VinylBox" parent="PreparingSlotMarker" instance=ExtResource("3_dpft4")]

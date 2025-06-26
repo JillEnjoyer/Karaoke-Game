@@ -22,10 +22,10 @@ func _ready() -> void:
 
 func fetch_settings() -> void:
 	for key in data_dict:
-		print("Key:", key, "Value:", Core.get_node("PreferencesData").getData(key))
+		print("Key:", key, "Value:", PreferencesData.getData(key))
 	
 	for key in data_dict:
-		data_dict[key] = Core.get_node("PreferencesData").getData(key)
+		data_dict[key] = PreferencesData.getData(key)
 		print("Key:", key, "Value:", data_dict[key])
 	
 
@@ -93,9 +93,9 @@ func _on_back_btn_pressed() -> void:
 func _on_apply_settings_btn_pressed() -> void:
 	for key in data_dict:
 		print("Key:", key, "Value:", data_dict[key])
-		Core.get_node("PreferencesData").setData(key, data_dict[key])
+		PreferencesData.setData(key, data_dict[key])
 		change_game_parameters(key, data_dict[key])
-	Core.get_node("PreferencesData").save_config()
+	PreferencesData.save_config()
 
 
 func change_game_parameters(parameter, parameter_value) -> void:
@@ -105,7 +105,7 @@ func change_game_parameters(parameter, parameter_value) -> void:
 
 	elif parameter == "framerate":
 		ProjectSettings.set_setting("engine/core/target_fps", int(parameter_value))
-		print("LALALALALALA", ProjectSettings.get_setting("engine/core/target_fps"))
+		Debugger.debug("target_fps" + ProjectSettings.get_setting("engine/core/target_fps"))
 		pass
 
 	elif parameter == "v-sync":

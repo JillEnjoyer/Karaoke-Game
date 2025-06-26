@@ -32,9 +32,9 @@ func _scan_directory(dir: DirAccess, path: String):
 		file_name = dir.get_next()
 	dir.list_dir_end()
 
-
+## Creates a standartized name based on "snake case"
+## example: res://Components/MainMenu/MainMenu.tscn → main_menu
 func _path_to_key(path: String) -> String:
-	# example: res://Components/MainMenu/MainMenu.tscn → main_menu
 	return path.get_file().get_basename().to_snake_case()
 
 

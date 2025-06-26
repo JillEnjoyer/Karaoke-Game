@@ -89,5 +89,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_i4vig")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="gui_input" from="DragBtn" to="." method="_on_drag_btn_gui_input"]
+[connection signal="pressed" from="DragBtn" to="." method="_on_drag_btn_pressed"]
 [connection signal="gui_input" from="LeftHandle" to="." method="_on_left_handle_gui_input"]
 [connection signal="gui_input" from="RightHandle" to="." method="_on_right_handle_gui_input"]

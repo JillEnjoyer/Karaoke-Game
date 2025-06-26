@@ -8,16 +8,18 @@ signal video_ended
 var is_playing = false
 
 var metadata_array = {}
-var framerate = 1.0
-var length = 1.0 # real file length in seconds
+var framerate = 1.0 # amout of frames in second
+var length = 1.0 # real file length
 var timer = 1.0 # time between frames in video file (not every get_frame may return it)
 var time_passed = 0.0 # time passed between 0 and timer
 var speed = 1.0
 
 var playback_position = 0 #in seconds - absolute global time (not affected by offsets)
 
-var video_offset_start = 0 # +time from start of video
-var video_offset_end = 0 # -time from end of video
+var video_offset_start = 0 # +time from start of video file
+var video_offset_end = 0 # -time from end of video file
+
+# hot-swap offsets for debug purposes 
 var desired_offset_start = 0
 var desired_offset_end = 0
 
@@ -35,7 +37,6 @@ func init(video_list):
 
 
 func load_video(absolute_video_path) -> void:
-	#var absolute_video_path = franchise_name + "/" + song_name + "/" + video_link
 	Debugger.info("video_renderer.gd", "load_video()", "Trying to load video from: " + absolute_video_path)
 	
 	if FileAccess.file_exists(absolute_video_path):
@@ -44,11 +45,11 @@ func load_video(absolute_video_path) -> void:
 		var result = video.open(absolute_video_path)
 		print(result)
 		if result == OK:
-			Debugger.debug("video_renderer.gd", "load_video()", "Video opened successfully!")
+			Debugger.debug("Video opened successfully!")
 		else:
-			Debugger.error("video_renderer.gd", "load_video()", "Error with video opening: " + result)
+			Debugger.error("Error with video opening: " + result)
 	else:
-		Debugger.error("video_renderer.gd", "load_video()", "Video file not found: " + absolute_video_path)
+		Debugger.error("Video file not found: " + absolute_video_path)
 
 
 func get_video_metadata(absolute_video_path):

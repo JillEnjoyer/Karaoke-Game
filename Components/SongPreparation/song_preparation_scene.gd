@@ -1,5 +1,6 @@
 extends Control
 
+var project_opened = false
 var player_scene_fullscreen = false
 var cp_appeared = false
 
@@ -146,3 +147,8 @@ func save_project() -> void:
 	"""1. Save choosen project files as copies to catalog folder (owerwrite if asked)"""
 	
 	"""2. Save their parameters: Names, Offsets and etc in standartized json type"""
+
+
+
+func temp_expose_VOSK_result(data: String) -> void:
+	$TextEdit.text = JSON.stringify(data)

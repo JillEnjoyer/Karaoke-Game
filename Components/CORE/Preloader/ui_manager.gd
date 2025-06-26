@@ -33,7 +33,7 @@ func show_ui(scene_name: String, desired_parent = "") -> Node:
 	return scene_instance
 
 
-## by a string name from preloaded scenes we return a copy (intantiate is happening after)
+## by a string name from preloaded scenes we return a copy (instantiate() is happening after)
 func get_desired_node(name: String) -> PackedScene:
 	if not preloaded_scenes.has(name):
 		Debugger.error("ss", "show_ui()", "Error: Scene is not found in the list!")

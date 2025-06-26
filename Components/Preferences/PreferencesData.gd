@@ -20,7 +20,7 @@ var BaseSettingsList = {
 	"countdown_time": 4,
 	"debugger_enabled": true,
 	"log_file_path": "",
-	"catalog_path": "W:/Projects/Godot/Karaoke/Catalog"
+	"catalog_path": "X:/Projects/Godot/Karaoke/Catalog"
 }
 var BaseUserData = {
 	"main_menu_tutorial_passed": false,

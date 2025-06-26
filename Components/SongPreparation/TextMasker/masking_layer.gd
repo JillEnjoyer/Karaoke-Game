@@ -1,5 +1,6 @@
 extends Control
 
+
 var draw_color: Color = Color(1, 0, 0, 0.3) # Прозрачный красный
 var is_erasing: bool = false
 var image: Image

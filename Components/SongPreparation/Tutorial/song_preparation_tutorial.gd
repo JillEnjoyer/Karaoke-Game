@@ -23,3 +23,4 @@ func _start_tutorial_async():
 			popup.position = data[2]
 			popup.set_info(data[0], data[1])
 			await popup.wait_for_close()
+	PreferencesData.setUserData("song_preparation_tutorial_passed", true)
