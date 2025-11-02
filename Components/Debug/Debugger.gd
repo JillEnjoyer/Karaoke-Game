@@ -6,8 +6,18 @@ const LOG_LEVELS := {
 	"INFO": 1,
 	"WARNING": 2,
 	"ERROR": 3,
-	"EXCEPTION": 4
+	"EXCEPTION": 4,
+	"NOT_IMPLEMENTED": 5
 }
+
+"""
+const LOG_LEVELS := {
+	"DEBUG": 0,
+	"INFO": 1,
+	"WARNING": 2,
+	"ERROR": 3,
+	"EXCEPTION": 4
+}"""
 
 const COLOR_MAP := {
 	"DEBUG": "#55ff55",     # green
@@ -15,6 +25,7 @@ const COLOR_MAP := {
 	"WARNING": "#ffaa00",   # orange
 	"ERROR": "#ff4444",     # red
 	"EXCEPTION": "#cc55ff", # purple
+	"NOT_IMPLEMENTED": "#739693", # teal
 	"TSTAMP": "#7FFFD4",    # gray
 	"FILEFUNC": "#DAA520"
 }
@@ -131,3 +142,5 @@ func error(var_one: String = "", var_two: String = "", var_three: String = "") -
 	log_auto("ERROR", var_one, var_two, var_three)
 func exception(var_one: String = "", var_two: String = "", var_three: String = "") -> void:
 	log_auto("EXCEPTION", var_one, var_two, var_three)
+func not_implemented(var_one: String = "", var_two: String = "", var_three: String = "") -> void:
+	log_auto("NOT_IMPLEMENTED", var_one, var_two, var_three)

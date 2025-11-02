@@ -23,9 +23,9 @@ var video_offset_end = 0 # -time from end of video file
 var desired_offset_start = 0
 var desired_offset_end = 0
 
+
 func _ready() -> void:
 	pass
-
 
 func init(video_list):
 	var video_path = ""

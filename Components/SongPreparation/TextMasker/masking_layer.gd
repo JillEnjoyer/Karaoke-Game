@@ -55,13 +55,12 @@ var svg_cache := {}
 func get_mask_from_svg(id: String) -> Image:
 	if svg_cache.has(id):
 		return svg_cache[id]
-	var image := convert_svg_to_bitmap(id) # твоя реализация
+	var image := convert_svg_to_bitmap(id)
 	svg_cache[id] = image
 	return image
 
 
-func convert_svg_to_bitmap(id: String) -> Image:
-	# Заглушка – возвращает пустую маску на 64x64, заменишь на настоящий парсер SVG
+func convert_svg_to_bitmap(id: String) -> Image: # TODO
 	var img := Image.create(64, 64, false, Image.FORMAT_RGBA8)
-	img.fill(Color(0, 0, 0, 0)) # пустая прозрачная картинка
+	img.fill(Color(0, 0, 0, 0))
 	return img

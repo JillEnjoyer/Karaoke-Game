@@ -111,6 +111,7 @@ func get_transition_table() -> Dictionary:
 
 
 func input(event: InputEvent) -> void:
+	Debugger.debug("Input received:" + str(event))
 	if event.is_action_pressed("left"):
 		fsm.handle_input("left")
 	elif event.is_action_pressed("right"):

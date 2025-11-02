@@ -33,8 +33,6 @@ func animate_property(
 	await tween.finished
 
 
-
-# "Парабола" (примерно правая ветвь x^2) — резко ускоряется, потом замедляется
 func animate_parabolic(target: Object, property: String, from_value: float, to_value: float, duration:float = 1.0):
 	await animate_property(
 		target,
@@ -43,10 +41,10 @@ func animate_parabolic(target: Object, property: String, from_value: float, to_v
 		to_value,
 		duration,
 		Tween.TRANS_QUAD,
-		Tween.EASE_OUT  # имитирует параболическую правую часть
+		Tween.EASE_OUT
 	)
 
-# "Круговая" синусоидальная кривая туда-обратно
+
 func animate_sine_loop(target: Object, property: String, amplitude: float, base_value: float, duration := 1.0):
 	# x -> x + amplitude
 	await animate_property(

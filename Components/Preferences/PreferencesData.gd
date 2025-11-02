@@ -10,7 +10,7 @@ const ext_path = {
 }
 
 var BaseSettingsList = {
-	"resolution": Vector2(1280, 720),
+	"resolution": [1920, 1080],
 	"language": "ENG",
 	"window_mode": "Window",
 	"framerate": 75,
@@ -20,7 +20,8 @@ var BaseSettingsList = {
 	"countdown_time": 4,
 	"debugger_enabled": true,
 	"log_file_path": "",
-	"catalog_path": "X:/Projects/Godot/Karaoke/Catalog"
+	"catalog_path": "X:/Projects/Godot/Karaoke/Catalog",
+	"catalog_style": "2d" # 2d/3d
 }
 var BaseUserData = {
 	"main_menu_tutorial_passed": false,
@@ -38,37 +39,34 @@ var UserData = BaseUserData.duplicate()
 func _ready() -> void:
 	# Config
 	if not FileAccess.file_exists(config_path):
-		Debugger.error("Config file not found. Creating new with base settings...")
-		create_and_save_config(BaseSettingsList)
+		Debugger.warning("Config file not found. Creating new with base settings...")
+		create_and_save_config()
 	else:
 		Debugger.info("Loading settings...")
 		var loaded_settings = load_config()
 		if loaded_settings["result"] == null:
-			Debugger.error("Failed to load config. Rewriting with base settings.")
-			create_and_save_config(BaseSettingsList)
+			Debugger.warning("Failed to load config. Rewriting with base settings.")
+			create_and_save_config()
 		else:
 			update_settings_from_dictionary(loaded_settings["result"])
 
 	# UserData
 	if not FileAccess.file_exists(user_data_path):
-		Debugger.error("UserData file not found. Creating new with base user data...")
+		Debugger.warning("UserData file not found. Creating new with base user data...")
 		save_user_data()
 	else:
 		Debugger.info("Loading user data...")
 		var loaded_user_data = load_user_data()
 		if loaded_user_data["result"] == null:
-			Debugger.error("Failed to load UserData. Rewriting with base user data.")
+			Debugger.warning("Failed to load UserData. Rewriting with base user data.")
 			save_user_data()
 		else:
 			for key in loaded_user_data["result"].keys():
 				setUserData(key, loaded_user_data["result"][key])
 
-# === CONFIG (SettingsList) ===
 
-func create_and_save_config(settings: Dictionary) -> void:
+func create_and_save_config() -> void:
 	ensure_directories_exist(config_path)
-	var settings_to_save = convert_resolution_for_save(settings)
-	SettingsList = settings_to_save.duplicate()
 	save_config()
 
 
@@ -96,10 +94,6 @@ func load_config() -> Dictionary:
 				Debugger.error(data["error"])
 			else:
 				data["result"] = parsed_data
-				if "resolution" in data["result"]:
-					var res = data["result"]["resolution"]
-					if res is Array and res.size() == 2:
-						data["result"]["resolution"] = Vector2(res[0], res[1])
 		else:
 			data["error"] = "Cannot open config file"
 	else:
@@ -112,15 +106,6 @@ func update_settings_from_dictionary(new_settings: Dictionary) -> void:
 	for key in new_settings.keys():
 		setData(key, new_settings[key])
 
-
-func convert_resolution_for_save(settings: Dictionary) -> Dictionary:
-	var copy = settings.duplicate()
-	if copy.has("resolution"):
-		copy["resolution"] = [copy["resolution"].x, copy["resolution"].y]
-	return copy
-
-
-# === USERDATA ===
 
 func save_user_data() -> void:
 	var file = FileAccess.open(user_data_path, FileAccess.WRITE)
@@ -153,8 +138,6 @@ func load_user_data() -> Dictionary:
 
 	return data
 
-
-# === Утилиты и доступ ===
 
 func ensure_directories_exist(file_path: String) -> void:
 	var dir_path = file_path.get_base_dir()
@@ -189,8 +172,6 @@ func setUserData(key: String, value) -> void:
 func getExtPath(ext: String):
 	return ext_path.get(ext, null)
 
-
-# === Сброс данных ===
 
 func RestoreData():
 	SettingsList = BaseSettingsList.duplicate()

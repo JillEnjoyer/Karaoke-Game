@@ -18,7 +18,7 @@ func _ready():
 ## Add_child from already preloaded list of scene elemenets (much faster)
 func show_ui(scene_name: String, desired_parent = "") -> Node:
 	if not preloaded_scenes.has(scene_name):
-		Debugger.error("ss", "show_ui()", "Error: Scene is not found in the list!")
+		Debugger.error("Error: Scene is not found in the list!")
 		return null
 	
 	var parent: Node = null
@@ -34,11 +34,11 @@ func show_ui(scene_name: String, desired_parent = "") -> Node:
 
 
 ## by a string name from preloaded scenes we return a copy (instantiate() is happening after)
-func get_desired_node(name: String) -> PackedScene:
-	if not preloaded_scenes.has(name):
-		Debugger.error("ss", "show_ui()", "Error: Scene is not found in the list!")
+func get_desired_node(desired_name: String) -> PackedScene:
+	if not preloaded_scenes.has(desired_name):
+		Debugger.error("Error: Scene is not found in the list!")
 		return null
-	return preloaded_scenes[name]
+	return preloaded_scenes[desired_name]
 
 
 ## Add_child of already .instantiate() object. Slower but simpler
@@ -51,7 +51,7 @@ func new_child(node: Node, desired_parent):
 	if parent != null:
 		parent.add_child(node)
 	else:
-		Debugger.error("UIManager", "new_child()", "Failed to add child: parent is null.")
+		Debugger.error("Failed to add child: parent is null.")
 
 
 func get_needed_parent(desired_parent):
@@ -65,7 +65,7 @@ func get_needed_parent(desired_parent):
 		if default_parent.has_node(desired_parent):
 			parent = default_parent.get_node(desired_parent)
 		else:
-			Debugger.error("ss", "show_ui()", "Error: Parent object '" + desired_parent + "' is not found!")
+			Debugger.error("Error: Parent object '" + desired_parent + "' is not found!")
 			return null
 	return parent
 
@@ -75,9 +75,9 @@ func remove_child_from_tree(removable_node: String, node_path: String = "") -> v
 	if parent and parent.has_node(removable_node):
 		parent.remove_child(parent.get_node(removable_node))
 	else:
-		Debugger.error("ui_manager.gd", "remove_child_from_tree()", "There is no parent: '" + parent.name + "' or no removable node: '" + removable_node + "'")
+		Debugger.error("Error: There is no parent: '" + parent.name + "' or no removable node: '" + removable_node + "'")
 func cleanup_tree() -> void:
 	for child in default_parent.get_children().duplicate():
 		default_parent.remove_child(child)
 		child.queue_free()
-	Debugger.info("ui_manager.gd", "cleanup_tree()", "Tree is cleaned")
+	Debugger.info("Tree is cleaned")

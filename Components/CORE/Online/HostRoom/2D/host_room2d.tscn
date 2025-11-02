@@ -1,0 +1,111 @@
+[gd_scene load_steps=5 format=3 uid="uid://bvkcxgci1n7c3"]
+
+[ext_resource type="Script" uid="uid://i31h0etjtilt" path="res://Components/CORE/Online/HostRoom/2D/host_room_2d.gd" id="1_tnv7c"]
+
+[sub_resource type="Animation" id="Animation_tnv7c"]
+resource_name = "show-hide"
+length = 0.75
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.75),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(20, 0), Vector2(20, -500)]
+}
+
+[sub_resource type="Animation" id="Animation_ib20o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3f42s"]
+_data = {
+&"RESET": SubResource("Animation_ib20o"),
+&"show-hide": SubResource("Animation_tnv7c")
+}
+
+[node name="HostRoom2d" type="Control"]
+layout_mode = 3
+anchor_left = 0.010000001
+anchor_right = 0.37500003
+anchor_bottom = 0.44400004
+offset_left = -19.2
+offset_right = -6.1035156e-05
+offset_bottom = 0.480011
+script = ExtResource("1_tnv7c")
+
+[node name="EntryPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.031000001
+anchor_right = 1.0
+offset_top = -0.11999893
+
+[node name="BackgroundPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HostBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.014
+anchor_top = 0.014
+anchor_right = 0.29200003
+anchor_bottom = 0.22900002
+offset_left = -0.07999992
+offset_top = 3.2799997
+offset_right = -0.24002075
+offset_bottom = 0.0799942
+text = "Create as HOST"
+
+[node name="ClientBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.30600002
+anchor_top = 0.021000002
+anchor_right = 0.583
+anchor_bottom = 0.22900002
+offset_left = -0.32002258
+offset_top = -0.08000088
+offset_right = 0.23999023
+offset_bottom = 0.0799942
+text = "Connect as CLIENT"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.014
+anchor_top = 0.25
+anchor_right = 0.98600006
+anchor_bottom = 0.87500006
+offset_left = -0.07999992
+offset_right = 0.079956055
+offset_bottom = -3.0517578e-05
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_3f42s")
+}
+
+[connection signal="pressed" from="HostBtn" to="." method="_on_host_btn_pressed"]
+[connection signal="pressed" from="ClientBtn" to="." method="_on_client_btn_pressed"]

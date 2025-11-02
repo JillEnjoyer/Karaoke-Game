@@ -10,7 +10,6 @@ signal new_project_closed(value)
 
 var file_struct = FileStructurePreparation.new()
 var file_manager = FileManager.new()
-var text_loader = TextureLoader.new()
 
 var fm: FileDialog = null
 var folder_steps: Array[String] = []
@@ -115,7 +114,7 @@ func _on_franchise_icon_btn_pressed() -> void:
 	show_fm(file_manager.open(_franchise_image_returned, "image"))
 func _franchise_image_returned(paths: PackedStringArray) -> void:
 	var path = paths[0]
-	$Panel/FranchiseIconLbl/FranchiseTextureRect.texture = text_loader.load_texture_or_placeholder(path)
+	$Panel/FranchiseIconLbl/FranchiseTextureRect.texture = TextureLoader.load_texture_or_placeholder(path)
 	folder_images["franchise"]["Icon"] = path
 
 
@@ -127,7 +126,7 @@ func _album_image_returned(paths: PackedStringArray) -> void:
 
 	for path in paths:
 		var tex_rect = TextureRect.new()
-		tex_rect.texture = text_loader.load_texture_or_placeholder(path)
+		tex_rect.texture = TextureLoader.load_texture_or_placeholder(path)
 		tex_rect.custom_minimum_size = Vector2(200, 150)
 		tex_rect.expand_mode = TextureRect.ExpandMode.EXPAND_IGNORE_SIZE
 		tex_rect.stretch_mode = TextureRect.StretchMode.STRETCH_SCALE
@@ -143,7 +142,7 @@ func _on_song_icon_btn_pressed() -> void:
 	show_fm(file_manager.open(_song_image_returned, "image"))
 func _song_image_returned(paths: PackedStringArray) -> void:
 	var path = paths[0]
-	$Panel/SongIconLbl/SongTextureRect.texture = text_loader.load_texture_or_placeholder(path)
+	$Panel/SongIconLbl/SongTextureRect.texture = TextureLoader.load_texture_or_placeholder(path)
 	folder_images["song"]["Icon"] = path
 
 

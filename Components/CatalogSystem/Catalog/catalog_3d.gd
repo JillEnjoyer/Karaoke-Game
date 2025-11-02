@@ -141,7 +141,7 @@ func instantiate_catalog_item(entry: Dictionary) -> Node3D:
 				node = vinyl_record.instantiate()
 	
 	if node:
-		node.reset_state() # Сбрасываем состояние нового объекта
+		node.reset_state()
 	return node
 
 

@@ -40,4 +40,4 @@ func extract_zip(arguments):
 	if result == 0:
 		Debugger.info("Archive unpacked successfully!")
 	else:
-		Debugger.info("Error during archive unpack!")
+		Debugger.error("Error during archive unpack!")

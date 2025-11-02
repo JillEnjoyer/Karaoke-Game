@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5ffrilors7xp"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_lcyot"]
+size = Vector2(30, 30)
+orientation = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_4a8nv"]
+size = Vector2(30, 5)
+center_offset = Vector3(30, 0, 0)
+orientation = 0
+
+[node name="HostRoom3d" type="Node3D"]
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_lcyot")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_4a8nv")

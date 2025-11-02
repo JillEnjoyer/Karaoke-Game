@@ -25,7 +25,10 @@ func _ready():
 
 func _on_catalog_button_pressed():
 	UIManager.cleanup_tree()
-	UIManager.show_ui("catalog")
+	if PreferencesData.getData("catalog_style") == "2d":
+		UIManager.show_ui("catalog")
+	else:
+		UIManager.show_ui("catalog_3d")
 
 func _on_prepare_da_song_btn_pressed() -> void:
 	UIManager.cleanup_tree()

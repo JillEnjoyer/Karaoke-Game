@@ -1,38 +1,41 @@
 extends Node
-
-var thread: Thread = Thread.new()
+class_name VoskHandler
 
 signal transcription_complete(result)
 
-func _ready():
-	return thread.start(Callable(self, "handler"))
+var thread: Thread = Thread.new()
+
+var vosk_handler = PreferencesData.getExtPath("Vosk_Handler")
+var ffmpeg_path = PreferencesData.getExtPath("ffmpeg")
 
 
-func handler(audio_path, model_path):
+func transcribe(audio_path: String, model_path: String) -> void:
+	if thread and thread.is_alive():
+		return
+	thread = Thread.new()
+	thread.start(Callable(self, "_thread_handler").bind(audio_path, model_path))
+
+
+func _thread_handler(audio_path: String, model_path: String) -> void:
 	var args = [
-		"res://Extensions/Vosk_Handler_V1.1.exe",
+		path_globalizer(vosk_handler),
 		audio_path,
 		model_path,
-		path_globalizer("res://Extensions/ffmpeg.exe")
+		path_globalizer(ffmpeg_path)
 	]
-	
 	var output = ""
 	var error = ""
-	var exit_code = OS.execute(args[0], args.slice(1), output, error)
-	if exit_code == OK:
-		error = "Python script executed successfully"
-	else:
-		error = "Error while executing Python script"
-	
-	print(error, "\n\n\n\n")
-	print(output)
-	
+	var exit_code = OS.execute(args[0], args, output, error)
+	if exit_code != OK:
+		Debugger.error("Error while executing Vosk handler: " + error)
+		return
+	call_deferred("_emit_transcription_complete", output)
+
+
+func _emit_transcription_complete(transcription_result: String) -> void:
+	emit_signal("transcription_complete", transcription_result)
 	thread.wait_to_finish()
-	
-	thread.free()
 	thread = null
-	
-	return output
 
 
 func path_globalizer(local_path):

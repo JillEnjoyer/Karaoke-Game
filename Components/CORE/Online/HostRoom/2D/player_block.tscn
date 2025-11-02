@@ -1,0 +1,89 @@
+[gd_scene load_steps=2 format=3 uid="uid://ce33nlom5yk7o"]
+
+[ext_resource type="Script" uid="uid://b3xds66bnhdvm" path="res://Components/CORE/Online/HostRoom/2D/player_block.gd" id="1_lnvu1"]
+
+[node name="PlayerBlock" type="Control"]
+layout_mode = 3
+anchor_right = 0.312
+anchor_bottom = 0.093
+offset_right = 0.95996094
+offset_bottom = -0.44000244
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lnvu1")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.66700006
+anchor_bottom = 1.0
+offset_right = -0.20004272
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WrapperLeft" type="Control" parent="HSplitContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="NameLbl" type="Label" parent="HSplitContainer/WrapperLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "ClientName"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WrapperRight" type="Control" parent="HSplitContainer"]
+clip_contents = true
+layout_mode = 2
+
+[node name="PID-PortLbl" type="Label" parent="HSplitContainer/WrapperRight"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.064
+anchor_bottom = 0.5
+offset_right = -0.03199768
+text = "Port: "
+vertical_alignment = 1
+
+[node name="BitrateLbl" type="Label" parent="HSplitContainer/WrapperRight"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.064
+anchor_bottom = 1.0
+offset_right = -0.03199768
+text = "Bitrate: "
+vertical_alignment = 1
+
+[node name="PingLbl" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.66700006
+anchor_right = 0.91700006
+anchor_bottom = 1.0
+offset_left = -0.20004272
+offset_right = -0.2000122
+grow_horizontal = 2
+grow_vertical = 2
+text = "Ping: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExtentionBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.91700006
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.2000122
+offset_top = 100.0
+offset_right = 50.0
+offset_bottom = 50.0
+rotation = -1.5707964
+text = "More"
+flat = true
