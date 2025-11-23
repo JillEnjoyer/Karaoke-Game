@@ -1,0 +1,97 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkke5y2e6v33x"]
+
+[ext_resource type="Script" uid="uid://bxvvcprqomx6j" path="res://Components/Scenes/CatalogSystem/Card/Card/Card.gd" id="1_ool65"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1j5mv"]
+bg_color = Color(0, 0, 0, 0.49411765)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[node name="Card" type="Control"]
+layout_mode = 3
+anchor_right = 0.286
+anchor_bottom = 0.648
+offset_right = 0.880005
+offset_bottom = 0.159973
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(275, 350)
+script = ExtResource("1_ool65")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1j5mv")
+
+[node name="Thumbnail" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(512, 512)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.109
+anchor_right = 0.961
+anchor_bottom = 0.84
+offset_left = 0.1667
+offset_top = -0.109505
+offset_right = 0.117004
+offset_bottom = 0.190002
+expand_mode = 1
+
+[node name="NameLbl" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.018
+anchor_top = 0.014
+anchor_right = 0.891
+anchor_bottom = 0.086
+offset_left = 0.0999994
+offset_top = 0.2
+offset_right = -0.0500183
+offset_bottom = -0.200001
+theme_override_font_sizes/font_size = 24
+text = "Placeholder"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="NameRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 490.0
+offset_bottom = 60.0
+
+[node name="AboutLbl" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.031
+anchor_top = 0.847
+anchor_right = 0.962
+anchor_bottom = 0.976
+offset_left = -0.0500011
+offset_top = 0.0999756
+offset_right = -0.100037
+offset_bottom = -0.200073
+text = "Placeholder"
+autowrap_mode = 3
+justification_flags = 195
+
+[node name="Aboutbtn" type="Button" parent="."]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.87500006
+anchor_top = 0.014
+anchor_right = 0.98200005
+anchor_bottom = 0.08400001
+offset_left = -0.25003052
+offset_top = -0.8000002
+offset_right = -0.10003662
+offset_bottom = 0.19999695
+text = "(More)"

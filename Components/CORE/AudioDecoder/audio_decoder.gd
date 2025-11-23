@@ -42,7 +42,7 @@ func load_files(file_paths: Dictionary, file_type: String):
 
 
 func create_voice_channel_control(Imported_player: AudioStreamPlayer, player_name: String) -> void:
-	var instance = UIManager.show_ui("voice_channel_control", "PlayerScene/PlayerSceneUI/Panel/Voice_Channel_HBox")
+	var instance = UIManager.show_ui("voice_channel_control", "PlayerScene/SoundMixer/Panel/Voice_Channel_HBox")
 	instance.get_node("Ch_NameLbl").text = player_name
 	instance.connect("value_changed_signal", Callable(self, "on_value_changed"))
 func on_value_changed(value, name) -> void:

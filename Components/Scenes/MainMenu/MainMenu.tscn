@@ -1,0 +1,83 @@
+[gd_scene load_steps=4 format=3 uid="uid://cc5fynsretk25"]
+
+[ext_resource type="Script" uid="uid://chtfnua2h75wq" path="res://Components/Scenes/MainMenu/main_menu.gd" id="1_yn12e"]
+[ext_resource type="Texture2D" uid="uid://c5oxqwg48vy1a" path="res://VocaLume--All-1@2x.png" id="2_b76km"]
+[ext_resource type="Theme" uid="uid://b5rwnmy0fedkv" path="res://Themes/Button/button_theme[MainMenu].tres" id="2_cruaa"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yn12e")
+
+[node name="LogoImg" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -383.0
+offset_top = 23.0
+offset_right = 424.0
+offset_bottom = 308.0
+grow_horizontal = 2
+texture = ExtResource("2_b76km")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DefLbl" type="Label" parent="LogoImg"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.037
+anchor_right = 1.0
+anchor_bottom = 1.481
+offset_top = 0.00498962
+offset_right = 2.3999
+offset_bottom = 0.0649872
+grow_horizontal = 2
+grow_vertical = 0
+text = "Karaoke, sing-along, prep-tool, collector-room. record-tool and so on"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.039
+anchor_top = 0.275
+anchor_right = 0.365
+anchor_bottom = 0.898
+offset_left = 0.119995
+offset_right = -0.800049
+offset_bottom = 0.159912
+theme_override_constants/separation = 40
+
+[node name="CatalogBtn" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme = ExtResource("2_cruaa")
+text = "Choose da Song"
+
+[node name="EditorBtn" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme = ExtResource("2_cruaa")
+text = "Prepare da Song"
+
+[node name="SettingsBtn" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme = ExtResource("2_cruaa")
+text = "Settings"
+
+[node name="ExitBtn" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme = ExtResource("2_cruaa")
+text = "Exit"
+
+[connection signal="pressed" from="VBoxContainer/CatalogBtn" to="." method="_on_catalog_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/EditorBtn" to="." method="_on_editor_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsBtn" to="." method="_on_settings_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExitBtn" to="." method="_on_exit_btn_pressed"]

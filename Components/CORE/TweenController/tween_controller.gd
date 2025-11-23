@@ -3,6 +3,7 @@ class_name TweenController
 
 var tween: Tween
 
+
 func ensure_tween_ready():
 	if tween == null:
 		tween = create_tween()
@@ -12,7 +13,7 @@ func animate_property(
 	target: Object,
 	property: String,
 	start_value = null,
-	final_value = 0,
+	final_value = 0.0,
 	duration := 0.5,
 	transition_type := Tween.TRANS_LINEAR,
 	ease_type := Tween.EASE_IN_OUT

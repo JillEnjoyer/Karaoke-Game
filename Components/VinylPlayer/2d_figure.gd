@@ -25,11 +25,11 @@ func tex_init():
 					var texture = ImageTexture.create_from_image(image)
 					if texture:
 						tex.append(texture)
-						Debugger.info("2d_figure.gd", "tex_init()", "Loaded:" + str(tex_path[n]))
+						Debugger.info("Loaded: " + str(tex_path[n]))
 					else:
-						Debugger.error("2d_figure.gd", "tex_init()", "Error with texture creation:" + str(tex_path[n]))
+						Debugger.error("Error with texture creation: " + str(tex_path[n]))
 				else:
-					Debugger.error("2d_figure.gd", "tex_init()", "Error with image loading:" + str(tex_path[n]))
+					Debugger.error("Error with image loading: " + str(tex_path[n]))
 
 
 func extract_number(filename: String) -> int:
@@ -52,7 +52,7 @@ func anim_exec():
 func count_files_in_directory(path: String) -> int:
 	var dir = DirAccess.open(path)
 	if dir == null:
-		Debugger.info("2d_figure.gd", "count_files_in_directory()", "Error: failed to open directory" + str(path))
+		Debugger.info("Error: failed to open directory " + str(path))
 		return 0
 	
 	dir.list_dir_begin()

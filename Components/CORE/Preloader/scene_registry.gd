@@ -1,8 +1,8 @@
 extends Node
-
 class_name SceneRegistry
 
 var scenes := {}
+
 
 func build_scene_map():
 	scenes = {}
