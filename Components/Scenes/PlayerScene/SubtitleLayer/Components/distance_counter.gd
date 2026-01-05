@@ -1,8 +1,8 @@
 extends Node
-
 class_name DistanceCounter
 
-func _levenshtein_distance(s: String, t: String) -> int:
+## Levenshtein distance for calculating similarity between words
+static func levenshtein_distance(s: String, t: String) -> int:
 	var n = s.length()
 	var m = t.length()
 	

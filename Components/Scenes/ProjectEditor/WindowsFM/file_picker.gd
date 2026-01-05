@@ -18,7 +18,7 @@ func open_windows_file_picker(start_path) -> PackedStringArray:
 	var output := []
 	var error := false
 	
-	print(script_path)
+	Debugger.debug(script_path)
 
 	var args = [
 		"/c",

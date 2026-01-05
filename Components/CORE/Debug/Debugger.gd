@@ -85,6 +85,9 @@ func format_bbcode(timestamp: String, level: String, file_name: String, method_n
 
 
 func write_to_file(message: String) -> void:
+	if PreferencesData.get_data("log_file_path") == false:
+		return
+	
 	var file = FileAccess.open(log_file_path, FileAccess.WRITE_READ)
 	if file:
 		file.store_line(message)
@@ -106,6 +109,9 @@ func get_datetime() -> Dictionary:
 
 
 func log_auto(level: String, var_one: String = "", var_two: String = "", var_three: String = "") -> void:
+	if PreferencesData.get_data("debugger_enabled") == false:
+		return
+
 	var file_name: String = ""
 	var method_name: String = ""
 	var message: String = ""

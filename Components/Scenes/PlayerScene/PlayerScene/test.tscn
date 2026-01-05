@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdq5cdwwlq8u8"]
+
+[ext_resource type="Texture2D" uid="uid://b8jvqxj4bumq5" path="res://Icon.png" id="1_4skmn"]
+[ext_resource type="Script" uid="uid://cixwsu12lmvot" path="res://Components/Scenes/PlayerScene/PlayerScene/test.gd" id="1_bomb0"]
+[ext_resource type="Material" uid="uid://ccoaw3q3wdf8" path="res://Components/Scenes/PlayerScene/PlayerScene/texture_rect_bluring_shadermaterial.tres" id="1_i8n4l"]
+
+[node name="Test" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bomb0")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = ExtResource("1_i8n4l")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.26000002
+anchor_bottom = 0.46300003
+offset_right = 0.7999573
+offset_bottom = -0.040039063
+texture = ExtResource("1_4skmn")
+expand_mode = 1

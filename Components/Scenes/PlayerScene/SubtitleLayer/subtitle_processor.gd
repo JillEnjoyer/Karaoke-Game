@@ -1,6 +1,11 @@
 extends Node
-
 class_name SubtitleProcessor
+
+enum TextSource {
+	AUTO_FROM_VOSK,
+	USER_INPUT,
+	ONLINE_SEARCH
+}
 
 
 func parse_vosk_json(json_string: String) -> Dictionary:
@@ -11,7 +16,6 @@ func parse_vosk_json(json_string: String) -> Dictionary:
 	return json_result
 
 
-# 2. Extract all words into Dict
 func extract_words(vosk_data: Dictionary) -> Array:
 	var words = []
 	for word_obj in vosk_data["result"]:
@@ -19,15 +23,8 @@ func extract_words(vosk_data: Dictionary) -> Array:
 	return words
 
 
-# 3. Get text variants
-enum TextSource {
-	AUTO_FROM_VOSK,
-	USER_INPUT,
-	ONLINE_SEARCH
-}
-
-
-# 4. Online text search
+# 4. Example of Online text search
+## TODO: Make it usable...later
 func fetch_lyrics_online(song_name: String) -> String:
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
@@ -89,7 +86,7 @@ func sync_text_with_timestamps(vosk_data: Dictionary, reference_text: String) ->
 
 
 func _words_similar(word1: String, word2: String, threshold: float = 0.7) -> bool:
-	var distance = DistanceCounter.new()._levenshtein_distance(word1, word2)
+	var distance = DistanceCounter.levenshtein_distance(word1, word2)
 	var max_len = max(word1.length(), word2.length())
 	var similarity = 1.0 - float(distance) / max_len
 	return similarity >= threshold

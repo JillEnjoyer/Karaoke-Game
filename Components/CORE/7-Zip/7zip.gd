@@ -1,5 +1,4 @@
 extends Control
-
 class_name zip_handler
 
 var exe_path = ProjectSettings.globalize_path("res://Extensions/7z.exe")

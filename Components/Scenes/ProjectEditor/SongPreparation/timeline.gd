@@ -3,7 +3,14 @@ extends Control
 @onready var name_scroll_container = $HSplitContainer/NamePanel/ScrollContainer
 @onready var timeline_scroll_container = $HSplitContainer/TimelinePanel/ScrollContainer
 @onready var vbox_names = $HSplitContainer/NamePanel/ScrollContainer/VBoxNames
+
 @onready var vbox_timelines = $HSplitContainer/TimelinePanel/ScrollContainer/VBoxTimelines
+@onready var vbox_video = $HSplitContainer/TimelinePanel/ScrollContainer/VBoxTimelines/VBoxVideo
+@onready var vbox_instrumental = $HSplitContainer/TimelinePanel/ScrollContainer/VBoxTimelines/VBoxInstrumental
+@onready var vbox_acapella = $HSplitContainer/TimelinePanel/ScrollContainer/VBoxTimelines/VBoxAcapella
+@onready var vbox_subtitles = $HSplitContainer/TimelinePanel/ScrollContainer/VBoxTimelines/VBoxSubtitles
+#@onready var vbox_role = $HSplitContainer/TimelinePanel/ScrollContainer/VBoxRole
+
 @onready var h_scroll = $HSplitContainer/TimelinePanel/TimeBar/HScrollBar
 @onready var v_scroll = $VScrollBar
 @onready var name_panel = $HSplitContainer/NamePanel
@@ -39,7 +46,7 @@ func _ready():
 	#update_scrollbars()
 	#update_time_labels()
 	#update_scroll_range()
-	time_pointer.connect("pointer_moved", Callable(self, "_on_time_pointer_moved"))
+	# time_pointer.connect("pointer_moved", Callable(self, "_on_time_pointer_moved"))
 	time_pointer.connect("move_timeline", Callable(self, "_on_timeline_move_requested"))
 
 
@@ -100,9 +107,31 @@ func add_channel(node_name: String, path: String, duration: int):
 	name_box.add_child(name_label)
 	vbox_names.add_child(name_box)
 
-	var controller_wrapper = UIManager.get_desired_node("controller_wrapper").instantiate()
+	var desired_parent: VBoxContainer = null
+
+	match node_name:
+		"video":
+			desired_parent = vbox_video
+		"audio":
+			desired_parent = vbox_instrumental
+		"instrumental":
+			desired_parent = vbox_instrumental
+		"acapella":
+			desired_parent = vbox_instrumental
+		"subtitles":
+			desired_parent = vbox_subtitles
+		"role":
+			pass
+			#desired_parent = vbox_role
+		_:
+			Debugger.debug("Unknown channel type: " + node_name)
+			return
+		
+
+	var controller_wrapper = UIManager.show_ui("controller_wrapper", desired_parent)
+	#UIManager.get_desired_node("controller_wrapper").instantiate()
 	
-	vbox_timelines.add_child(controller_wrapper)
+	#vbox_timelines.add_child(controller_wrapper)
 	controller_wrapper.init(node_name, path, node_name, duration)
 	
 	update_time_labels()
@@ -127,6 +156,7 @@ func update_time_labels(start_time: float = -1.0, end_time: float = -1.0):
 
 
 func calculate_actual_duration() -> float: # change!
+	return 1.0
 	var max_duration = 0.0
 	for child in vbox_timelines.get_children():
 		if child.has_method("get_total_duration"):
@@ -137,6 +167,7 @@ func calculate_actual_duration() -> float: # change!
 
 
 func update_scrollbars():
+	return
 	await get_tree().process_frame
 	v_scroll.max_value = max(0, vbox_names.get_combined_minimum_size().y - name_scroll_container.size.y)
 	h_scroll.max_value = max(0, vbox_timelines.get_combined_minimum_size().x - name_scroll_container.size.x)
@@ -161,25 +192,13 @@ func _on_timeline_move_requested(delta_move_in_pix: int) -> void:
 	timeline_scroll_container.scroll_horizontal = clamp(new_h_scroll_value, h_scroll.min_value, h_scroll.max_value)
 
 
-"""
-chosen_files.append({
-		"path": path,
-		"type": type,
-		"duration": duration
-	})
-
-chosen_files = [
-	{"path": path, "type": type, "duration": duration},
-	{"path": path, "type": type, "duration": duration}
-]
-"""
-
 func import_choosen_files(files: Array):
 	for file in files:
 		add_channel(file["type"], file["path"], file["duration"])
 
 
 func export_project_configs() -> Dictionary:
+	return {}
 	"""
 	export_data = {
 		"tracks": [

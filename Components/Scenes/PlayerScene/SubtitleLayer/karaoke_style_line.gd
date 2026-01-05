@@ -52,12 +52,12 @@ func _center_line() -> void:
 	var line_width = last_cell["position"].x + last_cell["cell"].size.x
 	var offset = (max_width - line_width) / 2
 	
-	# Сначала центрируем как обычно
+	## firstly center normally
 	for item in word_cells:
 		item["cell"].position.x += offset
 		item["position"] = item["cell"].position
 	
-	# Затем сжимаем, сохраняя центровку
+	## then shrink, keeping centered
 	#_shrink_size()
 	#_recenter_after_shrink()
 
@@ -66,14 +66,14 @@ func _shrink_size() -> void:
 	if word_cells.is_empty():
 		return
 	
-	# Находим реальную ширину содержимого
+	# Finding the real width
 	var required_width: float = 0
 	for item in word_cells:
 		required_width += item["cell"].size.x
-		if item != word_cells.back():  # Добавляем пробелы между словами
+		if item != word_cells.back():  # spaces between words
 			required_width += 20  # space_size
 	
-	# Устанавливаем новую ширину с небольшим отступом
+	# new width with padding
 	self.custom_minimum_size.x = required_width + 40
 	self.size.x = self.custom_minimum_size.x
 
@@ -81,11 +81,11 @@ func _recenter_after_shrink() -> void:
 	if word_cells.is_empty():
 		return
 	
-	# Вычисляем новое смещение для центрирования
+	# new offset for centering
 	var line_width = word_cells.back()["position"].x + word_cells.back()["cell"].size.x
 	var new_offset = (max_width - line_width) / 2
 	
-	# Применяем новое смещение ко всем словам
+	# Apply the new offset to all words
 	for item in word_cells:
 		item["cell"].position.x = item["position"].x - (item["position"].x - item["cell"].position.x) + new_offset
 		item["position"] = item["cell"].position

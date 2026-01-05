@@ -73,10 +73,10 @@ func _input(event: InputEvent) -> void:
 
 
 func print_storage_info():
-	print("=== Storage ===")
+	Debugger.debug("=== Storage ===")
 	for path in all_level_objects:
-		print(" ", path, ": ", all_level_objects[path].objects.size(), " objects")
-	print("Current: ", current_objects.size(), " objects")
+		Debugger.debug(" " + path + ": " + str(all_level_objects[path].objects.size()) + " objects")
+	Debugger.debug("Current: " + str(current_objects.size()) + " objects")
 
 
 ## Clears current objects with optional animation
@@ -108,7 +108,7 @@ func scan_current_stage_folder() -> void:
 	for i in range(entries.size()):
 		var node = instantiate_catalog_item(entries[i])
 		if node:
-			# Устанавливаем имя объекта по имени папки
+			# Setting up object name as foldername
 			node.name = entries[i]["name"]
 			node.position = main_slot.position + ITEM_OFFSET * (i - focus_item)
 			node.scale = Vector3.ZERO
@@ -194,7 +194,8 @@ func enter_next_stage(selected_folder: String) -> void:
 	tween.tween_callback(selected.play_open_animation.bind(TRANSITION_DURATION))
 	tween.tween_callback(func():
 		_add_new_path_block(selected_folder)
-		current_fsm_stage += 1 # What?
+		#current_fsm_stage += 1 # What?
+		current_fsm_stage = (current_fsm_stage as Stage)
 		current_objects = []
 		focus_item = 0
 		scan_current_stage_folder()

@@ -13,7 +13,7 @@ extends Control
 	#"resolution": $ResolutionOptBtn,
 	"window_mode": $VBoxContainer/WindowMode/WindowModeOptBtn,
 	"framerate": $VBoxContainer/Framerate/FrametimeOptBtn,
-	"v-sync": $"VBoxContainer/VSync/V-SyncCB",
+	"v-sync": $"VBoxContainer/VSync/V-SyncLbl/V-SyncCB",
 	"catalog_path": $VBoxContainer/CatalogPath/CatalogPathLE
 }
 
@@ -140,11 +140,11 @@ func _on_resolution_opt_btn_item_selected(index: int) -> void:
 
 func _on_window_mode_opt_btn_item_selected(index: int) -> void:
 	data_dict["framerate"] = int(object_links["framerate"].get_item_text(index))
-	print(data_dict["framerate"])
+	Debugger.debug(data_dict["framerate"])
 
 
 func _on_frametime_opt_btn_item_selected(index: int) -> void:
-	data_dict["v_sync"] = object_links["v-sync"].get_item_text(index).to_lower()
+	data_dict["v_sync"] = object_links["v-sync"].button_pressed
 
 
 func _on_v_sync_cb_toggled(toggled_on: bool) -> void:

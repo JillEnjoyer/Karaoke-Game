@@ -73,7 +73,7 @@ func scan_current_stage_folder() -> void:
 	_combine_path_block()
 	var entries := folder_scanner.scan_folder(current_path)
 	
-	#clear_current_objects(false)  # Не анимируем при первой загрузке
+	#clear_current_objects(false)
 	
 	for i in range(entries.size()):
 		var node = instantiate_catalog_item(entries[i])

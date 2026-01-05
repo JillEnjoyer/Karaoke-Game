@@ -109,10 +109,9 @@ func _process(_delta):
 			var ip = udp_server.get_packet_address()
 			var port = udp_server.get_packet_port()
 
-			# если нового клиента нет — регистрируем
+			## If client not registered — fix it
 			#if not udp_clients.has(ip):
 				#udp_clients[ip] = port
 				#Debugger.info("UDP client registered: %s:%d" % [ip, port])
 
-			# тут обработка голосовых/вводовых данных
 			#handle_udp_packet(ip, port, packet)

@@ -106,9 +106,6 @@ func _on_path_focus_exited():
 
 
 func instantiate_project():
-	"""
-	Обработка выбранных файлов для создания проекта.
-	"""
 	if chosen_files.size():
 		Debugger.warning("Files aren't choosen")
 		return

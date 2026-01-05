@@ -12,23 +12,23 @@ enum SleeveState {
 	CLOSED_BACK
 }
 
-var path_dict = {
+var path_dict_test = {
 	"inner_sleeve_front_cover": "X:/Projects/Godot/Karaoke/Catalog/Hazbin Hotel/Season 1/[VINYL]/[Inner_Sleeve][Front].png",
 	"inner_sleeve_back_cover": "X:/Projects/Godot/Karaoke/Catalog/Hazbin Hotel/Season 1/[VINYL]/[Inner_Sleeve][Back].png"
 }
 
-var info_dict = {
+var info_dict_test = {
 	"franchise": "Hazbin Hotel"
 }
 
 var current_state: SleeveState = SleeveState.CLOSED_FRONT
 var previous_state: SleeveState = SleeveState.CLOSED_FRONT
 var input_buffer: Array = []
-var is_processing := false
+var is_active := false
 
 
 func _ready() -> void:
-	init(path_dict, info_dict)
+	init(path_dict_test, info_dict_test)
 
 
 func init(path_dict: Dictionary, info_dict: Dictionary) -> void:
@@ -39,7 +39,7 @@ func init(path_dict: Dictionary, info_dict: Dictionary) -> void:
 			apply_texture_to(node, tex_path)
 
 	var franchise = info_dict.get("franchise", "Unknown")
-	print("Franchise:", franchise)
+	Debugger.debug("Franchise:" + franchise)
 
 
 func apply_texture_to(node: MeshInstance3D, texture_path: String) -> void:
@@ -65,10 +65,10 @@ func input(event: InputEvent) -> void:
 
 
 func _process_buffer() -> void:
-	if is_processing or input_buffer.is_empty():
+	if is_active or input_buffer.is_empty():
 		return
 	
-	is_processing = true
+	is_active = true
 	var command = input_buffer.pop_front()
 	
 	match command:
@@ -77,7 +77,7 @@ func _process_buffer() -> void:
 		"right":
 			await _handle_spin_right()
 	
-	is_processing = false
+	is_active = false
 	_process_buffer()
 
 
@@ -91,7 +91,7 @@ func _handle_spin_left() -> void:
 			await animation_handler.run_animation(animation_player, "right_front", true)
 			current_state = SleeveState.CLOSED_FRONT
 			
-	print(SleeveState.find_key(current_state))
+	Debugger.debug(SleeveState.find_key(current_state))
 
 
 func _handle_spin_right() -> void:
@@ -104,4 +104,4 @@ func _handle_spin_right() -> void:
 			await animation_handler.run_animation(animation_player, "left_front", true) #left_front_opened
 			current_state = SleeveState.CLOSED_FRONT
 			
-	print(SleeveState.find_key(current_state))
+	Debugger.debug(SleeveState.find_key(current_state))

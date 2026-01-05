@@ -1,116 +1,91 @@
-extends Resource
-class_name ProjectConfigParser
+class_name ConfigParser
 
-## Every OffsetController represents a single file thing - video, audio, subtitles, and etc.
+var json = JSON.new()
 
-## Video, Audio
-const media_file_config_example := {
-	"file_name": "",
-	"file_path": "",
-    "type": "",
-	"length": 0.0,
-	"jumpers": []
-}
+var returnable_data: Dictionary = {
+		"video": {},
+		"instrumental": {},
+		"acapella": {},
+		"character_list": []
+	}
+
+var data: Dictionary = {}
+
+## PARSER ##
+func get_parsed_data(config_path: String) -> Dictionary:
+	_load_and_parse(config_path)
+	return returnable_data
+
+
+func _load_and_parse(config_path: String) -> void:
+	if not FileAccess.file_exists(config_path):
+		Debugger.error("File missing: " + config_path)
+		return
+
+	# get_file_as_string is file.open() and file.close() analogue 
+	var json_text = FileAccess.get_file_as_string(config_path)
+	var parsed_data = JSON.parse_string(json_text)
+
+	if not parsed_data is Dictionary:
+		Debugger.error("Invalid JSON format")
+		return
+
+	# Getting data in correct format
+	returnable_data = parsed_data.get("files", {})
+	returnable_data["characters"] = parsed_data.get("characters", [])
+
+	Debugger.debug("Data flattened and loaded: " + str(returnable_data.keys()))
+
+
+## UNPARSER ##
+## TODO: Refactor with this way:
 """
-var jumpers_example := [
-    {"Start_from": 0.0}, # Mandatory to declare where to start playing from initially
-	{"from_time": 10.0, "to_time": 22.4}, 
-	{"from_time": 50.0, "to_time": 75.0},
-    {"from_time": 80.0, "to_time": 60.0}, # backwards jump
-    {"from_time": 85.0, "to_time": 90.0, "loops_amount": 3, "interrupt_avaliable_after": 2}, # loop can be from 1 (no loop) to -1 (till user interrupts) - avaliable_after reads next line and if it stops player, it interrupts loop
-    {"Stop_at": 90.0} # Optional - if not declared, plays till the end of the file reached. Else (if loop declared) plays till player interrupts.
-]"""
-
-## Subtitles
-const subtitles_file_config_example := {
-    "file_name": "",
-    "file_path": "",
-    "type": "subtitles",
-    "length": 0.0,
-    "lyrics": []
-}
+func save_config(save_path: String) -> void:
+	var file = FileAccess.open(save_path, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(data, "\t"))
+		file.close()
 """
-"lyrics": [
-    {
-        start_time: 0.0,
-        end_time: 4.0,
-        line: "First comment",
-        words: [
-            {
-                "word": "First",
-                "start_time": 0.0,
-                "end_time": 0.8
-            },
-            {
-                "word": "comment",
-                "start_time": 1.0,
-                "end_time": 3.0,
-                "subwords": [
-                    {
-                        "subword": "com",
-                        "start_time": 1.0,
-                        "end_time": 2.0
-                    },
-                    {
-                        "subword": "ment",
-                        "start_time": 2.0,
-                        "end_time": 3.0
-                    }
-                ]
-            }
-        ]
-    }
-]
-"""
+func save_config(data: Dictionary, save_path: String) -> void:
+	var json_dict := {
+		"files": {
+			"video": {},
+			"instrumental": {},
+			"acapella": {}
+		},
+		"characters": []
+	}
 
-## WIP
-const service_file_config_example := {
-    "file_name": "",
-    "file_path": "",
-    "type": "",
-    "settings": {}
-}
+	for video_name in data["video"]:
+		var entry = data["video"][video_name]
+		json_dict["files"]["video"][video_name] = {
+			"path": entry.get("path", ""),
+			"jumpers": entry.get("jumpers", [])
+		}
 
-var file_config: Dictionary = {}
+	for inst_name in data["instrumental"]:
+		var entry = data["instrumental"][inst_name]
+		json_dict["files"]["instrumental"][inst_name] = {
+			"path": entry.get("path", ""),
+			"jumpers": entry.get("jumpers", [])
+		}
 
+	for character in data["acapella"]:
+		var entry = data["acapella"][character]
+		json_dict["files"]["acapella"][character] = {
+			"path": entry.get("path", ""),
+			"jumpers": entry.get("jumpers", [])
+		}
 
-# creating real file from config data
-# path should be as "sth://folder^n". /filename.ext would be added automatically
-func create_config_file(data: Dictionary) -> void:
-    var config_file := FileAccess.open(data.get("file_path", "") + "/" + data.get("file_name", "") + ".json", FileAccess.ModeFlags.WRITE)
-    if config_file != null:
-        config_file.store_var(file_config)
-        config_file.close()
+	json_dict["characters"] = data.get("character_list", [])
 
+	# save JSON
+	var file = FileAccess.open(save_path, FileAccess.WRITE)
+	if file == null:
+		Debugger.error("Cannot open file for writing: " + save_path)
+		return
 
-func get_config_pathes(project_config_header_path) -> Dictionary:
-    var file = FileAccess.open(project_config_header_path, FileAccess.ModeFlags.READ)
-    var files = {}
-    if file:
-        while not file.eof_reached():
-            var line = file.get_line()
-            print(line)
-        file.close()
-    return {
-        "file_name": file_config.get("file_name", ""),
-        "file_path": file_config.get("file_path", "")
-    }
-
-
-## parsing config data from file
-func parse_config(data: Dictionary) -> void:
-    var file_type = data.get("type", "")
-    if file_type == "subtitles":
-        file_config = subtitles_file_config_example.duplicate()
-    elif file_type == "service":
-        file_config = service_file_config_example.duplicate()
-    else:
-        file_config = media_file_config_example.duplicate()
-
-    for key in file_config.keys():
-        if data.has(key):
-            file_config[key] = data[key]
-
-
-func get_config() -> Dictionary:
-    return file_config
+	var json_text = json.print(json_dict, "\t")
+	file.store_string(json_text)
+	file.close()
+	Debugger.debug("Config saved successfully: " + save_path)

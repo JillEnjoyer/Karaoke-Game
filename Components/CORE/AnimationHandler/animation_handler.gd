@@ -1,6 +1,7 @@
 extends Node
 class_name AnimationHandler
 
+
 ## run_animation(animation_player: AnimationPlayer, anim_name: String, backwards: bool = false) -> Signal
 func run_animation(animation_player: AnimationPlayer, anim_name: String, backwards: bool = false) -> Signal:
 	if backwards:

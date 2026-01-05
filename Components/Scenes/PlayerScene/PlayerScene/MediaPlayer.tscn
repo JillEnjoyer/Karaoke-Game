@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnk5hessaqj4"]
+
+[ext_resource type="Script" uid="uid://c5a38upmc8shv" path="res://Components/Scenes/PlayerScene/PlayerScene/media_player.gd" id="1_sx2dm"]
+[ext_resource type="PackedScene" uid="uid://cw1llcn6p3wy" path="res://Components/Scenes/PlayerScene/VideoManager/VideoManager.tscn" id="2_yu7rx"]
+[ext_resource type="PackedScene" uid="uid://2t6qkx6baxyi" path="res://Components/Scenes/PlayerScene/AudioManager/AudioManager.tscn" id="3_fgpkj"]
+[ext_resource type="PackedScene" uid="uid://rl20x4sogyk" path="res://Components/Scenes/PlayerScene/SubtitleLayer/SubtitleManager.tscn" id="4_lnroo"]
+
+[node name="MediaPlayer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sx2dm")
+
+[node name="VideoManager" parent="." instance=ExtResource("2_yu7rx")]
+layout_mode = 1
+
+[node name="InstrumentalManager" parent="." instance=ExtResource("3_fgpkj")]
+
+[node name="AcapellaManager" parent="." instance=ExtResource("3_fgpkj")]
+
+[node name="SubtitleManager" parent="." instance=ExtResource("4_lnroo")]
+layout_mode = 1

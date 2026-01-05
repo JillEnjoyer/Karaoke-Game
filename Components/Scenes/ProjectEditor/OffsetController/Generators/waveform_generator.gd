@@ -12,7 +12,7 @@ func load_waveform_image(
 	
 	ffmpegPath = "X:/Projects/Godot/Karaoke/karaoke-game/Extensions/ffmpeg.exe"
 
-	var FFmpegProcessorClass = load("res://Components/SongPreparation/OffsetController/Generators/FFmpegProcessor.cs")
+	var FFmpegProcessorClass = load("res://Components/Scenes/ProjectEditor/OffsetController/Generators/FFmpegProcessor.cs")
 	var ffmpeg_processor = FFmpegProcessorClass.new()
 	
 	ProjectSettings.globalize_path(ffmpegPath)
@@ -30,6 +30,7 @@ func load_waveform_image(
 	if error == OK:
 		var texture : ImageTexture = ImageTexture.new()
 		texture.set_image(img)
+		Debugger.debug("Waveform image size: " + str(texture.get_size()))
 		return texture
 	else:
 		Debugger.error("Error with loading image!")

@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ccoaw3q3wdf8"]
+
+[ext_resource type="Shader" uid="uid://ckled06woxm7s" path="res://Components/Scenes/PlayerScene/PlayerScene/texture_rect_bluring_shader.gdshader" id="1_bd5uo"]
+
+[resource]
+shader = ExtResource("1_bd5uo")
+shader_parameter/blur_amount = 1.0
+shader_parameter/blur_radius = 64.0
+shader_parameter/blur_strength = 1.0
+shader_parameter/edge_softness = 0.0010000000475
+shader_parameter/noise_strength = 2.0

@@ -9,16 +9,16 @@
     <img id="image" width="1280" height="720" />
 
     <script>
-        // Устанавливаем соединение с сервером
+        // Connect to the server
         const ws = new WebSocket('http://192.168.10.112:8082');
 
-        // Обработка входящих сообщений
+        // Handle incoming messages
         ws.onmessage = function(event) {
             const blob = new Blob([event.data], { type: 'image/png' });
             const url = URL.createObjectURL(blob);
             document.getElementById('image').src = url;
 
-            // Отправляем подтверждение серверу
+            // Send confirmation to the server
             ws.send("received");
         };
 

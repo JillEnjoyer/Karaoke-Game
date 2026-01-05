@@ -1,10 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bnk5hessaqj4"]
+[gd_scene load_steps=4 format=3 uid="uid://rvk7dfnpuu33"]
 
-[ext_resource type="Script" uid="uid://c5a38upmc8shv" path="res://Components/Scenes/PlayerScene/PlayerScene/PlayerSceneControl.gd" id="1_sx2dm"]
-[ext_resource type="PackedScene" uid="uid://cw1llcn6p3wy" path="res://Components/CORE/VideoRenderer/VideoRenderer.tscn" id="2_yu7rx"]
-[ext_resource type="PackedScene" uid="uid://2t6qkx6baxyi" path="res://Components/CORE/AudioDecoder/AudioDecoder.tscn" id="3_fgpkj"]
-[ext_resource type="PackedScene" uid="uid://rl20x4sogyk" path="res://Components/Scenes/PlayerScene/SubtitleLayer/Subtitles.tscn" id="4_lnroo"]
-[ext_resource type="PackedScene" uid="uid://bpuwn2vfuwf2s" path="res://Components/Scenes/PlayerScene/UI/SoundMixer.tscn" id="4_v2a7w"]
+[ext_resource type="Script" uid="uid://cgh0s6isyn46p" path="res://Components/Scenes/PlayerScene/PlayerScene/player_scene.gd" id="1_1fcos"]
+[ext_resource type="PackedScene" uid="uid://bnk5hessaqj4" path="res://Components/Scenes/PlayerScene/PlayerScene/MediaPlayer.tscn" id="1_eh80k"]
+[ext_resource type="PackedScene" uid="uid://bpuwn2vfuwf2s" path="res://Components/Scenes/PlayerScene/UI/UI.tscn" id="4_v2a7w"]
 
 [node name="PlayerScene" type="Control"]
 layout_mode = 3
@@ -13,15 +11,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_sx2dm")
+script = ExtResource("1_1fcos")
 
-[node name="VideoRenderer" parent="." instance=ExtResource("2_yu7rx")]
+[node name="MediaPlayer" parent="." instance=ExtResource("1_eh80k")]
 layout_mode = 1
 
-[node name="AudioDecoder" parent="." instance=ExtResource("3_fgpkj")]
-
-[node name="Subtitles" parent="." instance=ExtResource("4_lnroo")]
-layout_mode = 1
-
-[node name="SoundMixer" parent="." instance=ExtResource("4_v2a7w")]
+[node name="UI" parent="." instance=ExtResource("4_v2a7w")]
 layout_mode = 1

@@ -17,7 +17,7 @@ Lots of subtitles?
 Wish to maintain a whole Karaoke bar with one video broadcaster through the room with internet? 
 - It is it"
 config/version="0.3.37"
-run/main_scene="res://Components/CORE/ViewportBase/viewport_base.tscn"
+run/main_scene="uid://c76nh51iw8yh3"
 config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -27,9 +27,11 @@ driver/enable_input=true
 
 [autoload]
 
-Debugger="*res://Components/CORE/Debug/Debugger.gd"
-UIManager="*res://Components/CORE/Preloader/ui_manager.gd"
+ViewportBase="*res://Components/CORE/ViewportBase/ViewportBase.tscn"
+BaseScene="*res://Components/CORE/ViewportBase/BaseScene.tscn"
 PreferencesData="*res://Components/CORE/Preferences/PreferencesData.gd"
+UIManager="*res://Components/CORE/Preloader/ui_manager.gd"
+Debugger="*res://Components/CORE/Debug/Debugger.gd"
 TextureLoader="*res://Components/CORE/Preloader/texture_loader.gd"
 
 [display]

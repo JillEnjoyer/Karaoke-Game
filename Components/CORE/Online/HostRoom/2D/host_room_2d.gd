@@ -13,10 +13,10 @@ func _ready() -> void:
 	entry_panel.connect("mouse_entered", Callable(self, "show_host_panel"))
 
 """
-1. Нажимая на Хост кнопку - создать комнату, имея свой IP, PORT, Спец код для подключения. Наверное этот этап должен проводить Port forwarding
-2. client кнопка спросит данные и попробует подключится к существующему хосту
-3. Добавленные пользователи будут заметны в player_container - их можно будет заглушить и удалить из группы, а также заблокировать.
-4. Все игроки в релизе будут иметь идентификатор - SteamID.
+1. Pressing the Host button - create a room with your IP, PORT, and a special code for connection. This step may require Port forwarding.
+2. The Client button will ask for the data and try to connect to an existing host.
+3. Added users will be visible in the player_container - they can be muted, removed from the group, and blocked.
+4. All players in the release will have an identifier - SteamID or similar, to avoid duplicate connections.
 """
 
 

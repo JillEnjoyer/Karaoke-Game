@@ -5,6 +5,7 @@ signal popup_closed
 @onready var label = $Label
 @onready var button = $Label/Button
 
+
 func _ready() -> void:
 	self.visible = false
 	button.pressed.connect(_on_texture_button_pressed)

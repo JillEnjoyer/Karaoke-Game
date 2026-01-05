@@ -9,7 +9,7 @@ class_name PNGSaveIntruder
 
 var baseImage = load("res://BlackSquare.png") # Will be removed later
 
-var targetSaveLoc = "res://Preferences/"
+var target_save_location = "res://Preferences" ## will be changed
 
 
 func _ready() -> void:
@@ -18,15 +18,15 @@ func _ready() -> void:
 
 
 func GenerateGeneralSaveFile() -> void:
-	var data_string = getSaveString()
-	var save_path = targetSaveLoc + "game_settings.png"
+	var data_string = GetSaveString()
+	var save_path = target_save_location.path_join("game_settings.png")
 	
 	var image = Image.create(int(imageSize.x), int(imageSize.y), false, Image.FORMAT_RGB8)
 	Debugger.info("Created image with size: " + str(image.get_width()) + "x" + str(image.get_height()))
 	#image.create(int(imageSize.x), int(imageSize.y), false, Image.FORMAT_RGB8)
 	
 	if image.get_width() == 0 or image.get_height() == 0:
-		Debugger.error("Error: Wrong image size")
+		Debugger.error("Wrong image size")
 		return
 	
 	var data_binary = data_string.to_utf8_buffer()
@@ -47,7 +47,7 @@ func GenerateGeneralSaveFile() -> void:
 
 
 func ReadGeneralSaveFile() -> void:
-	var file_path = targetSaveLoc + "game_settings.png"
+	var file_path = target_save_location.path_join("game_settings.png")
 	var image = Image.new()
 	image.load(file_path)
 	#image.lock()
@@ -68,7 +68,7 @@ func ReadGeneralSaveFile() -> void:
 
 func GenerateSongSaveFile(ParametrList: Dictionary) -> void:
 	var data_string = getSaveStringFromDict(ParametrList)
-	var save_path = targetSaveLoc + "song_settings.png"
+	var save_path = target_save_location.path_join("song_settings.png")
 
 	var image = Image.create(int(imageSize.x), int(imageSize.y), false, Image.FORMAT_RGB8)
 
@@ -90,7 +90,7 @@ func GenerateSongSaveFile(ParametrList: Dictionary) -> void:
 
 
 func ReadSongSaveFile() -> void:
-	var file_path = targetSaveLoc + "song_settings.png"
+	var file_path = target_save_location.path_join("song_settings.png")
 	var image = Image.new()
 	image.load(file_path)
 	image.lock()
@@ -107,10 +107,10 @@ func ReadSongSaveFile() -> void:
 	image.unlock()
 	
 	var data_string = binary_data.get_string_from_utf8()
-	print("Restored Song Data: ", data_string)
+	Debugger.debug("Restored Song Data: " + data_string)
 
 
-func getSaveString() -> String:
+func GetSaveString() -> String:
 	var data_string = ""
 	#data_string += "ResolutionX:" + str(PreferencesData.get_data("ResolutionX")) + "\n"
 	data_string += "Language:" + str(PreferencesData.get_data("Language")) + "\n"

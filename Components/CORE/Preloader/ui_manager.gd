@@ -1,18 +1,38 @@
 extends Node
 
-@onready var default_parent = get_node("/root/ViewportBase/SubViewportContainer/SubViewport")
 @onready var core = get_node("/root")
 
+var default_parent
+var excluded_parent
+
 var scene_registry = SceneRegistry.new()
+
+var potential_parents := {
+	"base": "/root/BaseScene",
+	"viewport": "/root/ViewportBase/SubViewportContainer/SubViewport"
+}
 
 var preloaded_scenes = {}
 var found_scenes := {}
 
 
-func _ready():
+func _ready() -> void:
 	found_scenes = scene_registry.build_scene_map()
 	for key in found_scenes.keys():
-		preloaded_scenes[key] = load(found_scenes[key])
+		
+		var err = ResourceLoader.load_threaded_request(found_scenes[key])
+
+		if err != OK:
+			Debugger.warning("Load request failed: " + found_scenes[key])
+			continue
+
+		var res = ResourceLoader.load_threaded_get(found_scenes[key])
+
+		if res == null:
+			Debugger.warning("Broken scene skipped: " + found_scenes[key])
+			continue
+
+		preloaded_scenes[key] = res
 
 
 ## Add_child from already preloaded list of scene elemenets (much faster)
@@ -81,3 +101,18 @@ func cleanup_tree() -> void:
 		default_parent.remove_child(child)
 		child.queue_free()
 	Debugger.info("Tree is cleaned")
+
+
+func update_default_parent() -> void:
+	if PreferencesData.get_data("local_webstreaming"):
+		default_parent = get_node(potential_parents["viewport"])
+		excluded_parent = get_node(potential_parents["base"])
+	else:
+		default_parent = get_node(potential_parents["base"])
+		excluded_parent = get_node(potential_parents["viewport"])
+	default_parent.show_node(true)
+	excluded_parent.show_node(false)
+
+
+func find_scene_in_scene_tree(scene_name: String) -> Node:
+	return default_parent.find_child(scene_name)

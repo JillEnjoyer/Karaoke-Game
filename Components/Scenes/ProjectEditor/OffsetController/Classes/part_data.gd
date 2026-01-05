@@ -23,8 +23,8 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		context_menu.show_menu(get_viewport().get_mouse_position(), ["go to", "split", "copy", "delete"], func(id):
 			match id:
-				0: print("go to")
-				1: print("split")
-				2: print("copy")
-				3: print("delete")
+				0: Debugger.info("go to")
+				1: Debugger.info("split")
+				2: Debugger.info("copy")
+				3: Debugger.info("delete")
 		)

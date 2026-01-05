@@ -1,9 +1,8 @@
 extends Control
 
-@onready var root = UIManager.default_parent
-@onready var catalog_base = root.get_node("Catalog")
-
-var audio_player_init = audio_player_instance.new()
+#@onready var root = UIManager.default_parent
+@onready var card_node = $Cards
+@onready var card_background = $CardBackground
 
 var card_size = Vector2(550, 700)
 var focused_card_index = 1
@@ -17,6 +16,8 @@ var song_list = []
 var return_speed = 5.0
 
 var TestFeature: bool = false
+
+var background := []
 
 func _ready():
 	load_cards_at_path(current_path)
@@ -42,16 +43,18 @@ func load_cards_at_path(path: String):
 
 
 func create_cards():
+	background = []
 	for i in range(song_list.size()):
 		var card = create_card(song_list[i], i)
-		catalog_base.add_child(card)
+		card_node.add_child(card)
 
 
 func create_card(song_name: String, index: int) -> Control:
-	var card = UIManager.get_desired_node("card").instantiate()
+	var card = UIManager.get_desired_node("card").instantiate() ## Because of further init
 
-	var icon_path = current_path + "/" + song_name + "/Icon.png"
-	var bg_path = current_path + "/" + song_name + "/Background.png"
+	## TODO: Need to add support for loading png/jpg/jpeg/webp
+	var icon_path = current_path.path_join(song_name).path_join("Icon")
+	var bg_path = current_path.path_join(song_name).path_join("Background")
 	
 	card.call_deferred("import_data",
 		song_name,
@@ -59,6 +62,8 @@ func create_card(song_name: String, index: int) -> Control:
 		TextureLoader.load_texture_or_placeholder(icon_path),
 		null
 	)
+	
+	background.append(TextureLoader.load_texture_or_placeholder(bg_path))
 
 	card.custom_minimum_size = card_size
 	card.pivot_offset = card_size / 2
@@ -68,9 +73,9 @@ func create_card(song_name: String, index: int) -> Control:
 
 
 func clear_cards():
-	for child in catalog_base.get_children():
+	for child in card_node.get_children():
 		if child is Control:
-			catalog_base.remove_child(child)
+			card_node.remove_child(child)
 			child.queue_free()
 
 
@@ -86,27 +91,38 @@ func _input(event):
 	elif event.is_action_pressed("shift"):
 		TestFeature = not TestFeature
 		update_card_positions()
+	elif event.is_action_pressed("pause"):
+		return_to_main_menu()
 
 
-func move_focus(direction):
+func move_focus(direction) -> void:
+	#card_background.hide_highlight() ## video implementation
+	card_background.hide_texture()
+	
 	focused_card_index += direction
 	if focused_card_index < 0:
 		focused_card_index = song_list.size() - 1  # Go to the last element
 	elif focused_card_index >= song_list.size():
 		focused_card_index = 0  # Go to the first element
 	update_card_positions()
+	
+	if not background:
+		return
+	
+	card_background.apply_texture(background[focused_card_index])
+	#card_background.show_highlight(current_path.path_join(song_list[focused_card_index])) ## config_path
 
 
 func update_card_positions():
-	var center_x = catalog_base.get_viewport().size.x / 2
-	var center_y = catalog_base.get_viewport().size.y / 2
+	var center_x = card_node.get_viewport().size.x / 2
+	var center_y = card_node.get_viewport().size.y / 2
 	var base_spacing = card_size.x * 0.8
 	var depth_factor = 0.3 
 	var scaling_factor = 0.25
 	var offset_factor = card_size.y * 0.1
 
 	for i in range(song_list.size()):
-		var card = catalog_base.get_child(i)
+		var card = card_node.get_child(i)
 		var distance_from_center = abs(i - focused_card_index)
 		var offset_x = (i - focused_card_index) * base_spacing
 		var offset_y = distance_from_center * offset_factor
@@ -121,7 +137,7 @@ func update_card_positions():
 		if card.has_meta("tween"):
 			card.get_meta("tween").kill()
 
-		var tween = catalog_base.create_tween()
+		var tween = card_node.create_tween()
 		card.set_meta("tween", tween)
 
 		tween.tween_property(card, "position", target_position, 0.3)
@@ -139,11 +155,11 @@ func navigate_up():
 func navigate_down():
 	if focused_card_index >= 0 and focused_card_index < song_list.size():
 		var selected_folder = song_list[focused_card_index]
-		var new_path = current_path + "/" + selected_folder
+		var new_path = current_path.path_join(selected_folder)
 		
-		if FileAccess.file_exists(new_path + "/config.json"):
+		if FileAccess.file_exists(new_path.path_join("config.json")):
 			show_settings_panel(selected_folder, "single")
-			Debugger.debug("CatalogV2.gd", "navigate_down()", "Entered song settings panel")
+			Debugger.debug("Entered song settings panel")
 		elif selected_folder == "[Playlists]":
 			show_settings_panel(selected_folder, "playlist")
 		elif DirAccess.open(new_path):
@@ -154,6 +170,18 @@ func navigate_down():
 
 func show_settings_panel(folder_name: String, type: String):
 	var settings_panel = UIManager.show_ui("preset_panel")
-	Debugger.debug("CatalogV2.gd", "show_settings_panel()", "Sent current_path/folder_name:" + current_path + "/" + folder_name)
+	Debugger.debug("Sent current_path/folder_name: " + current_path.path_join(folder_name))
 	settings_panel.setup_mode(type)
-	settings_panel.CollectNames(current_path, folder_name)
+	settings_panel.collect_names(current_path, folder_name, focused_card_index)
+
+
+func return_catalog_position(album_path: String, chosen_index: int) -> void:
+	current_path = album_path
+	focused_card_index = chosen_index
+	load_cards_at_path(current_path)
+	update_card_positions()
+
+
+func return_to_main_menu() -> void:
+	UIManager.cleanup_tree()
+	UIManager.show_ui("main_menu")

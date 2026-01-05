@@ -1,4 +1,5 @@
 extends Control
+## TODO: Expand and refactor
 
 @onready var texture_rect = $TextureRect
 
@@ -44,7 +45,6 @@ func extract_number(filename: String) -> int:
 func anim_exec():
 	while state:
 		for n in range(tex.size()):
-			print(n)
 			texture_rect.texture = tex[n]
 			await get_tree().create_timer(0.01528).timeout
 
@@ -60,7 +60,7 @@ func count_files_in_directory(path: String) -> int:
 	var file_name = dir.get_next()
 	while file_name != "":
 		if not dir.current_is_dir() and file_name.ends_with(".png"):
-			tex_path.append(path + "/" + file_name)
+			tex_path.append(path.path_join(file_name))
 			count += 1
 		file_name = dir.get_next()
 	

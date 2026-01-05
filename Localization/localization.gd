@@ -2,6 +2,7 @@ extends Node
 
 @onready var localization_json = {}
 
+
 func _ready() -> void:
 	load_localization("ENG")
 
@@ -19,14 +20,14 @@ func load_localization(current_loc_str: String) -> void:
 		if parse_result == OK:
 			localization_json = json.data
 		else:
-			print("Parsing error JSON:", json.get_error_message(), " on line ", json.get_error_line())
+			Debugger.error("Parsing error JSON: " + json.get_error_message() + " on line " + str(json.get_error_line()))
 	else:
-		print("Localization key is not found:", path)
+		Debugger.warning("Localization key is not found:", path)
 
 
 func get_localized_line(loc_key: String) -> String:
 	if loc_key in localization_json:
 		return localization_json[loc_key]
 	else:
-		print("Localization key is not found:", loc_key)
+		Debugger.warning("Localization key is not found:" + loc_key)
 		return loc_key

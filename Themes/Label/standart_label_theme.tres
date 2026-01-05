@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cn1jysb5j3vyu"]
+
+[ext_resource type="FontFile" uid="uid://dcvrmp7r4qvki" path="res://[IMPORTS]/font/source_sans/SourceSans3-Medium.ttf" id="1_gsotm"]
+
+[resource]
+default_font = ExtResource("1_gsotm")
+default_font_size = 24

@@ -8,7 +8,7 @@ func _ready() -> void:
 
 
 func _start_tutorial_async():
-	if PreferencesData.UserData["song_preparation_tutorial_passed"] == false:
+	if not PreferencesData.get_user_data("song_preparation_tutorial_passed"):
 		var tutorial_data = [
 			["New project button lets you choose materials, that would make the appearance of Catalog cards and theirs description", "next", Vector2(0, 70)],
 			["Open Existing button lets you choose config file, that would open already prepared song project and its materials with presets", "next", Vector2(188, 70)],
@@ -16,7 +16,7 @@ func _start_tutorial_async():
 			["Masking Layer button allows you to work with masks - objects, that would hide parts of the text. Currently WIP", "next", Vector2(440, 70)],
 			["Subtitle Layer button allows you to work with words and their positions on the scene (size, position, style etc). Choosen automatically. Not for Karaoke mode! Currently WIP", "next", Vector2(504, 70)],
 			["File Manager button lets you choose materials, that you want to use with currently choosen project", "next", Vector2(568, 70)],
-			# и т.д.
+			# and so on.
 		]
 
 		for data in tutorial_data:

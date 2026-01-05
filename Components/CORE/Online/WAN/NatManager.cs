@@ -3,6 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Open.Nat;
+using System.Diagnostics;
 
 public partial class NatManager : Node, IDisposable
 {
@@ -42,7 +43,6 @@ public partial class NatManager : Node, IDisposable
     {
         if (!portsMapped || device == null)
             return false;
-
         try
         {
             if (tcpMapping != null)

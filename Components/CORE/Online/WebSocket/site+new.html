@@ -15,27 +15,26 @@
             const img = new Image();
             
             img.onload = function() {
-                // Устанавливаем размеры канваса, чтобы они соответствовали изображению
+                // Setting up canvas
                 canvas.width = img.width;
                 canvas.height = img.height;
                 
-                // Загружаем новое изображение в ImageData
+                // Loading image into ImageData
                 ctx.drawImage(img, 0, 0);
     
-                // Получаем данные пикселей с canvas
+                // get image data from canvas
                 let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     
                 if (previousImageData) {
-                    // Сравниваем старые и новые данные пикселей, чтобы обновить только изменённые пиксели
+                    // compare with previous image data and update only changed pixels
                     for (let i = 0; i < imageData.data.length; i += 4) {
-                        const r = imageData.data[i];     // Красный канал
-                        const g = imageData.data[i + 1]; // Зелёный канал
-                        const b = imageData.data[i + 2]; // Синий канал
-                        const a = imageData.data[i + 3]; // Альфа канал
+                        const r = imageData.data[i];
+                        const g = imageData.data[i + 1];
+                        const b = imageData.data[i + 2];
+                        const a = imageData.data[i + 3];
     
-                        // Если текущие пиксели изменились (не пустые)
+                        // if pixel is not empty and has changed
                         if (r !== previousImageData.data[i] || g !== previousImageData.data[i + 1] || b !== previousImageData.data[i + 2] || a !== previousImageData.data[i + 3]) {
-                            // Можно обновить пиксель
                             imageData.data[i] = r;
                             imageData.data[i + 1] = g;
                             imageData.data[i + 2] = b;
@@ -44,12 +43,12 @@
                     }
                 }
     
-                // Применяем обновлённые данные на canvas
+                // update canvas
                 ctx.putImageData(imageData, 0, 0);
     
-                // Отправляем подтверждение серверу
+                // Send acknowledgment to server
                 ws.send("received");
-                // Сохраняем текущие данные пикселей для будущего сравнения
+                // Store current image data for next comparison
                 previousImageData = imageData;
             };
             

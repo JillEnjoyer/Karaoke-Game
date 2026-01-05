@@ -1,19 +1,19 @@
 extends Node
 
-const config_path = "res://SaveData/Config.cfg"
-const user_data_path = "res://SaveData/UserData.cfg"
+const config_path = "res://SaveData/Config.cfg" ## TODO: Change to user:/
+const user_data_path = "res://SaveData/UserData.cfg" ## TODO: Change to user:/
 const ext_path = { # In Release will be changed with a single exe file
 	"ffmpeg": "res://Extensions/ffmpeg.exe",
 	"7z": "res://Extensions/7z.exe",
 	"qrGenerator": "res://Extensions/qrGenerator.exe",
-	"Vosk_Handler": "res://Extensions/Vosk_Handler_V1.1.exe",
+	"vosk_handler": "res://Extensions/Vosk_Handler_V1.2.exe",
 }
 
 var BaseSettingsList = {
 	#"resolution": [1920, 1080], # Unsupported since Godot 4.2
 	"fullscreen": false,
 	"language": "ENG",
-	"window_mode": "Window",
+	"window_mode": "Window", ## change to window
 	"framerate": 75,
 	"v-sync": true,
 	"overall_volume": 100,
@@ -23,7 +23,9 @@ var BaseSettingsList = {
 	"log_file_path": "",
 	"catalog_path": "X:/Projects/Godot/Karaoke/Catalog",
 	#"catalog_style": "2d"
-	"style": "2d" # 2d/3d. Decides if you will have avaliable 3d surroundings or not: Catalog, host_room etc.
+	"style": "2d", # 2d/3d. Decides if you will have avaliable 3d surroundings or not: Catalog, host_room etc.
+	"local_webstreaming": false,
+	"webstreaming_default_port": 8080
 }
 var BaseUserData = {
 	"main_menu_tutorial_passed": false,
@@ -152,34 +154,39 @@ func load_user_data() -> Dictionary:
 
 	return data
 
-
+## Get "setting" value from SettingList
 func get_data(setting: String):
 	return SettingsList.get(setting, null)
 
-
+## Set "setting" value from SettingList
 func set_data(setting: String, value) -> void:
 	if SettingsList.has(setting):
 		SettingsList[setting] = value
 
-
+## Get "setting" value from UserData
 func get_user_data(key: String):
 	return UserData.get(key, null)
 
-
+## Set "setting" value from UserData
 func set_user_data(key: String, value) -> void:
 	if UserData.has(key):
 		UserData[key] = value
 
-
+## Returns path to desired extension
 func get_ext_path(ext: String):
 	return ext_path.get(ext, null)
 
-
+## Wipes current SettingsList with default values
 func restore_settings_data():
 	SettingsList = BaseSettingsList.duplicate()
 	save_config()
 
-
+## Wipes current UserData with default values
 func restore_user_data():
 	UserData = BaseUserData.duplicate()
+	save_user_data()
+
+
+func _exit_tree() -> void:
+	save_config()
 	save_user_data()

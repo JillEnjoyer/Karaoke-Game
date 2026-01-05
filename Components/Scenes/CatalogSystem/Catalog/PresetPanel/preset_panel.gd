@@ -1,37 +1,30 @@
 extends Control
 
-@onready var song_ui = $SongUI
-@onready var playlist_ui = $PlaylistUI
+@onready var animation_player := $AnimationPlayer
 
-@onready var NameLbl = $SongNameLbl
-@onready var SongIcon = $SongIcon
+@onready var song_ui := $Panel/SongUI
+@onready var playlist_ui := $Panel/PlaylistUI
 
-@onready var SongModeCheckBox = $SongUI/ModeCheckBox
-@onready var VideoCheckBox = $SongUI/VideoCheckBox
-@onready var InstrumentalCheckBox = $SongUI/InstrumentalCheckBox
-@onready var AcapellaCheckBox = $SongUI/AcapellaCheckBox
+@onready var name_lbl := $Panel/SongUI/SongNameLbl
+@onready var song_icon := $Panel/SongUI/SongIcon
+@onready var song_mode_checkbox := $Panel/SongUI/VBoxContainer/GameModeHbox/ModeCheckBox
+#@onready var instrumental_checkbox := $Panel/SongUI/VBoxContainer/InstrumentalHbox/InstrumentalCheckBox
+@onready var acapella_checkbox := $Panel/SongUI/VBoxContainer/AcapellaHbox/AcapellaCheckBox
 
-@onready var PlaylistModeCheckBox = $PlaylistUI/ModeCheckBox
-@onready var RepeatCheckBox = $PlaylistUI/RepeatCheckBox
-@onready var ShuffleCheckBox = $PlaylistUI/ShuffleCheckBox
-@onready var PlaylistCheckBox = $PlaylistUI/PlaylistCheckBox
+@onready var playlist_mode_checkbox := $Panel/PlaylistUI/VBoxContainer/ModeHbox/ModeCheckBox
+@onready var repeat_checkbox := $Panel/PlaylistUI/VBoxContainer/RepeatHbox/RepeatCheckBox
+@onready var shuffle_checkbox := $Panel/PlaylistUI/VBoxContainer/ShuffleHbox/ShuffleCheckBox
+@onready var playlist_check_box := $Panel/PlaylistUI/VBoxContainer/PlaylistHbox/PlaylistCheckBox
 
-var BasePath = "Catalog"
-var FolderName = ""
-var Path = ""
+var base_path := "Catalog"
+var folder_name := ""
+var song_path := ""
+var card_index := 0
 
-var VideoData = {}
-var InstrumentalData = {}
-var AcapellaData = {}
-var PlaylistItems = []
+var acapella_data := {}
+var playlist_items := []
 
-var type = ""
-var current_playlist = {}
-
-var local_path = ""
-var choosen_video = ""
-var choosen_instrumental = ""
-var choosen_acapella = ""
+var type := ""
 
 
 func _ready() -> void:
@@ -47,74 +40,69 @@ func setup_mode(ui_type):
 		song_ui.visible = false
 		playlist_ui.visible = true
 	else:
-		Debugger.error("PresetScene.gd", "setup_mode()", "Not recognised preset scene type: " + str(type))
+		Debugger.error("Not recognised preset scene type: " + str(type))
+		push_error(ui_type + "is not recognized!")
 
 
-func CollectNames(Base: String, Folder: String):
-	BasePath = Base
-	FolderName = Folder
-	Path = BasePath + "/" + FolderName
-	Debugger.debug("PresetScene.gd", "CollectNames()", "FrPath = " + BasePath)
-	Debugger.debug("PresetScene.gd", "CollectNames()", "SnName = " + Folder)
+func collect_names(base: String, folder: String, choosen_index: int):
+	base_path = base
+	folder_name = folder
+	song_path = base_path + "/" + folder_name
+	card_index = choosen_index
+	Debugger.debug("FrPath = " + base_path)
+	Debugger.debug("SnName = " + folder)
 	
-	Init()
+	init()
+	animation_player.play("show_panel")
 
 
-func Init():
-	NameLbl.text = FolderName
-	SongIcon.texture = TextureLoader.load_texture(BasePath + "/" + FolderName + "/" + "Icon.png")
+func init():
+	name_lbl.text = folder_name
+	song_icon.texture = TextureLoader.load_texture(base_path + "/" + folder_name + "/" + "Icon.png")
 	
-	ScanFolder()
+	scan_folder()
 	
-	SongModeCheckBox.text = "Standart"
-	AcapellaCheckBox.clear()
+	song_mode_checkbox.text = "Standart"
+	acapella_checkbox.clear()
 	
 	if type == "single":
-		for instrumental_folder in InstrumentalData.keys():
-			InstrumentalCheckBox.add_item(instrumental_folder)
-		for acapella_folder in AcapellaData.keys():
-			AcapellaCheckBox.add_item(acapella_folder)
-		for video_file in VideoData.keys():
-			VideoCheckBox.add_item(video_file)
+		for acapella_folder in acapella_data.keys():
+			acapella_checkbox.add_item(acapella_folder)
 		
 	elif type == "playlist":
-		for playlist_name in PlaylistItems.keys():
-			PlaylistCheckBox.add_item(playlist_name)
+		for playlist_name in playlist_items:
+			playlist_check_box.add_item(playlist_name)
 
 
-func ScanFolder():
-	Path = BasePath + "/" + FolderName
-	AcapellaData = {}
-	InstrumentalData = {}
+func scan_folder():
+	song_path = base_path + "/" + folder_name
+	acapella_data = {}
 	
 	
 	if type == "single":
-		AcapellaData = scan_audio_folder(Path + "/Audio/Acapella")
-		InstrumentalData = scan_audio_folder(Path + "/Audio/Instrumental")
-		VideoData = scan_video_folder(Path + "/Video")
+		acapella_data = scan_audio_folder(song_path + "/Audio/Acapella")
 		
 	elif type == "playlist":
-		var dir = DirAccess.open(Path)
+		var dir = DirAccess.open(song_path)
 		if dir:
 			dir.list_dir_begin()
 			var file_name = dir.get_next()
-			PlaylistItems = []
+			playlist_items = []
 			
 			while file_name != "":
 				if not dir.current_is_dir() and file_name.get_extension().to_lower() == "json":
 					var basename = file_name.get_basename()
-					PlaylistItems.append(basename)
+					playlist_items.append(basename)
 				
 				file_name = dir.get_next()
 			
 			dir.list_dir_end()
-			_populate_playlist_checkbox(PlaylistItems)
+			_populate_playlist_checkbox(playlist_items)
 		else:
-			Debugger.debug("PresetScene.gd", "ScanFolder()", "Failed to open folder: " + Path)
+			Debugger.debug("Failed to open folder: " + song_path)
 	
-	Debugger.info("PresetScene.gd", "ScanFolder()", "Path for scanning = " + Path)
-	Debugger.debug("PresetScene.gd", "ScanFolder()", "Acapella: " + str(AcapellaData))
-	Debugger.debug("PresetScene.gd", "ScanFolder()", "Instrumental: " + str(InstrumentalData))
+	Debugger.info("Path for scanning = " + song_path)
+	Debugger.debug("Acapella: " + str(acapella_data))
 
 
 func scan_audio_folder(folder_path: String) -> Dictionary:
@@ -131,7 +119,7 @@ func scan_audio_folder(folder_path: String) -> Dictionary:
 			item_name = dir.get_next()
 		dir.list_dir_end()
 	else:
-		Debugger.debug("PresetScene.gd", "_scan_audio_folder()", "Failed to open folder: " + folder_path)
+		Debugger.debug("Failed to open folder: " + folder_path)
 	
 	return result
 
@@ -155,45 +143,51 @@ func scan_video_folder(folder_path: String, extensions: Array = [".mp4", ".webm"
 			item_name = dir.get_next()
 		dir.list_dir_end()
 	else:
-		Debugger.debug("PresetScene.gd", "scan_video_files()", "Failed to open folder: " + folder_path)
+		Debugger.debug("Failed to open folder: " + folder_path)
 	
 	return result
 
 
 func _populate_playlist_checkbox(items: Array) -> void:
-	PlaylistModeCheckBox.clear()
+	playlist_mode_checkbox.clear()
 	for idx in range(items.size()):
-		PlaylistModeCheckBox.add_item(items[idx], idx)
+		playlist_mode_checkbox.add_item(items[idx], idx)
 
 
-func pack_to_playlist():
-	var playlist = {}
+func pack_to_playlist(choosen_acapella: String = "") -> Array[Dictionary]:
+	var playlist: Array[Dictionary] = []
 	
-	playlist["1"] = {
-		"path": local_path,
-		"video": choosen_video,
-		"instrumental": choosen_instrumental,
-		"acapella": choosen_acapella
-	}
+	playlist.append({
+		"song_path": song_path,
+		"version": choosen_acapella
+	})
 	return playlist
 
 
-func start_karaoke(playlist: Dictionary) -> void:
+func start_karaoke(playlist: Array) -> void:
 	UIManager.cleanup_tree()
-	UIManager.show_ui("player_scene").import_playlist(playlist)
+	var player_scene = UIManager.show_ui("player_scene")
+	var input_data := {
+		"album_path": null,
+		"chosen_index": null
+	}
+	input_data["album_path"] = base_path
+	input_data["chosen_index"] = card_index
+
+	player_scene.import_playlist(input_data, playlist)
 
 
 func _on_back_btn_pressed() -> void:
+	animation_player.play_backwards("show_panel")
+	await animation_player.animation_finished
 	self.queue_free()
 
 
 func _on_start_btn_pressed() -> void:
-	local_path = Path
-	choosen_video = VideoCheckBox.get_item_text(VideoCheckBox.selected)
-	choosen_instrumental = InstrumentalCheckBox.get_item_text(InstrumentalCheckBox.selected)
-	choosen_acapella = AcapellaCheckBox.get_item_text(AcapellaCheckBox.selected)
-	
+	var choosen_acapella = acapella_checkbox.get_item_text(acapella_checkbox.selected)
+	var current_playlist := []
+
 	if type == "single":
-		current_playlist = pack_to_playlist()
+		current_playlist = pack_to_playlist(choosen_acapella)
 		Debugger.debug("current_playlist: " + str(current_playlist))
 	start_karaoke(current_playlist)

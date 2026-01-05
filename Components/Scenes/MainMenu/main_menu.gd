@@ -16,7 +16,7 @@ func _on_catalog_btn_pressed() -> void:
 
 func _on_editor_btn_pressed() -> void:
 	UIManager.cleanup_tree()
-	UIManager.show_ui("song_preparation_scene")
+	UIManager.show_ui("editor_scene")
 
 
 func _on_settings_btn_pressed() -> void:

@@ -2,5 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ymxikupspe1k" path="res://TEST/test.gd" id="1_rg3tc"]
 
-[node name="Test" type="Node2D"]
+[node name="Test" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_rg3tc")

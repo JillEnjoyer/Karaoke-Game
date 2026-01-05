@@ -24,3 +24,17 @@ static func time_to_display_string(time: float) -> String:
 	var minutes = int(time) / 60.0
 	var seconds = int(time) % 60
 	return "%02d:%02d" % [minutes, seconds]
+
+
+static func logical_to_physical(normalized_jumpers: Array, time_logical: float) -> float:
+	for segment in normalized_jumpers:
+		if time_logical >= segment["logical_start"] and time_logical <= segment["logical_end"]:
+			var offset = time_logical - segment["logical_start"]
+			return segment["physical_start"] + offset
+	return 0.0 #physical_time
+static func physical_to_logical(normalized_jumpers: Array, time_physical: float) -> float:
+	for segment in normalized_jumpers:
+		if time_physical >= segment["physical_start"] and time_physical <= segment["physical_end"]:
+			var offset = time_physical - segment["physical_start"]
+			return segment["logical_start"] + offset
+	return 0.0 #logical_time

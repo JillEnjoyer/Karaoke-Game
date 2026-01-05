@@ -1,18 +1,25 @@
+@warning_ignore_start("integer_division")
 extends Control
 
+@onready var texture_rect = $TextureRect
 
-var draw_color: Color = Color(1, 0, 0, 0.3) # Прозрачный красный
+
+var draw_color: Color = Color(1, 0, 0, 0.3) # translucent red
 var is_erasing: bool = false
 var image: Image
 var texture: ImageTexture
 
-const BRUSH_SIZE = 16
+@export var BRUSH_SIZE = 16
+
+var svg_cache := {}
+
 
 func _ready():
 	image = Image.create(get_viewport().size.x, get_viewport().size.y, false, Image.FORMAT_RGBA8)
-	image.fill(Color(0, 0, 0, 0)) # Прозрачность по умолчанию
+	image.fill(Color(0, 0, 0, 0))
 	texture = ImageTexture.create_from_image(image)
-	$TextureRect.texture = texture
+	texture_rect.texture = texture
+
 
 func _input(event):
 	if event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
@@ -21,8 +28,8 @@ func _input(event):
 			for x in range(BRUSH_SIZE):
 				var px = int(pos.x) + x - BRUSH_SIZE / 2
 				var py = int(pos.y) + y - BRUSH_SIZE / 2
-				var size = image.get_size()
-				if px >= 0 and py >= 0 and px < size.x and py < size.y:
+				var image_size = image.get_size()
+				if px >= 0 and py >= 0 and px < image_size.x and py < image_size.y:
 					if is_erasing:
 						image.set_pixel(px, py, Color(0, 0, 0, 0))
 					else:
@@ -32,6 +39,7 @@ func _input(event):
 
 func _on_ColorPicker_color_changed(color):
 	draw_color = color
+
 
 func _on_Button_pressed():
 	is_erasing = !is_erasing
@@ -47,17 +55,15 @@ func export_as_svg():
 			else:
 				data.append("0")
 
-	# тут вставить в SVG формат, либо просто сохранить в сжатом бинарном файле
+	# Here need an SVG format, or just compressed binary file
 
-
-var svg_cache := {}
 
 func get_mask_from_svg(id: String) -> Image:
 	if svg_cache.has(id):
 		return svg_cache[id]
-	var image := convert_svg_to_bitmap(id)
-	svg_cache[id] = image
-	return image
+	var mask_image := convert_svg_to_bitmap(id)
+	svg_cache[id] = mask_image
+	return mask_image
 
 
 func convert_svg_to_bitmap(id: String) -> Image: # TODO

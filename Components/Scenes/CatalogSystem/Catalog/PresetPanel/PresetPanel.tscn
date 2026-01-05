@@ -1,19 +1,64 @@
-[gd_scene load_steps=2 format=3 uid="uid://glyejdf6w1kn"]
+[gd_scene load_steps=5 format=3 uid="uid://glyejdf6w1kn"]
 
 [ext_resource type="Script" uid="uid://ur6asyo8x0t0" path="res://Components/Scenes/CatalogSystem/Catalog/PresetPanel/preset_panel.gd" id="1_iie1t"]
 
-[node name="Preset" type="Control"]
-custom_minimum_size = Vector2(1920, 1080)
+[sub_resource type="Animation" id="Animation_6oxb3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(60, 60)]
+}
+
+[sub_resource type="Animation" id="Animation_0nbq0"]
+resource_name = "show_panel"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(60, 1080), Vector2(60, 60)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6oxb3"]
+_data = {
+&"RESET": SubResource("Animation_6oxb3"),
+&"show_panel": SubResource("Animation_0nbq0")
+}
+
+[node name="PresetPanel" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.031000001
+anchor_top = 0.056
+anchor_right = 0.96900004
+anchor_bottom = 0.94400007
+offset_left = 0.47999573
+offset_top = -0.48000336
+offset_right = -0.48010254
+offset_bottom = 0.4800415
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_iie1t")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_6oxb3")
+}
+
 [node name="Panel" type="Panel" parent="."]
-custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,8 +66,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SongUI" type="Control" parent="."]
-visible = false
+[node name="SongUI" type="Control" parent="Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,127 +74,102 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ModeLbl" type="Label" parent="SongUI"]
-custom_minimum_size = Vector2(300, 100)
+[node name="SongNameLbl" type="Label" parent="Panel/SongUI"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.448
-anchor_top = 0.231
-anchor_right = 0.63
-anchor_bottom = 0.324
-offset_left = -0.160034
-offset_top = 0.519989
-offset_right = 0.399902
-offset_bottom = 0.0799866
+anchor_left = 0.27800003
+anchor_top = 0.046000004
+anchor_right = 0.72200006
+anchor_bottom = 0.15
+offset_left = -0.40005493
+offset_top = 0.31999588
+offset_right = 0.39990234
+offset_bottom = 0.4799652
+theme_override_font_sizes/font_size = 42
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="SongIcon" type="TextureRect" parent="Panel/SongUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.028
+anchor_top = 0.156
+anchor_right = 0.404
+anchor_bottom = 0.86200005
+offset_left = -0.40000153
+offset_top = 0.23999023
+offset_right = 0.79992676
+offset_bottom = 0.4798584
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/SongUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.41700003
+anchor_top = 0.22900002
+anchor_right = 0.97200006
+anchor_bottom = 0.646
+offset_left = -0.6000366
+offset_top = 0.1599884
+offset_right = 0.39990234
+offset_bottom = -0.16009521
+theme_override_constants/separation = 50
+
+[node name="GameModeHbox" type="HBoxContainer" parent="Panel/SongUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="ModeLbl" type="Label" parent="Panel/SongUI/VBoxContainer/GameModeHbox"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Game Mode"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="ModeCheckBox" type="OptionButton" parent="SongUI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.656
-anchor_top = 0.231
-anchor_right = 0.969
-anchor_bottom = 0.324
-offset_left = 0.47998
-offset_top = 0.519989
-offset_right = -0.480103
-offset_bottom = 0.0799866
+[node name="ModeCheckBox" type="OptionButton" parent="Panel/SongUI/VBoxContainer/GameModeHbox"]
+layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="VideoLbl" type="Label" parent="SongUI"]
+[node name="InstrumentalHbox" type="HBoxContainer" parent="Panel/SongUI/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="InstrumentalLbl" type="Label" parent="Panel/SongUI/VBoxContainer/InstrumentalHbox"]
 custom_minimum_size = Vector2(300, 100)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.448
-anchor_top = 0.37
-anchor_right = 0.63
-anchor_bottom = 0.463
-offset_left = -0.160034
-offset_top = 0.399994
-offset_right = 0.399902
-offset_bottom = -0.0400085
-theme_override_font_sizes/font_size = 42
-text = "Video"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-
-[node name="VideoCheckBox" type="OptionButton" parent="SongUI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.656
-anchor_top = 0.37
-anchor_right = 0.969
-anchor_bottom = 0.463
-offset_left = 0.47998
-offset_top = 0.399994
-offset_right = -0.480103
-offset_bottom = -0.0400391
-
-[node name="InstrumentalLbl" type="Label" parent="SongUI"]
-custom_minimum_size = Vector2(300, 100)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.448
-anchor_top = 0.509
-anchor_right = 0.63
-anchor_bottom = 0.603
-offset_left = -0.160034
-offset_top = 0.279968
-offset_right = 0.399902
-offset_bottom = -1.23999
+layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Instrumental"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="InstrumentalCheckBox" type="OptionButton" parent="SongUI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.656
-anchor_top = 0.509
-anchor_right = 0.969
-anchor_bottom = 0.602
-offset_left = 0.47998
-offset_top = 0.279968
-offset_right = -0.480103
-offset_bottom = -0.160034
+[node name="InstrumentalCheckBox" type="OptionButton" parent="Panel/SongUI/VBoxContainer/InstrumentalHbox"]
+layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="AcapellaLbl" type="Label" parent="SongUI"]
+[node name="AcapellaHbox" type="HBoxContainer" parent="Panel/SongUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="AcapellaLbl" type="Label" parent="Panel/SongUI/VBoxContainer/AcapellaHbox"]
 custom_minimum_size = Vector2(300, 100)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.448
-anchor_top = 0.648
-anchor_right = 0.63
-anchor_bottom = 0.741
-offset_left = -0.160034
-offset_top = 0.159973
-offset_right = 0.399902
-offset_bottom = -0.279968
+layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Acapella"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="AcapellaCheckBox" type="OptionButton" parent="SongUI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.655
-anchor_top = 0.648
-anchor_right = 0.969
-anchor_bottom = 0.741
-offset_left = 2.3999
-offset_top = 0.159973
-offset_right = -0.480103
-offset_bottom = -0.28009
+[node name="AcapellaCheckBox" type="OptionButton" parent="Panel/SongUI/VBoxContainer/AcapellaHbox"]
+layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="PlaylistUI" type="Control" parent="."]
+[node name="PlaylistUI" type="Control" parent="Panel"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -159,137 +178,108 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PlaylistLbl" type="Label" parent="PlaylistUI"]
-custom_minimum_size = Vector2(300, 100)
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/PlaylistUI"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 200.0
+offset_right = 778.0
+offset_bottom = 878.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel/PlaylistUI/ScrollContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/PlaylistUI"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.448
-anchor_top = 0.231
-anchor_right = 0.63
-anchor_bottom = 0.324
-offset_left = -0.160034
-offset_top = 0.519989
-offset_right = 0.399902
-offset_bottom = 0.0799866
+anchor_left = 0.41700003
+anchor_top = 0.22900002
+anchor_right = 0.41700003
+anchor_bottom = 0.22900002
+offset_left = -0.6000366
+offset_top = 0.1599884
+offset_right = 999.39996
+offset_bottom = 550.16
+theme_override_constants/separation = 50
+
+[node name="PlaylistHbox" type="HBoxContainer" parent="Panel/PlaylistUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="PlaylistLbl" type="Label" parent="Panel/PlaylistUI/VBoxContainer/PlaylistHbox"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Playlist"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="PlaylistCheckBox" type="OptionButton" parent="PlaylistUI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.656
-anchor_top = 0.231
-anchor_right = 0.969
-anchor_bottom = 0.324
-offset_left = 0.47998
-offset_top = 0.519989
-offset_right = -0.480103
-offset_bottom = 0.0799866
+[node name="PlaylistCheckBox" type="OptionButton" parent="Panel/PlaylistUI/VBoxContainer/PlaylistHbox"]
+layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="ModeLbl" type="Label" parent="PlaylistUI"]
+[node name="ModeHbox" type="HBoxContainer" parent="Panel/PlaylistUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="ModeLbl" type="Label" parent="Panel/PlaylistUI/VBoxContainer/ModeHbox"]
 custom_minimum_size = Vector2(300, 100)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.448
-anchor_top = 0.231
-anchor_right = 0.63
-anchor_bottom = 0.324
-offset_left = -0.160034
-offset_top = 150.52
-offset_right = 0.399902
-offset_bottom = 150.08
+layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Game Mode"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="ModeCheckBox" type="OptionButton" parent="PlaylistUI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.656
-anchor_top = 0.231
-anchor_right = 0.969
-anchor_bottom = 0.324
-offset_left = 0.47998
-offset_top = 150.52
-offset_right = -0.480103
-offset_bottom = 150.08
+[node name="ModeCheckBox" type="OptionButton" parent="Panel/PlaylistUI/VBoxContainer/ModeHbox"]
+layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="RepeatLbl" type="Label" parent="PlaylistUI"]
+[node name="RepeatHbox" type="HBoxContainer" parent="Panel/PlaylistUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="RepeatLbl" type="Label" parent="Panel/PlaylistUI/VBoxContainer/RepeatHbox"]
 custom_minimum_size = Vector2(300, 100)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.448
-anchor_top = 0.37
-anchor_right = 0.63
-anchor_bottom = 0.463
-offset_left = -0.160034
-offset_top = 150.4
-offset_right = 0.399902
-offset_bottom = 149.96
+layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Repeat"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="RepeatCheckBox" type="OptionButton" parent="PlaylistUI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.656
-anchor_top = 0.37
-anchor_right = 0.969
-anchor_bottom = 0.463
-offset_left = 0.47998
-offset_top = 150.4
-offset_right = -0.480103
-offset_bottom = 149.96
+[node name="RepeatCheckBox" type="OptionButton" parent="Panel/PlaylistUI/VBoxContainer/RepeatHbox"]
+layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="ShuffleLbl" type="Label" parent="PlaylistUI"]
+[node name="ShuffleHbox" type="HBoxContainer" parent="Panel/PlaylistUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="ShuffleLbl" type="Label" parent="Panel/PlaylistUI/VBoxContainer/ShuffleHbox"]
 custom_minimum_size = Vector2(300, 100)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.448
-anchor_top = 0.509
-anchor_right = 0.63
-anchor_bottom = 0.603
-offset_left = -0.160034
-offset_top = 150.28
-offset_right = 0.399902
-offset_bottom = 148.76
+layout_mode = 2
 theme_override_font_sizes/font_size = 42
 text = "Shuffle"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="ShuffleCheckBox" type="OptionButton" parent="PlaylistUI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.656
-anchor_top = 0.509
-anchor_right = 0.969
-anchor_bottom = 0.602
-offset_left = 0.47998
-offset_top = 150.28
-offset_right = -0.480103
-offset_bottom = 149.84
+[node name="ShuffleCheckBox" type="OptionButton" parent="Panel/PlaylistUI/VBoxContainer/ShuffleHbox"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="BackBtn" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.771
 anchor_top = 0.889
-anchor_right = 0.875
-anchor_bottom = 0.981
-offset_left = -0.320068
-offset_top = -0.120056
-offset_right = -0.00012207
-offset_bottom = 0.519897
+anchor_right = 0.771
+anchor_bottom = 0.88900006
+offset_left = -5.800049
+offset_top = -3.4400024
+offset_right = 194.19983
+offset_bottom = 96.559875
 theme_override_font_sizes/font_size = 24
 text = "Decline"
 
@@ -298,44 +288,14 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.885
 anchor_top = 0.889
-anchor_right = 0.99
-anchor_bottom = 0.981
-offset_left = 0.799927
-offset_top = -0.120056
-offset_right = -0.800171
-offset_bottom = 0.519897
+anchor_right = 0.88500005
+anchor_bottom = 0.88900006
+offset_left = -4.6800537
+offset_top = -3.4400024
+offset_right = 195.31982
+offset_bottom = 96.559875
 theme_override_font_sizes/font_size = 24
 text = "Accept"
-
-[node name="SongNameLbl" type="Label" parent="."]
-custom_minimum_size = Vector2(600, 100)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.292
-anchor_top = 0.046
-anchor_right = 0.708
-anchor_bottom = 0.139
-offset_left = -0.640076
-offset_top = 0.319996
-offset_right = 0.640015
-offset_bottom = -0.119995
-theme_override_font_sizes/font_size = 42
-text = "Name"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-
-[node name="SongIcon" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(512, 0)
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 134.0
-offset_top = 201.0
-offset_right = -1108.0
-offset_bottom = -201.0
-expand_mode = 1
 
 [connection signal="pressed" from="BackBtn" to="." method="_on_back_btn_pressed"]
 [connection signal="pressed" from="StartBtn" to="." method="_on_start_btn_pressed"]

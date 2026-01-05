@@ -396,6 +396,7 @@ layout_mode = 2
 text = "FM"
 
 [node name="AdditionalSettingsPanel" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.031000001

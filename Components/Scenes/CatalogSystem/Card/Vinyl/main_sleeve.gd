@@ -140,11 +140,11 @@ func apply_texture_to(node: MeshInstance3D, texture_path: String) -> void:
 func reset_state():
 	scale = Vector3.ONE
 	rotation = Vector3.ZERO
-	# Другие параметры сброса
+	# Other properties to reset
 
 
 func prepare_for_storage():
-	# Уменьшаем детализацию для объектов в хранилище
+	# Reduce detail or disable collisions before storing the object
 	pass#$CollisionShape.disabled = true
 
 

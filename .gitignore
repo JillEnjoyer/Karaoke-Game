@@ -6,6 +6,7 @@
 *.import
 *.uid
 *.mp3
+*.ogg
 
 # Ignore settings configs, that are unique for every pc
 .settings/

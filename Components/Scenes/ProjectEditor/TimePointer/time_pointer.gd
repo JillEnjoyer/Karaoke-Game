@@ -20,9 +20,9 @@ var pointer_position_in_px := 0.0
 var pointer_position_in_sec := 0.0
 
 # Tunables
-const EDGE_ZONE := 0.05                # 5% on each side = zone where autoscroll applies
-const BASE_SCROLL_SPEED := 600.0       # px per second at strength == 1
-const NUDGE_FACTOR := 1.0              # how strongly pointer itself is nudged away from edge
+const EDGE_ZONE := 0.02 # 5% on each side = zone where autoscroll applies
+const BASE_SCROLL_SPEED := 600.0 # px per second at strength == 1
+const NUDGE_FACTOR := 1.0 # how strongly pointer itself is nudged away from edge
 
 
 func _ready():
@@ -33,19 +33,27 @@ func _ready():
 ## position_in_percent expected in 0..1
 ## returns 0..1 where 1 => strongest
 func get_moving_strength_multiplier(position_in_percent: float) -> float:
-	# uses a small Gaussian inside EDGE_ZONE: peak is slightly away from the very edge,
-	# so we get a stronger nudge and a sharper drop to zero at the zone boundary.
+	var t: float = 0.0
+
+	# Edge zones
 	if position_in_percent <= EDGE_ZONE:
-		var t = clamp(position_in_percent / EDGE_ZONE, 0.0, 1.0) # 0 @ edge, 1 @ zone boundary
-		var peak = 0.15    # peak location inside normalized zone (0..1)
-		var sigma = 0.12   # width of the peak (smaller -> sharper)
-		return clamp(exp(-pow(t - peak, 2) / (2.0 * sigma * sigma)), 0.0, 1.0)
-	if position_in_percent >= 1.0 - EDGE_ZONE:
-		var t = clamp((1.0 - position_in_percent) / EDGE_ZONE, 0.0, 1.0)
-		var peak = 0.15
-		var sigma = 0.12
-		return clamp(exp(-pow(t - peak, 2) / (2.0 * sigma * sigma)), 0.0, 1.0)
-	return 0.0
+		t = clamp(position_in_percent / EDGE_ZONE, 0.3, 1.0) # 0 @ edge, 1 @ zone boundary
+	elif position_in_percent >= 1.0 - EDGE_ZONE:
+		t = clamp((1.0 - position_in_percent) / EDGE_ZONE, 0.3, 1.0)
+	else:
+		return 0.0
+
+	# Settings for your curve
+	var peak = 0.15
+	var sigma = 0.12
+	var gaussian = exp(-pow(t - peak, 2) / (2.0 * sigma * sigma))
+
+	# When t approaches 0 (the very edge), the result will approach 1.0
+	var linear_exit = 1.0 - (t / 0.33) ## last third
+
+	var result = max(gaussian, clamp(linear_exit, 0.05, 1.0))
+
+	return clamp(result, 0.0, 1.0)
 
 
 func get_moving_strength_custom(position_in_percent: float) -> float:
@@ -70,7 +78,7 @@ func _on_drag_btn_gui_input(event: InputEvent) -> void:
 		else:
 			is_dragging = false
 			if not is_moving:
-				move_pointer(true)
+				_move_pointer(true)
 
 	elif is_dragging and event is InputEventMouseMotion:
 		var min_x = 0.0
@@ -94,14 +102,14 @@ func _on_drag_btn_gui_input(event: InputEvent) -> void:
 
 		# start movement coroutine if not running
 		if not is_moving:
-			move_pointer(false)
+			_move_pointer(false)
 
 
 func signal_move_timeline(strength: float) -> void:
 	emit_signal("move_timeline", strength)
 
 
-func move_pointer(repeat: bool = false) -> void:
+func _move_pointer(repeat: bool = false) -> void:
 	if is_moving:
 		return
 	is_moving = true
@@ -123,18 +131,26 @@ func move_pointer(repeat: bool = false) -> void:
 		pointer_position_in_percent = center_x / timeline_panel.size.x
 		pointer_position_in_px = center_x
 
-		var moving_strength = get_moving_strength_multiplier(pointer_position_in_percent)
-		if moving_strength <= 0.0:
-			break
+		var moving_strength = 0.0#get_moving_strength_multiplier(pointer_position_in_percent)
+		#if moving_strength <= 0.0:
+		#	break
 
-		var delta_px = moving_strength * BASE_SCROLL_SPEED * dt
+		var delta_px = 5.0#moving_strength * BASE_SCROLL_SPEED * dt
 
-		if pointer_position_in_percent <= 0.5:
-			position.x = clamp(position.x + delta_px * NUDGE_FACTOR, 0.0 - size.x / 2, timeline_panel.size.x - size.x / 2)
-			emit_signal("move_timeline", -round(delta_px))
+		if is_dragging:
+			if pointer_position_in_percent <= 0.01:
+				#position.x = clamp(position.x + delta_px * NUDGE_FACTOR, 0.0 - size.x / 2, timeline_panel.size.x - size.x / 2)
+				_move_timeline(-round(delta_px))
+			elif pointer_position_in_percent >= 0.99:
+				#position.x = clamp(position.x - delta_px * NUDGE_FACTOR, 0.0 - size.x / 2, timeline_panel.size.x - size.x / 2)
+				_move_timeline(round(delta_px))
 		else:
-			position.x = clamp(position.x - delta_px * NUDGE_FACTOR, 0.0 - size.x / 2, timeline_panel.size.x - size.x / 2)
-			emit_signal("move_timeline", round(delta_px))
+			if pointer_position_in_percent <= 0.01:
+				position.x = clamp(position.x + delta_px * NUDGE_FACTOR, 0.0 - size.x / 2, timeline_panel.size.x - size.x / 2)
+				_move_timeline(-round(delta_px))
+			elif pointer_position_in_percent >= 0.99:
+				position.x = clamp(position.x - delta_px * NUDGE_FACTOR, 0.0 - size.x / 2, timeline_panel.size.x - size.x / 2)
+				_move_timeline(round(delta_px))
 
 		center_x = position.x + size.x / 2
 		pointer_position_in_percent = center_x / timeline_panel.size.x
@@ -146,3 +162,7 @@ func move_pointer(repeat: bool = false) -> void:
 			break
 
 	is_moving = false
+
+
+func _move_timeline(delta: int) -> void:
+	emit_signal("move_timeline", delta)

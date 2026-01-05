@@ -45,6 +45,23 @@ vertical_scroll_mode = 3
 
 [node name="VBoxTimelines" type="VBoxContainer" parent="HSplitContainer/TimelinePanel/ScrollContainer"]
 layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="VBoxVideo" type="VBoxContainer" parent="HSplitContainer/TimelinePanel/ScrollContainer/VBoxTimelines"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+
+[node name="VBoxInstrumental" type="VBoxContainer" parent="HSplitContainer/TimelinePanel/ScrollContainer/VBoxTimelines"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+
+[node name="VBoxAcapella" type="VBoxContainer" parent="HSplitContainer/TimelinePanel/ScrollContainer/VBoxTimelines"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+
+[node name="VBoxSubtitles" type="VBoxContainer" parent="HSplitContainer/TimelinePanel/ScrollContainer/VBoxTimelines"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
 
 [node name="TimeBar" type="Control" parent="HSplitContainer/TimelinePanel"]
 layout_mode = 1

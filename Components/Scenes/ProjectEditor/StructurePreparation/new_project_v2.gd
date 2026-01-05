@@ -1,6 +1,6 @@
 extends Control
 
-var project_panel = UIManager.get_desired_node("new_project_panel")
+@onready var project_panel = UIManager.get_desired_node("new_project_panel")
 
 enum LEVELS {
 	FRANCHISE,
@@ -15,7 +15,7 @@ func _ready() -> void:
 	var end := false
 	while not end:
 		var panel = show_panel()
-		var step = await panel.panel_closed # panel_closed должен быть сигналом с аргументом: +1 или -1
+		var step = await panel.panel_closed # panel_closed should be
 		remove_child(panel)
 		panel.queue_free()
 		current_state += step
@@ -28,6 +28,7 @@ func _ready() -> void:
 func show_panel() -> Object:
 	project_panel.instantiate()
 	project_panel.setup_panel(current_state)
+	project_panel.connect("step_change_requested", Callable(self, ""))
 	add_child(project_panel)
 	return project_panel
 
