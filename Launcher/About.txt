@@ -1,0 +1,9 @@
+Launcher is the main Godot block that is connected with EXE file.
+It should have special tools to connect with VocaTool.exe toolbox to have opportunity to decrypt other game related files.
+
+Every file besides launcher has name: DLC(N).pck, where each pck is only an archive that extends the file system of whole project (+ having a entrypoint).
+Reason for this is:
+1. Possibility of unlicensed dlc's that will expand gameplay scope
+2. Security reasons. For a hacker it is much harder to decrypt archives if they are encrypted using different encryption keys and decrypting methods
+3. Easier to maintain and update modules that have not much things in common
+4. Stability reason. If dlc's pck is faulty, it would be possible to just remove it without any problems.

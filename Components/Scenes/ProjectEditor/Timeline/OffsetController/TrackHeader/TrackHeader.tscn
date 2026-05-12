@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://comysa08wa2ci"]
+
+[node name="TrackHeader" type="Control"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 3
+anchor_right = 0.016
+anchor_bottom = 0.093
+offset_right = -0.7200012
+offset_bottom = -0.44000244
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBox" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(30, 100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Icon" type="TextureRect" parent="HBox"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+stretch_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HBox"]
+layout_mode = 2
+
+[node name="NameLbl" type="Label" parent="HBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="TypeLbl" type="Label" parent="HBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24

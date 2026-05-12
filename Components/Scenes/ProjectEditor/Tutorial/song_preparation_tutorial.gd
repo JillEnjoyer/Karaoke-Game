@@ -1,7 +1,7 @@
 #tutorial.gd
 extends Control
 
-@onready var popup = UIManager.show_ui("popup", self)
+@onready var popup = UIManager.show_ui("Popup", self)
 
 func _ready() -> void:
 	call_deferred("_start_tutorial_async")

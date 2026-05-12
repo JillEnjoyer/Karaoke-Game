@@ -1,18 +1,18 @@
 extends Control
 
 @onready var data_dict = {
-	#"resolution": [1920, 1080],
-	"window_mode": "fullscreen",
+	"resolution": [1920, 1080],
+	"window_mode": "Fullscreen",
 	"framerate": 60,
 	"v-sync": true,
-	"catalog_path": "",
-	"catalog_style": "2d" # 2d/3d
+	"catalog_path": ""
+	#"style": "2d" # 2d/3d
 }
 
 @onready var object_links = {
-	#"resolution": $ResolutionOptBtn,
+	"resolution": $VBoxContainer/Resolution/ResolutionOptBtn,
 	"window_mode": $VBoxContainer/WindowMode/WindowModeOptBtn,
-	"framerate": $VBoxContainer/Framerate/FrametimeOptBtn,
+	"framerate": $VBoxContainer/Framerate/FramerateOptBtn,
 	"v-sync": $"VBoxContainer/VSync/V-SyncLbl/V-SyncCB",
 	"catalog_path": $VBoxContainer/CatalogPath/CatalogPathLE
 }
@@ -47,6 +47,9 @@ func update_menu() -> void:
 			# FPS or other int
 			elif typeof(data_value) == TYPE_INT:
 				string_value = str(data_value)
+			
+			elif typeof(data_value) == TYPE_STRING:
+				string_value = data_value
 
 			# fallback
 			else:
@@ -73,6 +76,8 @@ func update_menu() -> void:
 		elif ui_element is LineEdit:
 			var data_value = data_dict[key]
 			ui_element.text = str(data_value)
+
+			Debugger.info("Set LineEdit text for key: " + key + " to value: " + str(data_value))
 		
 		elif ui_element is Button:
 			var data_value = data_dict[key]
@@ -96,11 +101,10 @@ func _on_additional_btn_pressed() -> void:
 
 func _on_back_btn_pressed() -> void:
 	UIManager.cleanup_tree()
-	UIManager.show_ui("main_menu")
+	UIManager.show_ui("MainMenu")
 
 
 func _on_apply_settings_btn_pressed() -> void:
-	#data_dict # for save
 	for key in data_dict:
 		Debugger.info("Key: " + key + "Value: " + str(data_dict[key]))
 		PreferencesData.set_data(key, data_dict[key])
@@ -109,11 +113,17 @@ func _on_apply_settings_btn_pressed() -> void:
 
 
 func change_game_parameter(parameter, parameter_value) -> void:
+	Debugger.debug("Changing parameter: " + parameter + " to value: " + str(parameter_value))
+	
 	if parameter == "resolution":
-		Debugger.info(type_string(typeof(parameter_value)))
-		get_window().set_size(Vector2i(int(parameter_value[0]), int(parameter_value[1])))# = Vector2(int(parameter_value[0]), int(parameter_value[1]))
-		#DisplayServer.window_set_size(Vector2i(int(parameter_value[0]), int(parameter_value[1])))
-		Debugger.info("resolution changed")
+		Debugger.info("resolution" + type_string(typeof(parameter_value)) + " value: " + str(parameter_value))
+		get_window().set_deferred("size", Vector2i(int(parameter_value[0]), int(parameter_value[1])))
+
+	elif parameter == "window_mode":
+		if parameter_value == "Fullscreen":
+			get_window().set_deferred("mode", Window.MODE_FULLSCREEN)
+		elif parameter_value == "Windowed":
+			get_window().set_deferred("mode", Window.MODE_WINDOWED)
 
 	elif parameter == "framerate":
 		ProjectSettings.set_setting("engine/core/target_fps", int(parameter_value))
@@ -129,26 +139,22 @@ func change_game_parameter(parameter, parameter_value) -> void:
 		
 
 func _on_resolution_opt_btn_item_selected(index: int) -> void:
-	pass
-	"""
 	var parts = object_links["resolution"].get_item_text(index).split("x")
 	if parts.size() == 2:
 		data_dict["resolution"] = [int(parts[0]), int(parts[1])]
-	
-	Debugger.info(str(data_dict["resolution"]))"""
 
 
 func _on_window_mode_opt_btn_item_selected(index: int) -> void:
+	data_dict["window_mode"] = object_links["window_mode"].get_item_text(index)
+	Debugger.debug(str(data_dict["window_mode"]))
+
+
+func _on_framerate_opt_btn_item_selected(index: int) -> void:
 	data_dict["framerate"] = int(object_links["framerate"].get_item_text(index))
-	Debugger.debug(data_dict["framerate"])
-
-
-func _on_frametime_opt_btn_item_selected(index: int) -> void:
-	data_dict["v_sync"] = object_links["v-sync"].button_pressed
 
 
 func _on_v_sync_cb_toggled(toggled_on: bool) -> void:
-	data_dict["v_sync"] = toggled_on
+	data_dict["v-sync"] = toggled_on
 
 
 func _on_catalog_path_le_text_changed(new_text: String) -> void:

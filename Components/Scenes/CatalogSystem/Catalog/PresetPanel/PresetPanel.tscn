@@ -169,6 +169,23 @@ autowrap_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="RoleHbox" type="HBoxContainer" parent="Panel/SongUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="RoleLbl" type="Label" parent="Panel/SongUI/VBoxContainer/RoleHbox"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Role Mode"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RoleCheckBox" type="OptionButton" parent="Panel/SongUI/VBoxContainer/RoleHbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="PlaylistUI" type="Control" parent="Panel"]
 visible = false
 layout_mode = 1

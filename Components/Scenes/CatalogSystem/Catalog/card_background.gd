@@ -41,6 +41,8 @@ func hide_texture() -> void:
 
 ## Highlight (video preview)
 func show_highlight(song_path: String) -> void:
+	media_player.playback_manager.wipe_managers()
+
 	if song_path == "": return
 	Debugger.debug("song_path: " + song_path)
 
@@ -48,31 +50,30 @@ func show_highlight(song_path: String) -> void:
 	var current_id = highlight_token
 
 	await get_tree().create_timer(2.5).timeout
-	
+
 	# If for that time ID has changed — means that song already changed
 	if current_id != highlight_token:
 		return
-
+	
 	config_path = song_path.path_join("config.json")
-
 	if not FileAccess.file_exists(config_path):
 		printerr("No Highlight available at: ", config_path)
 		return
-
 	# Read and parse ONLY IF timer sucessfully ended
 	var data = FileAccess.get_file_as_string(config_path)
-	var parsed_data = JSON.parse_string(data)
 
-	if parsed_data == null:
-		Debugger.error("Failed to parse JSON: " + config_path)
+	var parsed_data = JSON.parse_string(data)
+	if parsed_data == null or not parsed_data.has("highlights"):
+		Debugger.error("Failed to parse JSON and/or highlights are missing: " + config_path)
 		return
 
 	animation_player.play("show_media_player")
 	Debugger.debug("Highlight: " + str(parsed_data["highlights"]))
 	Debugger.debug("Whole parsed data: " + str(parsed_data))
-	media_player.highlight_init(parsed_data["highlights"], song_path)
+	media_player.highlight_init(parsed_data["highlights"], song_path, true)
+
+
 func hide_highlight() -> void:
 	highlight_token += 1 # interrupting potential highlight await
-	media_player.wipe_managers()
 	animation_player.play_backwards("show_media_player")
-	# Need to also call media_player.stop() "if" video is already playing
+	media_player.playback_manager.wipe_managers()

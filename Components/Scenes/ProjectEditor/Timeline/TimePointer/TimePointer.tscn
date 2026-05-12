@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://cc6x5ow7djqim"]
+
+[ext_resource type="Script" uid="uid://dm7qnt8ild1wv" path="res://Components/Scenes/ProjectEditor/Timeline/TimePointer/time_pointer.gd" id="1_5mgs4"]
+
+[node name="TimePointer" type="Control"]
+layout_mode = 3
+anchor_bottom = 0.296
+offset_right = 200.0
+offset_bottom = 0.32000732
+mouse_filter = 2
+script = ExtResource("1_5mgs4")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0.560784)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.49
+anchor_right = 0.49
+anchor_bottom = 1.0
+offset_right = 4.0
+grow_vertical = 2
+color = Color(1, 1, 0, 1)
+
+[node name="DragBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_bottom = 15.0
+
+[connection signal="button_down" from="DragBtn" to="." method="_on_drag_btn_button_down"]

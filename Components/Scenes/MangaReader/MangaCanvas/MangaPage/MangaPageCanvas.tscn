@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctvnshwvi2w57"]
+
+[ext_resource type="Script" uid="uid://cjdljms0cq4yy" path="res://Components/Scenes/MangaReader/MangaCanvas/MangaPage/manga_page_canvas.gd" id="1_sprh6"]
+
+[node name="MangaPageCanvas" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sprh6")

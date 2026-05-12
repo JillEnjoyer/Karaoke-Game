@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw87ndxelgy2d"]
+
+[ext_resource type="Script" uid="uid://cjifn1r7a3dkr" path="res://Components/Scenes/PlayerScene/PlayerScene/Modules/playlist_manager.gd" id="1_pyger"]
+
+[node name="PlaylistManager" type="Node"]
+script = ExtResource("1_pyger")

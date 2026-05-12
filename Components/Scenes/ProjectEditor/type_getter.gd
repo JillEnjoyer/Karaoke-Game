@@ -1,5 +1,4 @@
 extends Node
-
 class_name TypeGetter
 
 const EXTENSION_TYPES: Dictionary = {
@@ -8,7 +7,7 @@ const EXTENSION_TYPES: Dictionary = {
 	"image": ["png", "jpg", "jpeg", "gif", "bmp"]
 }
 
-func get_file_type(path: String) -> String:
+static func get_file_type(path: String) -> String:
 	var extension = path.get_extension().to_lower()
 	for type in EXTENSION_TYPES.keys():
 		if extension in EXTENSION_TYPES[type]:

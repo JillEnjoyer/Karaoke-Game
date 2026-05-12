@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfn5wxdejq08f"]
+
+[ext_resource type="Script" uid="uid://cg2ml2dit4dpi" path="res://Components/Scenes/ProjectEditor/MediaPool/media_pool.gd" id="1_advtc"]
+
+[node name="MediaPool" type="Control"]
+layout_mode = 3
+anchor_right = 0.266
+anchor_bottom = 0.66700006
+offset_bottom = -0.3600464
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_advtc")
+
+[node name="ScrollContainerFM" type="ScrollContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_bottom = 6.1035156e-05
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainerFM"]
+custom_minimum_size = Vector2(320, 70)
+layout_mode = 2
+
+[node name="ScrollContainerCI" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 6.1035156e-05
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainerCI"]
+custom_minimum_size = Vector2(320, 70)
+layout_mode = 2

@@ -1,0 +1,6 @@
+DLC2 is expansion for expansion "DLC1" that adds only few more models:
+	1. Ashley Graham ("Friend and almost collegue")
+	2. Claire Redfield ("Wife")
+	3. Sherry Birkin (friend and child that was "adopted" by him and Claire)
+
+As always, it adds some minigames, event, voicelines, reaction, interests etc.

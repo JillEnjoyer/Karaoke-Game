@@ -8,7 +8,7 @@ extends Control
 
 
 func _ready() -> void:
-	pass
+	pass#ui.connect_media_player(media_player)
 
 
 func import_playlist(input_data: Dictionary, imported_playlist: Array) -> void:

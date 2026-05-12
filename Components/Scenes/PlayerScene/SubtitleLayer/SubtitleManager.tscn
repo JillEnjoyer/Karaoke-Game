@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://rl20x4sogyk"]
 
 [ext_resource type="Script" uid="uid://baix7lsbohxj0" path="res://Components/Scenes/PlayerScene/SubtitleLayer/subtitle_manager.gd" id="1_0q5nd"]
-[ext_resource type="PackedScene" uid="uid://clgcgclwhoo1b" path="res://Components/Scenes/PlayerScene/SubtitleLayer/Components/word_jumper.tscn" id="2_7xe5j"]
+[ext_resource type="PackedScene" uid="uid://clgcgclwhoo1b" path="res://Components/Scenes/PlayerScene/SubtitleLayer/Components/WordJumper.tscn" id="2_7xe5j"]
 
 [node name="SubtitleManager" type="Control"]
 layout_mode = 3

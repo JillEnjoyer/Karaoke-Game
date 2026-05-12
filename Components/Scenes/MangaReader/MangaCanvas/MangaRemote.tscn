@@ -1,0 +1,114 @@
+[gd_scene load_steps=2 format=3 uid="uid://dilafplx8wpnv"]
+
+[ext_resource type="Script" uid="uid://cplf7sokh15lu" path="res://Components/Scenes/MangaReader/MangaCanvas/manga_remote.gd" id="1_w7fni"]
+
+[node name="MangaRemote" type="Control"]
+layout_mode = 3
+anchor_right = 0.25
+anchor_bottom = 0.102000006
+offset_bottom = -0.16000366
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w7fni")
+
+[node name="BackBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.002
+anchor_top = 0.007
+anchor_right = 0.17300001
+anchor_bottom = 0.98700005
+offset_left = -0.17920005
+offset_top = 0.061999977
+offset_right = -0.0008010864
+offset_bottom = 0.04197693
+theme_override_font_sizes/font_size = 32
+text = "Back"
+
+[node name="NextBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.82800007
+anchor_top = 0.015000001
+anchor_right = 0.99700004
+anchor_bottom = 0.9850001
+offset_left = -0.18881226
+offset_top = -0.00999999
+offset_right = 0.16882324
+offset_bottom = 0.009994507
+theme_override_font_sizes/font_size = 32
+text = "Next"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17400001
+anchor_top = 0.21800001
+anchor_right = 0.82600003
+anchor_bottom = 0.73600006
+offset_left = -0.21600342
+offset_top = 0.01999855
+offset_right = 0.2159729
+offset_bottom = 0.039993286
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="AtLbl" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "At"
+
+[node name="CurrentPageTE" type="TextEdit" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+placeholder_text = "000"
+context_menu_enabled = false
+emoji_menu_enabled = false
+scroll_fit_content_height = true
+scroll_fit_content_width = true
+
+[node name="OfLbl" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "of "
+
+[node name="PageAmountLbl" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "XXX"
+
+[node name="PagesLbl" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "pages"
+
+[node name="HideBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.76400006
+anchor_bottom = -0.76400006
+offset_top = 0.03993988
+offset_right = 84.0
+offset_bottom = 84.16218
+text = "Hide
+/
+Show"
+
+[node name="MangaBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17400001
+anchor_top = -0.763
+anchor_right = 0.17400001
+anchor_bottom = -0.763
+offset_left = -0.21600342
+offset_top = 0.052017212
+offset_right = 398.784
+offset_bottom = 84.05202
+text = "Open Manga in FM"
+
+[connection signal="pressed" from="BackBtn" to="." method="_on_back_btn_pressed"]
+[connection signal="pressed" from="NextBtn" to="." method="_on_next_btn_pressed"]
+[connection signal="text_changed" from="HBoxContainer/CurrentPageTE" to="." method="_on_current_page_te_text_changed"]
+[connection signal="pressed" from="HideBtn" to="." method="_on_hide_btn_pressed"]
+[connection signal="pressed" from="MangaBtn" to="." method="_on_manga_btn_pressed"]

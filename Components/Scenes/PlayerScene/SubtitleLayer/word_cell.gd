@@ -60,5 +60,5 @@ func import_data(data):
 """
 
 func get_text_texture(current_label: Label) -> Texture2D:
-	var texture_getter = UIManager.show_ui("texture_getter", self)
+	var texture_getter = UIManager.show_ui("TextureGetter", self)
 	return texture_getter.label_to_texture(current_label)

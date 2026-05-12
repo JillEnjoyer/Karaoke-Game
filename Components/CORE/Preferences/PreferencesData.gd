@@ -1,17 +1,16 @@
+## preferences_data.gd
 extends Node
 
-const config_path = "res://SaveData/Config.cfg" ## TODO: Change to user:/
-const user_data_path = "res://SaveData/UserData.cfg" ## TODO: Change to user:/
-const ext_path = { # In Release will be changed with a single exe file
+const config_path = "user://SaveData/Config.cfg"
+const user_data_path = "user://SaveData/UserData.cfg"
+const ext_path = {
+	"VocaTool": "res://Extensions/VocaTool.exe",
 	"ffmpeg": "res://Extensions/ffmpeg.exe",
-	"7z": "res://Extensions/7z.exe",
-	"qrGenerator": "res://Extensions/qrGenerator.exe",
-	"vosk_handler": "res://Extensions/Vosk_Handler_V1.2.exe",
+	"7z": "res://Extensions/7z.exe"
 }
 
 var BaseSettingsList = {
-	#"resolution": [1920, 1080], # Unsupported since Godot 4.2
-	"fullscreen": false,
+	"resolution": [1920, 1080],
 	"language": "ENG",
 	"window_mode": "Window", ## change to window
 	"framerate": 75,
@@ -25,7 +24,9 @@ var BaseSettingsList = {
 	#"catalog_style": "2d"
 	"style": "2d", # 2d/3d. Decides if you will have avaliable 3d surroundings or not: Catalog, host_room etc.
 	"local_webstreaming": false,
-	"webstreaming_default_port": 8080
+	"webstreaming_default_port": 8080,
+	"main_menu_highlights_enabled": true, ## Random by default
+	"main_menu_highlights": [] ## many paths where path = catalog_path + song_folder + "config.json"
 }
 var BaseUserData = {
 	"main_menu_tutorial_passed": false,
@@ -38,6 +39,8 @@ var BaseUserData = {
 
 var SettingsList = BaseSettingsList.duplicate()
 var UserData = BaseUserData.duplicate()
+
+## TODO: Create SaveV2 module that utilizes .tres files for saving/loading settings and user data
 
 
 func _ready() -> void:
@@ -52,6 +55,11 @@ func _ready() -> void:
 			Debugger.warning("Failed to load config. Rewriting with base settings.")
 			create_and_save_config()
 		else:
+			for key in BaseSettingsList.keys():
+				if loaded_settings["result"].has(key):
+					#UserData[key] = loaded_settings[key]
+					set_data(key, loaded_settings["result"][key], true)
+
 			update_settings_from_dictionary(loaded_settings["result"])
 
 	# UserData
@@ -65,8 +73,15 @@ func _ready() -> void:
 			Debugger.warning("Failed to load UserData. Rewriting with base user data.")
 			save_user_data()
 		else:
-			for key in loaded_user_data["result"].keys():
-				set_user_data(key, loaded_user_data["result"][key])
+			for key in BaseUserData.keys():
+				if loaded_user_data["result"].has(key):
+					#UserData[key] = loaded_data[key]
+					set_user_data(key, loaded_user_data["result"][key], true)
+
+
+func load_data(config_name: String) -> void:
+	## combines both config loading
+	pass
 
 
 func create_and_save_config() -> void:
@@ -78,7 +93,7 @@ func ensure_directories_exist(file_path: String) -> void:
 	var dir_path = file_path.get_base_dir()
 	var dir = DirAccess.open(dir_path)
 	if dir == null:
-		dir = DirAccess.open("res://")
+		dir = DirAccess.open("user://")
 		var err = dir.make_dir_recursive(dir_path)
 		if err == OK:
 			Debugger.info("Directory created: " + str(dir_path))
@@ -159,8 +174,8 @@ func get_data(setting: String):
 	return SettingsList.get(setting, null)
 
 ## Set "setting" value from SettingList
-func set_data(setting: String, value) -> void:
-	if SettingsList.has(setting):
+func set_data(setting: String, value, force_add: bool = false) -> void:
+	if force_add or SettingsList.has(setting):
 		SettingsList[setting] = value
 
 ## Get "setting" value from UserData
@@ -168,8 +183,8 @@ func get_user_data(key: String):
 	return UserData.get(key, null)
 
 ## Set "setting" value from UserData
-func set_user_data(key: String, value) -> void:
-	if UserData.has(key):
+func set_user_data(key: String, value, force_add: bool = false) -> void:
+	if force_add or UserData.has(key):
 		UserData[key] = value
 
 ## Returns path to desired extension

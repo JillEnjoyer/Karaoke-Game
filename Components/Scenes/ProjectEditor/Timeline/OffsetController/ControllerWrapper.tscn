@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://85u6n6tdsrhp"]
+
+[ext_resource type="Script" uid="uid://d1qvrdq857d6u" path="res://Components/Scenes/ProjectEditor/Timeline/OffsetController/controller_wrapper.gd" id="1_btdbh"]
+
+[node name="ControllerWrapper" type="Control"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 3
+anchor_right = 0.026
+anchor_bottom = 0.093
+offset_right = 0.07999802
+offset_bottom = -30.44001
+script = ExtResource("1_btdbh")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

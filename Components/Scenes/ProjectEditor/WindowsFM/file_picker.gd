@@ -2,9 +2,9 @@ extends Node
 class_name FilePicker
 
 var file_manager = FileManager.new()
-
 var file_array: PackedStringArray = []
 
+## Depends on user needs or platform, where the game is running (obviously Linux is not supporting WindowsFM)
 func open_file_picker(start_path: String = OS.get_executable_path().get_base_dir()) -> PackedStringArray:
 	var file_array: String = ""
 	if true:

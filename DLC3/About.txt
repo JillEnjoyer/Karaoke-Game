@@ -1,0 +1,13 @@
+DLC3 is completely different story (cause DLC2 Requires DLC1 to work properly - DLC3 Requires at least DLC0).
+It is an expansion that adds to multiplayer possibily to play new and fully detailed game - My vision of Dead by Daylight
+
+It would try to preserve:
+	1. low-mid graphics (possible to switch between bad->mid->good->laggy)
+	2. Same systems, but highly improved
+	3. Rebalance, updates, tweeks, new regimes (Not all killers and survs will be added - only interesting ones)
+	4. New chapter: RE Requiem Chapter with Leon-skin, Grace, Victor-Killer, Ashley-skin-Ada - Whole chapter gameplay should be killer based (whole mechanics)
+	5. New chapter: Uncharted Chapter with Nathan Drake, Sullivan-skin-Drake, Elena, Chloe-skin-Elena, Lazarevich
+	6. New concept - every killer should not only change power of model but also change the flow of match, changing goals and ways to win/lose
+	7. New MMR system - MMR as skill measurement, but not as lobby creator (everyone is playing with everyone but game would buff weak ones and nerf strong ones dinamically)
+	8. New Anticamp, Antitunneling, Antislug and etc. systems that would not ban it but make it highly unprofitable for killer (Fair play would buff him accordingly)
+	9. New Anticheat system "HHNet" aka "HiveHostNet" (Hive->Five)

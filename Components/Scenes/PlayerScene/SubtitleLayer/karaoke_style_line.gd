@@ -24,7 +24,7 @@ func _create_words(words: Array) -> void:
 	var space_size := 20
 	
 	for word_data in words:
-		var cell = UIManager.show_ui("word_cell", self)
+		var cell = UIManager.show_ui("WordCell", self)
 		cell.set_word(word_data["word"], word_data["style"])
 		
 		if current_x > 0 and current_x + cell.size.x > max_width:

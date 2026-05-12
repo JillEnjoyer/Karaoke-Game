@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=3 uid="uid://cwyicktejh7r1"]
+
+[ext_resource type="Script" uid="uid://de5lguiuj2ba5" path="res://Components/Scenes/MangaReader/MangaCanvas/manga_reader.gd" id="1_ne264"]
+[ext_resource type="Script" uid="uid://dtkrxh3k52nfj" path="res://Components/Scenes/MangaReader/MangaCanvas/manga_tcp_client.gd" id="2_nerw5"]
+[ext_resource type="PackedScene" uid="uid://dilafplx8wpnv" path="res://Components/Scenes/MangaReader/MangaCanvas/MangaRemote.tscn" id="2_ynper"]
+[ext_resource type="PackedScene" uid="uid://ctvnshwvi2w57" path="res://Components/Scenes/MangaReader/MangaCanvas/MangaPage/MangaPageCanvas.tscn" id="3_yumpb"]
+
+[sub_resource type="Animation" id="Animation_q4hib"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MangaRemote:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 1080)]
+}
+
+[sub_resource type="Animation" id="Animation_bt4dr"]
+resource_name = "hide_control_block"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MangaRemote:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 970), Vector2(0, 1080)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c8vkc"]
+_data = {
+&"RESET": SubResource("Animation_q4hib"),
+&"hide_control_block": SubResource("Animation_bt4dr")
+}
+
+[node name="MangaReader" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+script = ExtResource("1_ne264")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_c8vkc")
+}
+
+[node name="MangaTCPClient" type="Node" parent="."]
+script = ExtResource("2_nerw5")
+
+[node name="MangaPageCanvas" parent="." instance=ExtResource("3_yumpb")]
+layout_mode = 1
+
+[node name="MangaRemote" parent="." instance=ExtResource("2_ynper")]
+layout_mode = 1
+anchor_top = 0.89800006
+anchor_bottom = 1.0
+offset_top = 110.15991
+offset_bottom = 109.99988

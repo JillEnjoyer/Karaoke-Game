@@ -13,8 +13,8 @@ static func build_jumper_map(jumpers: Array, lengths: Dictionary) -> Array:
 		"id": "EMPTY",
 		"logical_start": -PreferencesData.get_data("countdown_time"),
 		"logical_end": 0.0,
-		"physical_start": null,
-		"physical_end": null,
+		"physical_start": 0.0,
+		"physical_end": 0.0,
 		"jumper_index": 0
 	})
 
@@ -59,7 +59,12 @@ static func build_jumper_map(jumpers: Array, lengths: Dictionary) -> Array:
 		elif j.has("stop_at"):
 			var end = j["stop_at"]
 			if end == null:
-				end = lengths.get(seg_id, 0.0)
+				if lengths.has(seg_id):
+					end = lengths.get(seg_id, 0.0)
+				elif lengths.size() > 0:
+					end = lengths.values()[0]
+				else:
+					end = 0.0
 
 			var length = end - phys
 			if length < 0:

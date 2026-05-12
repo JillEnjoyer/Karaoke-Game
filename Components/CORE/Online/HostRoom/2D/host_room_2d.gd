@@ -9,7 +9,7 @@ extends Control
 var server = ClientServer.new()
 
 func _ready() -> void:
-	player_container.add_child(UIManager.get_desired_node("player_block").instantiate())
+	player_container.add_child(UIManager.get_desired_node("PlayerBlock").instantiate())
 	entry_panel.connect("mouse_entered", Callable(self, "show_host_panel"))
 
 """

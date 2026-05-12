@@ -1,0 +1,12 @@
+DLC5 Is a kind of experiment - It will be adding support for crossplay with Playstation 1.
+
+It will establish local connection between win-pc and playstation 1 using internet connection.
+
+Game will be mostly as screen, as pc game will work with graphics, physics, most of animations and etc. PS1 game will base on data and will be as control for it.
+
+Of course, ps1 is not supporting any kind of internet connection by default, but models with Parallel IO or serial port can use it
+as connector to custom devices and ESP8266 or similiar can share internet connection.
+After connection with ESP certain launched game (from cd, sdcard etc) will be using special commands to get and send data commands with pc.
+PIO theoretical bandwidth is 2-4MB per seconds so basic data will be possible to send. Materials As TIM, data as basic strings will be possible to convert before or during delivery
+
+No practical usefulness. Only attempt in case all other projects will success and game will already be released in Early Access.

@@ -16,11 +16,11 @@ var current_time := 0.0
 var timer := 1.0
 
 
-func init(song_path: String, data_dict: Dictionary, manager_type: String, playback_mode: String = "standard") -> void:
+func init(song_path: String, data_dict: Dictionary, manager_type: String, highlight: bool = false) -> void:
 	self.type = manager_type
 	Debugger.debug(str(data_dict))
 
-	prepare_all_players(data_dict, song_path, playback_mode)
+	prepare_all_players(data_dict, song_path, highlight)
 
 
 func update_timer(time: float) -> void:
@@ -28,14 +28,22 @@ func update_timer(time: float) -> void:
 		players[player].update_timer(time)
 
 
-func prepare_all_players(type_config: Dictionary, song_path: String, playback_mode: String) -> void:
+func prepare_all_players(type_config: Dictionary, song_path: String, highlight: bool = false) -> void:
 	for version_name in type_config:
 		var audio_controller = AudioController.new(self)
 		audio_controller.name = version_name
 		audio_controller.connect("audio_ended", Callable(self, "_on_audio_ended"))
 		players[version_name] = audio_controller
 
-		audio_controller.load_audio(type_config[version_name], version_name, type, song_path, playback_mode)
+		audio_controller.load_audio(type_config[version_name], version_name, type, song_path, highlight)
+
+
+func set_extras(highlight_extras: Array = []) -> void:
+	if not highlight_extras:
+		Debugger.debug("No extras provided to set_extras")
+		return
+	for player in players:
+		players[player].set_extras(highlight_extras)
 
 
 func set_pause_state(audio_lists: Array, paused: bool):
@@ -65,9 +73,9 @@ func pause() -> void:
 func resume() -> void:
 	for player in players:
 		players[player].resume()
-func start() -> void:
+func start(time: float = 0.0) -> void:
 	for player in players:
-		players[player].start()
+		players[player].start(time)
 func seek(to_time: float) -> void:
 	for player in players:
 		players[player].seek(to_time)

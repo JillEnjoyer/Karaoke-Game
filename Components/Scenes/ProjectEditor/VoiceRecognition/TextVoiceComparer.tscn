@@ -1,0 +1,151 @@
+[gd_scene load_steps=3 format=3 uid="uid://dd2vbe0if15bl"]
+
+[ext_resource type="Script" uid="uid://csfcq50yknpi5" path="res://Components/Scenes/ProjectEditor/VoiceRecognition/text_voice_comparer.gd" id="1_d0ube"]
+[ext_resource type="PackedScene" uid="uid://b012ktbhefepn" path="res://Components/Scenes/ProjectEditor/DataVisualizer/JsonVisualizerV2.tscn" id="2_kel81"]
+
+[node name="TextVoiceComparer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_d0ube")
+
+[node name="SplitContainer" type="SplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+split_offset = 953
+
+[node name="InputPanel" type="Panel" parent="SplitContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SplitContainer/InputPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.022000002
+anchor_top = 0.0050000004
+anchor_right = 0.96400005
+anchor_bottom = 0.069000006
+offset_left = 0.03399849
+offset_top = -0.40000057
+offset_right = 0.3079834
+offset_bottom = 0.47999573
+alignment = 1
+
+[node name="SrtBtn" type="Button" parent="SplitContainer/InputPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Youtube
+Subtitles"
+
+[node name="PHBtn" type="Button" parent="SplitContainer/InputPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Placeholder"
+
+[node name="Button3" type="Button" parent="SplitContainer/InputPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button4" type="Button" parent="SplitContainer/InputPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button5" type="Button" parent="SplitContainer/InputPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StartBtn" type="Button" parent="SplitContainer/InputPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Start"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="SplitContainer/InputPanel"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.33400002
+anchor_top = 0.071
+anchor_right = 0.96700007
+anchor_bottom = 0.136
+offset_left = -0.30203247
+offset_top = 0.3199997
+offset_right = 0.44891357
+offset_bottom = 0.11999512
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="SplitContainer/InputPanel/HBoxContainer2"]
+custom_minimum_size = Vector2(500, 70)
+layout_mode = 2
+text = "Enter path here (or pass it with FileManager)"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="SplitContainer/InputPanel/HBoxContainer2"]
+custom_minimum_size = Vector2(100, 70)
+layout_mode = 2
+text = "FM"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="SplitContainer/InputPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.022000002
+anchor_top = 0.072000004
+anchor_right = 0.33400002
+anchor_bottom = 0.13700001
+offset_left = 0.03399849
+offset_top = 0.23999786
+offset_right = -0.30203247
+offset_bottom = 0.039993286
+
+[node name="UserInputBtn" type="Button" parent="SplitContainer/InputPanel/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VoskOutputBtn" type="Button" parent="SplitContainer/InputPanel/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextEdit" type="TextEdit" parent="SplitContainer/InputPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.021000002
+anchor_top = 0.13900001
+anchor_right = 0.98100007
+anchor_bottom = 0.99000007
+offset_left = -0.013002396
+offset_top = -0.120010376
+offset_right = 0.106933594
+offset_bottom = -0.20007324
+
+[node name="OutputPanel" type="Panel" parent="SplitContainer"]
+layout_mode = 2
+
+[node name="CodeEdit" type="CodeEdit" parent="SplitContainer/OutputPanel"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.034
+anchor_top = 0.074
+anchor_right = 0.97200006
+anchor_bottom = 0.99100006
+offset_left = -0.36800003
+offset_top = 0.08000183
+offset_right = -0.34405518
+offset_bottom = -0.2800293
+grow_horizontal = 2
+
+[node name="JsonVisualizer" parent="SplitContainer/OutputPanel" instance=ExtResource("2_kel81")]
+layout_mode = 1
+anchor_right = 0.99600005
+offset_right = -0.19207764
+
+[connection signal="pressed" from="SplitContainer/InputPanel/HBoxContainer/StartBtn" to="." method="_on_start_btn_pressed"]
+[connection signal="pressed" from="SplitContainer/InputPanel/HBoxContainer2/Button" to="." method="_on_button_pressed"]

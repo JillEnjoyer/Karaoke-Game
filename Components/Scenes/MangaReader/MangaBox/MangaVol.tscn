@@ -1,0 +1,129 @@
+[gd_scene load_steps=11 format=3 uid="uid://b4biup1jqengj"]
+
+[ext_resource type="Script" uid="uid://b2eo0ooght4tg" path="res://Components/Scenes/MangaReader/MangaBox/manga_vol.gd" id="1_ujgyi"]
+[ext_resource type="Texture2D" uid="uid://dsoogxlxhm6l4" path="res://icon.svg" id="2_xulf2"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ujgyi"]
+size = Vector2(0.15, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wdtr8"]
+shading_mode = 0
+albedo_texture = ExtResource("2_xulf2")
+
+[sub_resource type="BoxMesh" id="BoxMesh_4ue6g"]
+lightmap_size_hint = Vector2i(5, 7)
+size = Vector3(0.15, 0.01, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ujgyi"]
+size = Vector3(0.15, 0.01, 0.2)
+
+[sub_resource type="Animation" id="Animation_xulf2"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LeftBlock")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0.9999996, -0.00087268744)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RightBlock")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/2/type = "position_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_ujgyi"]
+resource_name = "close_vol_left"
+length = 0.75
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LeftBlock")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0.9999996, -0.00087268744, 0.75, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_wdtr8"]
+resource_name = "close_vol_right"
+length = 0.75
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RightBlock")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, -1, 0, 0.75, 1, 0, 0, 0, 1)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0.075, 0, 0, 0.75, 1, 0, 0, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wdtr8"]
+_data = {
+&"RESET": SubResource("Animation_xulf2"),
+&"close_vol_left": SubResource("Animation_ujgyi"),
+&"close_vol_right": SubResource("Animation_wdtr8")
+}
+
+[node name="MangaVol" type="Node3D"]
+script = ExtResource("1_ujgyi")
+
+[node name="LeftBlock" type="Node3D" parent="."]
+transform = Transform3D(-0.99999833, 0.0017453738, 0, -0.0017453738, -0.99999833, 0, 0, 0, 1, 0, 0.005, 0)
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="LeftBlock"]
+transform = Transform3D(-1, 8.742278e-08, 4.371139e-08, -4.371139e-08, 1.9106855e-15, -1, -8.742278e-08, -1, 1.9106855e-15, -0.075, -0.011, 0)
+mesh = SubResource("QuadMesh_ujgyi")
+skeleton = NodePath("../LeftBlock")
+surface_material_override/0 = SubResource("StandardMaterial3D_wdtr8")
+
+[node name="LeftBlock" type="MeshInstance3D" parent="LeftBlock"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075, -0.005, 0)
+mesh = SubResource("BoxMesh_4ue6g")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LeftBlock"]
+transform = Transform3D(0.9999999, 0, 0, 0, -4.371138e-08, 0.9999999, 0, -1, -4.371139e-08, -0.075, 0.001, 0)
+mesh = SubResource("QuadMesh_ujgyi")
+skeleton = NodePath("../LeftBlock")
+surface_material_override/0 = SubResource("StandardMaterial3D_wdtr8")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.99999976, 0, 0, 0, -4.3711374e-08, 0.99999976, 0, -1, -4.371139e-08, -0.07499999, 0.006, 0)
+skeleton = NodePath("../LeftBlock/MeshInstance3D")
+
+[node name="RightBlock" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="RightBlock"]
+transform = Transform3D(-1, 8.742278e-08, 4.371139e-08, -4.371139e-08, 1.9106855e-15, -1, -8.742278e-08, -1, 1.9106855e-15, 0.075, -0.011, 0)
+mesh = SubResource("QuadMesh_ujgyi")
+skeleton = NodePath("../../LeftBlock")
+surface_material_override/0 = SubResource("StandardMaterial3D_wdtr8")
+
+[node name="RightBlock" type="MeshInstance3D" parent="RightBlock"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, -0.005, 0)
+mesh = SubResource("BoxMesh_ujgyi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RightBlock"]
+transform = Transform3D(0.9999999, 0, 0, 0, -4.371138e-08, 0.9999999, 0, -1, -4.371139e-08, 0.075, 0.001, 0)
+mesh = SubResource("QuadMesh_ujgyi")
+skeleton = NodePath("../../LeftBlock")
+surface_material_override/0 = SubResource("StandardMaterial3D_wdtr8")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_wdtr8")
+}

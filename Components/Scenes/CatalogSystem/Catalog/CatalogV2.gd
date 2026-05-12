@@ -50,7 +50,7 @@ func create_cards():
 
 
 func create_card(song_name: String, index: int) -> Control:
-	var card = UIManager.get_desired_node("card").instantiate() ## Because of further init
+	var card = UIManager.get_desired_node("Card").instantiate() ## Because of further init
 
 	## TODO: Need to add support for loading png/jpg/jpeg/webp
 	var icon_path = current_path.path_join(song_name).path_join("Icon")
@@ -96,7 +96,7 @@ func _input(event):
 
 
 func move_focus(direction) -> void:
-	#card_background.hide_highlight() ## video implementation
+	card_background.hide_highlight() ## video implementation
 	card_background.hide_texture()
 	
 	focused_card_index += direction
@@ -104,13 +104,18 @@ func move_focus(direction) -> void:
 		focused_card_index = song_list.size() - 1  # Go to the last element
 	elif focused_card_index >= song_list.size():
 		focused_card_index = 0  # Go to the first element
+	
+	card_node.get_child(focused_card_index).visible = true
+	
 	update_card_positions()
 	
 	if not background:
 		return
 	
 	card_background.apply_texture(background[focused_card_index])
-	#card_background.show_highlight(current_path.path_join(song_list[focused_card_index])) ## config_path
+	card_background.show_highlight(current_path.path_join(song_list[focused_card_index])) ## config_path
+
+	#card_node.get_child(focused_card_index).visible = false
 
 
 func update_card_positions():
@@ -169,7 +174,7 @@ func navigate_down():
 
 
 func show_settings_panel(folder_name: String, type: String):
-	var settings_panel = UIManager.show_ui("preset_panel")
+	var settings_panel = UIManager.show_ui("PresetPanel")
 	Debugger.debug("Sent current_path/folder_name: " + current_path.path_join(folder_name))
 	settings_panel.setup_mode(type)
 	settings_panel.collect_names(current_path, folder_name, focused_card_index)
@@ -184,4 +189,4 @@ func return_catalog_position(album_path: String, chosen_index: int) -> void:
 
 func return_to_main_menu() -> void:
 	UIManager.cleanup_tree()
-	UIManager.show_ui("main_menu")
+	UIManager.show_ui("MainMenu")

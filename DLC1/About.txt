@@ -1,0 +1,10 @@
+DLC1 is a pck for a first expandable update - It would cover only Resident Evil Universe expansion:
+	RE Requiem's Leon and Grace:
+		1. models
+		2. lightning
+		3. voicelines
+		4. custom behaviour tree
+		5. interests
+		6. minigames
+		7. missions
+		8. Lore sum up as one entity 

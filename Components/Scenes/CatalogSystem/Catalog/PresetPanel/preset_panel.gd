@@ -166,7 +166,7 @@ func pack_to_playlist(choosen_acapella: String = "") -> Array[Dictionary]:
 
 func start_karaoke(playlist: Array) -> void:
 	UIManager.cleanup_tree()
-	var player_scene = UIManager.show_ui("player_scene")
+	var player_scene = UIManager.show_ui("PlayerScene")
 	var input_data := {
 		"album_path": null,
 		"chosen_index": null

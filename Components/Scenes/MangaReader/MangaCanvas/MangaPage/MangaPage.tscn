@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxrs04c0ghjj2"]
+
+[ext_resource type="Texture2D" uid="uid://b8jvqxj4bumq5" path="res://Icon.png" id="1_hotnp"]
+[ext_resource type="Script" uid="uid://bd5032uef2wit" path="res://Components/Scenes/MangaReader/MangaCanvas/MangaPage/manga_page.gd" id="2_11hw2"]
+
+[node name="MangaPage" type="TextureRect"]
+offset_right = 1000.0
+offset_bottom = 1450.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_hotnp")
+expand_mode = 1
+stretch_mode = 4
+script = ExtResource("2_11hw2")

@@ -1,6 +1,6 @@
 extends Control
 
-signal signal_video_ended
+signal video_ended
 
 @onready var video_texture = $TextureRect
 
@@ -8,6 +8,7 @@ var frame_buffer: FrameBuffer = null
 var texture: ImageTexture = null
 
 var speed_multiplier := 1.0 ## used for syncing video (during desync or between online players)
+var playing := false
 
 
 func _ready() -> void:
@@ -15,6 +16,7 @@ func _ready() -> void:
 
 
 func init(song_path: String, video_dict: Dictionary) -> void:
+	#wipe_manager()
 	Debugger.debug("VIDEO_DICT" + str(video_dict))
 	frame_buffer = FrameBuffer.new(song_path, video_dict)
 	frame_buffer.connect("video_ended", Callable(self, "video_ended"))
@@ -29,7 +31,7 @@ func wipe_manager() -> void:
 
 
 func update_timer(player_scene_logical_time: float) -> void:
-	if frame_buffer and frame_buffer.update_timer(player_scene_logical_time):
+	if playing and frame_buffer and frame_buffer.update_timer(player_scene_logical_time):
 		update_frame()
 
 
@@ -42,14 +44,19 @@ func update_frame() -> void:
 		else:
 			video_texture.texture.update(frame)
 	else:
-		Debugger.warning("No frame received from FrameBuffer. Video might be ended")
-		video_ended()
-
-
-func video_ended() -> void:
-	emit_signal("signal_video_ended")
+		Debugger.warning("No frame received from FrameBuffer. Video is bugged or might be ended")
+		emit_signal("video_ended")
 
 
 func seek(new_logical_time: float):
 	frame_buffer.seek(new_logical_time)
 	Debugger.info("seeked time:" + str(new_logical_time))
+
+
+func start(time: float = 0.0) -> void:
+	frame_buffer.seek(time)
+	playing = true
+func resume():
+	playing = true
+func pause():
+	playing = false

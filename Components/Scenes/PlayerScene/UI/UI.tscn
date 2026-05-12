@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bpuwn2vfuwf2s"]
+[gd_scene load_steps=8 format=3 uid="uid://bpuwn2vfuwf2s"]
 
-[ext_resource type="Script" uid="uid://bbiv7ub2str4" path="res://Components/Scenes/PlayerScene/UI/sound_mixer.gd" id="1_u3rvf"]
+[ext_resource type="Script" uid="uid://bbiv7ub2str4" path="res://Components/Scenes/PlayerScene/UI/SoundMixer/sound_mixer.gd" id="1_u3rvf"]
 [ext_resource type="PackedScene" uid="uid://cq1qmmed87bw2" path="res://Components/Scenes/PlayerScene/UI/SoundMixer/SoundMixer.tscn" id="2_6fm0v"]
+[ext_resource type="PackedScene" uid="uid://dv6i016rf3a6a" path="res://Components/Scenes/PlayerScene/UI/SeekBar/SeekBar.tscn" id="3_6fm0v"]
 
 [sub_resource type="Animation" id="Animation_rrdpa"]
 length = 0.001
@@ -16,6 +17,35 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1360, -300)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SeekBar:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 1080)]
+}
+
+[sub_resource type="Animation" id="Animation_oib71"]
+resource_name = "show_seek_bar"
+length = 0.45
+step = 0.0168
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SeekBar:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.43333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1080), Vector2(0, 1030)]
 }
 
 [sub_resource type="Animation" id="Animation_7rw3d"]
@@ -38,6 +68,7 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j4juy"]
 _data = {
 &"RESET": SubResource("Animation_rrdpa"),
+&"show_seek_bar": SubResource("Animation_oib71"),
 &"show_voice_channel": SubResource("Animation_7rw3d")
 }
 
@@ -64,3 +95,10 @@ offset_left = 0.64001465
 offset_top = -300.0
 offset_right = 500.64
 offset_bottom = 0.0
+
+[node name="SeekBar" parent="." instance=ExtResource("3_6fm0v")]
+layout_mode = 1
+anchor_top = 0.95400006
+anchor_bottom = 1.0
+offset_top = 49.67993
+offset_bottom = 50.0

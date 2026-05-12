@@ -9,7 +9,6 @@ var DEFAULT_ICON := preload("res://GlobalAssets/icon.svg")
 func load_texture_or_placeholder(file_path: String) -> Texture2D:
 	if file_path.get_extension() == "":
 		for ext in TEXTURE_EXTENSIONS:
-			Debugger.debug("Trying: " + file_path + ext)
 			if FileAccess.file_exists(file_path + ext):
 				file_path += ext
 				break

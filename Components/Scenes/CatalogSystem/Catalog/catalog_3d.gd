@@ -6,10 +6,10 @@ extends Node3D
 @onready var offscreen_marker = $OtherSlotsMarker
 
 
-var vinyl_box = UIManager.get_desired_node("vinyl_box")
-var main_sleeve = UIManager.get_desired_node("main_sleeve")
-var inner_sleeve = UIManager.get_desired_node("inner_sleeve")
-var vinyl_record = UIManager.get_desired_node("vinyl_record")
+var vinyl_box = UIManager.get_desired_node("VinylBox")
+var main_sleeve = UIManager.get_desired_node("MainSleeve")
+var inner_sleeve = UIManager.get_desired_node("InnerSleeve")
+var vinyl_record = UIManager.get_desired_node("VinylRecord")
 
 var catalog_path: String = PreferencesData.get_data("catalog_path")
 var folder_scanner = FolderScanner.new()

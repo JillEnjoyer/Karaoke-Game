@@ -33,13 +33,14 @@ PreferencesData="*res://Components/CORE/Preferences/PreferencesData.gd"
 UIManager="*res://Components/CORE/Preloader/ui_manager.gd"
 Debugger="*res://Components/CORE/Debug/Debugger.gd"
 TextureLoader="*res://Components/CORE/Preloader/texture_loader.gd"
+VocatoolWatchdog="*res://Components/CORE/VocaTool/vocatool_watchdog.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/stretch/aspect="ignore"
 
 [dotnet]
 

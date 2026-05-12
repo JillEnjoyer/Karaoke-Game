@@ -1,0 +1,9 @@
+DLC0 is a whole .pck that should be a standalone pack for a Steam release.
+It should store whole logic of:
+	1. 2d/3d room
+	2. Base 3d models and 2d textures
+	3. Some example free-use materials
+	4. Activities like Cards, !Karaoke!, manga reader, online, sync, tv and etc.
+	5. Lightning system, bonus rooms
+
+This dlc should NOT use any unauthorized and unlicensed content at any cost!

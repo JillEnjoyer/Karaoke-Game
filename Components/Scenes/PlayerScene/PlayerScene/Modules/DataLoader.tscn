@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bto48lb0leim3"]
+
+[ext_resource type="Script" uid="uid://dfsp0xdmnfq4w" path="res://Components/Scenes/PlayerScene/PlayerScene/Modules/data_loader.gd" id="1_trxr0"]
+
+[node name="SongDataLoader" type="Node"]
+script = ExtResource("1_trxr0")

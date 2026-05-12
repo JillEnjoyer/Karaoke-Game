@@ -8,8 +8,6 @@ signal subtitles_finished
 	$LastLineMarker
 ] as Array[Node2D]
 @onready var word_jumper = $WordJumper
-var subtitle_math = SubtitleMath.new()
-var subtitle_parser = SubtitleParser.new()
 
 const LINE_COUNT := 4
 const LINE_SLIDE_DURATION := 0.5
@@ -39,8 +37,8 @@ func _ready() -> void:
 		lines[0].modulate.a = 1.0
 
 
-func init(path: String, type: String = "Karaoke") -> void:
-	subtitle_list = subtitle_parser._load_subtitles(path)
+func init(path: String, type: String = "karaoke", characters: Array = []) -> void:
+	subtitle_list = SubtitleParser.load_subtitles(path)
 	if subtitle_list.is_empty():
 		return
 	
@@ -50,8 +48,21 @@ func init(path: String, type: String = "Karaoke") -> void:
 	_position_all_lines()
 
 
+func update_timer(time: float) -> void:
+	if not is_playing or lines.is_empty():
+		return
+	
+	current_time = time
+
+	if current_time >= lines[0].end_time:
+		_advance_lines()
+	
+	if not jump_active and current_time >= lines[0].start_time - JUMP_ADVANCE_TIME:
+		_start_jumping()
+
+
 func _create_line(index: int) -> void:
-	var line := UIManager.show_ui("karaoke_style_line", self) as Control
+	var line := UIManager.show_ui("KaraokeStyleLine", self) as Control
 	line.position = Vector2(
 		markers.back().position.x - (line.size.x / 2),
 		get_viewport().get_visible_rect().size.y + 100
@@ -84,19 +95,6 @@ func _position_all_lines() -> void:
 		
 		lines[i].scale = Vector2(1.1, 1.1)
 		tweens.tween_property(lines[i], "scale", Vector2.ONE, LINE_SLIDE_DURATION)
-
-
-func update_timer(time: float) -> void:
-	if not is_playing or lines.is_empty():
-		return
-	
-	current_time = time
-
-	if current_time >= lines[0].end_time:
-		_advance_lines()
-	
-	if not jump_active and current_time >= lines[0].start_time - JUMP_ADVANCE_TIME:
-		_start_jumping()
 
 
 func _advance_lines() -> void:
@@ -187,7 +185,7 @@ func _animate_jump(
 	
 	tween.tween_method(
 		func(t: float):
-			word_jumper.global_position = subtitle_math._quadratic_bezier(from, control_point, to, t),
+			word_jumper.global_position = SubtitleMath.calc_quadratic_bezier(from, control_point, to, t),
 		0.0, 1.0, duration * JUMP_DURATION_SCALE
 	)
 	
@@ -216,7 +214,7 @@ func _final_jump_sequence() -> void:
 	
 	tween.tween_method(
 		func(t: float):
-			word_jumper.global_position = subtitle_math._quadratic_bezier(
+			word_jumper.global_position = SubtitleMath.calc_quadratic_bezier(
 				word_jumper.global_position, overshoot_pos, target_pos, t
 			),
 		0.0, 1.0, 0.7
@@ -305,3 +303,43 @@ func stop() -> void:
 	for line in lines:
 		line.queue_free()
 	lines.clear()
+
+
+func seek(time: float) -> void:
+	current_time = time
+	current_index = 0
+	
+	# Find the correct subtitle index for the given time
+	for i in range(subtitle_list.size()):
+		var data: Dictionary = subtitle_list[i]
+		if current_time >= data.get("timestamp", {}).get("start", 0.0) and \
+		   current_time <= data.get("timestamp", {}).get("end", 0.0):
+			current_index = i
+			break
+		elif current_time < data.get("timestamp", {}).get("start", 0.0):
+			current_index = max(0, i - 1)
+			break
+		else:
+			current_index = subtitle_list.size()
+	
+	# Clear existing lines
+	for line in lines:
+		line.queue_free()
+	lines.clear()
+	
+	# Recreate lines based on the new index
+	for i in range(LINE_COUNT):
+		_create_line(i)
+		_setup_line(i)
+	
+	_position_all_lines()
+
+
+func wipe_manager() -> void:
+	subtitle_list.clear()
+	current_time = 0.0
+	current_index = 0
+	for line in lines:
+		line.queue_free()
+	lines.clear()
+	word_jumper.clear()

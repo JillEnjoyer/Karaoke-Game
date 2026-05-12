@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwyicktejh7r1"]
+
+[ext_resource type="Script" uid="uid://de5lguiuj2ba5" path="res://Components/Scenes/MangaReader/MangaCanvas/manga_page_canvas.gd" id="1_ixqxv"]
+
+[node name="MangaPageCanvas" type="CanvasLayer"]
+script = ExtResource("1_ixqxv")
+
+[node name="BaseControlBlock" type="Panel" parent="."]
+anchors_preset = -1
+anchor_top = 0.92600006
+anchor_right = 0.312
+anchor_bottom = 1.0
+offset_top = -0.080078125
+offset_right = 0.95996094
+
+[node name="Button" type="Button" parent="BaseControlBlock"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 61.0
+offset_bottom = 79.0
+text = "Back"
+
+[node name="Button2" type="Button" parent="BaseControlBlock"]
+layout_mode = 0
+offset_left = 538.0
+offset_top = 1.0
+offset_right = 598.0
+offset_bottom = 79.0
+text = "Next"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BaseControlBlock"]
+layout_mode = 0
+offset_left = 205.0
+offset_top = 48.0
+offset_right = 245.0
+offset_bottom = 88.0
+
+[node name="AtLbl" type="Label" parent="BaseControlBlock/HBoxContainer"]
+layout_mode = 2
+text = "At"
+
+[node name="UITE" type="TextEdit" parent="BaseControlBlock/HBoxContainer"]
+layout_mode = 2
+text = "dfsddsfdddddddddddddddddddddddddd"
+placeholder_text = "dddddddddddddddddddddddddddddd"
+
+[node name="OfLbl" type="Label" parent="BaseControlBlock/HBoxContainer"]
+layout_mode = 2
+text = "of "
+
+[node name="PageAmountLbl" type="Label" parent="BaseControlBlock/HBoxContainer"]
+layout_mode = 2
+text = "XXX"
+
+[node name="PagesLbl" type="Label" parent="BaseControlBlock/HBoxContainer"]
+layout_mode = 2
+text = "pages"

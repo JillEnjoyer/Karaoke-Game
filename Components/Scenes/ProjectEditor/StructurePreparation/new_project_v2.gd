@@ -1,6 +1,6 @@
 extends Control
 
-@onready var project_panel = UIManager.get_desired_node("new_project_panel")
+@onready var project_panel = UIManager.get_desired_node("NewProjectPanel")
 
 enum LEVELS {
 	FRANCHISE,

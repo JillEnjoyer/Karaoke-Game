@@ -1,7 +1,8 @@
 extends Node
 class_name SubtitleParser
 
-func _load_subtitles(path: String) -> Array:
+
+static func load_subtitles(path: String) -> Array:
 	if not FileAccess.file_exists(path):
 		Debugger.error("Subtitles file not found: " + path)
 		return []
