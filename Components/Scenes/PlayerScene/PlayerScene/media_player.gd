@@ -20,6 +20,7 @@ var song_path := ""
 var config_file
 
 var is_highlight_mode := false
+var is_editor_mode := false
 var highlight_start := 0.0
 var highlight_end := 0.0
 var highlight_repeat := false
@@ -29,10 +30,15 @@ func _ready() -> void:
 	pass
 
 
+func is_playing() -> bool:
+	return playback_manager.is_playing
+
+
 func import_playlist(imported_data: Dictionary, imported_playlist: Array) -> void:
 	input_data = imported_data
 	playlist = imported_playlist
 	start_song()
+
 
 func start_song() -> void:
 	var index := 0
@@ -52,20 +58,30 @@ func start_song() -> void:
 
 func karaoke_init(playlist_song: Dictionary = {}) -> bool:
 	song_data = playlist_song
-	is_highlight_mode = false
-	
+
+	# 1. Загружаем конфиг
 	var result: Dictionary = song_data_loader.player_scene_partial_init(playlist_song)
-	if not result:
+	if result.is_empty():
 		return false
 
+	# 2. ПАРСИМ субтитры ТУТ
+	var sub_path = result.get("subtitle_path") # путь, который уже сформирован в data_loader
+	var sub_data = SubtitleParser.load_subtitles(sub_path)
+
+	# Добавляем в результат для удобной передачи
+	result["subtitle_data"] = sub_data
+
+	# 3. Шлем готовый массив данных в менеджер
 	playback_manager.init_managers(result, result["song_path"])
 
 	return true
 
-
-func highlight_init(input_highlight_data: Array = [], imported_song_path: String = "", is_random: bool = false) -> void:
+func highlight_preinit() -> void:
 	playback_manager.pause_all()
 	is_highlight_mode = true
+func highlight_init(input_highlight_data: Array = [], imported_song_path: String = "", is_random: bool = false) -> void:
+	#playback_manager.pause_all()
+	#is_highlight_mode = true
 	song_path = imported_song_path
 
 	var highlight_data = song_data_loader.highlight_partial_init(song_path, input_highlight_data, is_random)
@@ -78,6 +94,25 @@ func highlight_init(input_highlight_data: Array = [], imported_song_path: String
 	var version = highlight_data.get("version", "")
 	config_file = highlight_data.get("config_file", "")
 
+## Just preinit that will block all unwanted inputs
+func editor_preinit() -> void:
+	playback_manager.pause_all()
+	is_editor_mode = true
+## Used for every change in timeline. Logic must Check and update objects only if necessary. Else ignore.
+func editor_init(input_highlight_data: Array = [], imported_song_path: String = "", is_random: bool = false) -> void:
+	#playback_manager.pause_all()
+	#is_highlight_mode = true
+	song_path = imported_song_path
+
+	var highlight_data = song_data_loader.highlight_partial_init(song_path, input_highlight_data, is_random)
+	if highlight_data.is_empty():
+		Debugger.warning("No highlights found for: " + song_path)
+		return
+	
+	playback_manager.init_managers(highlight_data, song_path, is_highlight_mode)
+
+	var version = highlight_data.get("version", "")
+	config_file = highlight_data.get("config_file", "")
 
 """
 func get_current_subtitle_line(time: float) -> int:
@@ -101,12 +136,15 @@ func show_pause_menu() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if is_highlight_mode:
+	if is_highlight_mode or is_editor_mode:
 		return
 	
 	if event.is_action_pressed("pause"):
 		show_pause_menu()
 	## other inputs to expand functionality
+	
+	if event.is_action_pressed("blur"):
+		playback_manager.change_blur()
 
 
 func _on_pause_menu_continue() -> void:
@@ -126,7 +164,7 @@ func _on_pause_menu_main_menu() -> void:
 
 
 func return_to_catalog() -> void:
-	await get_tree().create_timer(5).timeout
+	#await get_tree().create_timer(5).timeout
 	UIManager.cleanup_tree()
 	var catalog = UIManager.show_ui("Catalog")
 	#catalog.return_catalog_position(input_data["album_path"], input_data["chosen_index"])

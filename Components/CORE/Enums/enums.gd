@@ -19,3 +19,8 @@ enum MediaType{
     SUBTITLES,
     ROLE
 }
+
+enum EditorWindowMode{
+    CREATE,
+    OPEN
+} 

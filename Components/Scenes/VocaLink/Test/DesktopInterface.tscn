@@ -1,0 +1,150 @@
+[gd_scene format=3 uid="uid://cshex2m5wojo1"]
+
+[node name="DesktopInterface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.117647, 0.133333, 0.160784, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="MainLayout" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HeaderPanel" type="PanelContainer" parent="MarginContainer/MainLayout"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+
+[node name="HeaderMargin" type="MarginContainer" parent="MarginContainer/MainLayout/HeaderPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/MainLayout/HeaderPanel/HeaderMargin"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/MainLayout/HeaderPanel/HeaderMargin/HeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Рабочая Панель Данных"
+vertical_alignment = 1
+
+[node name="AddDataButton" type="Button" parent="MarginContainer/MainLayout/HeaderPanel/HeaderMargin/HeaderHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "+ Добавить элемент"
+
+[node name="BodyHBox" type="HBoxContainer" parent="MarginContainer/MainLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="SidebarParameters" type="PanelContainer" parent="MarginContainer/MainLayout/BodyHBox"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+
+[node name="SidebarMargin" type="MarginContainer" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ParametersVBox" type="VBoxContainer" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters/SidebarMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SectionTitle" type="Label" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters/SidebarMargin/ParametersVBox"]
+layout_mode = 2
+text = "Параметры и Фильтры"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters/SidebarMargin/ParametersVBox"]
+layout_mode = 2
+
+[node name="FilterRow" type="HBoxContainer" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters/SidebarMargin/ParametersVBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters/SidebarMargin/ParametersVBox/FilterRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Категория:"
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters/SidebarMargin/ParametersVBox/FilterRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SearchRow" type="VBoxContainer" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters/SidebarMargin/ParametersVBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters/SidebarMargin/ParametersVBox/SearchRow"]
+layout_mode = 2
+text = "Поиск:"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/MainLayout/BodyHBox/SidebarParameters/SidebarMargin/ParametersVBox/SearchRow"]
+layout_mode = 2
+placeholder_text = "Введите название..."
+
+[node name="DataViewPanel" type="PanelContainer" parent="MarginContainer/MainLayout/BodyHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/MainLayout/BodyHBox/DataViewPanel"]
+layout_mode = 2
+
+[node name="DataMarginContainer" type="MarginContainer" parent="MarginContainer/MainLayout/BodyHBox/DataViewPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="DynamicGridContainer" type="GridContainer" parent="MarginContainer/MainLayout/BodyHBox/DataViewPanel/ScrollContainer/DataMarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 3
+
+[node name="FooterPanel" type="PanelContainer" parent="MarginContainer/MainLayout"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+
+[node name="FooterMargin" type="MarginContainer" parent="MarginContainer/MainLayout/FooterPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="StatusLabel" type="Label" parent="MarginContainer/MainLayout/FooterPanel/FooterMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Система готова. Загружено элементов: 0"
+vertical_alignment = 1

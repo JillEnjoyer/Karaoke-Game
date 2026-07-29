@@ -2,8 +2,6 @@ extends Node
 
 signal last_audio_ended
 
-#var audio_init = AudioPlayerInstance.new()
-
 var is_playing: bool = false
 var speed_multiplier: float = 1.0
 
@@ -12,7 +10,6 @@ var type := "" ## Acapella / Instrumental
 # var mode := "" ## standart / highlight
 
 var current_time := 0.0
-#var delta_time := 0.0
 var timer := 1.0
 
 

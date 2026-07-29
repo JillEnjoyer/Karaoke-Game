@@ -28,6 +28,10 @@ func _ready() -> void:
 	pass
 
 
+func change_blur():
+	video_manager.change_blur()
+
+
 func init_managers(data: Dictionary, song_path: String, highlight_mode: bool = false) -> void:
 	Debugger.debug("data: " + str(data))
 	
@@ -43,7 +47,7 @@ func init_managers(data: Dictionary, song_path: String, highlight_mode: bool = f
 	acapella_manager.connect("last_audio_ended", Callable(self, "_handle_acapella_audio_ended"))
 
 	#subtitle_manager.init(song_path, data["subtitle_path"], "karaoke", result["character_dict"])
-	subtitle_manager.init(data.get("subtitle_path", ""), "karaoke", data.get("character_dict", []))
+	subtitle_manager.init(data.get("subtitle_data", []), "karaoke", data.get("character_dict", []))
 	subtitle_manager.connect("subtitles_ended", Callable(self, "_handle_subtitles_ended"))
 
 	if highlight_mode:
@@ -132,7 +136,7 @@ func start_all(time: float = 0.0) -> void:
 	video_manager.start(time) # But not important
 	instrumental_manager.start(time)
 	acapella_manager.start(time)
-	#subtitle_manager.resume()
+	subtitle_manager.resume()
 
 
 func _handle_video_ended() -> void:

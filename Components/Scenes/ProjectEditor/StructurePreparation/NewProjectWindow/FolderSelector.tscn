@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://dixim4rpkmlp8"]
+
+[ext_resource type="Script" uid="uid://deelwkrhjdfpi" path="res://Components/Scenes/ProjectEditor/StructurePreparation/NewProjectWindow/folder_selector.gd" id="1_rwxp4"]
+
+[node name="FolderSelector" type="HBoxContainer"]
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 0.093
+offset_bottom = -0.44000244
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rwxp4")
+
+[node name="OptionButton" type="OptionButton" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="LineEdit" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="CreateBtn" type="Button" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32

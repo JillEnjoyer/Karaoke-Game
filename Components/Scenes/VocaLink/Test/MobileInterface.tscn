@@ -1,0 +1,166 @@
+[gd_scene format=3 uid="uid://cj5avk46bex5y"]
+
+[node name="MobileInterface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.117647, 0.133333, 0.160784, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="MainLayout" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HeaderPanel" type="PanelContainer" parent="MarginContainer/MainLayout"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+
+[node name="HeaderMargin" type="MarginContainer" parent="MarginContainer/MainLayout/HeaderPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/MainLayout/HeaderPanel/HeaderMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ToggleParamsButton" type="Button" parent="MarginContainer/MainLayout/HeaderPanel/HeaderMargin/HeaderHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "⚙"
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/MainLayout/HeaderPanel/HeaderMargin/HeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Мобильный Монитор"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AddDataButton" type="Button" parent="MarginContainer/MainLayout/HeaderPanel/HeaderMargin/HeaderHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "+"
+
+[node name="DataViewPanel" type="PanelContainer" parent="MarginContainer/MainLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/MainLayout/DataViewPanel"]
+layout_mode = 2
+
+[node name="DataMarginContainer" type="MarginContainer" parent="MarginContainer/MainLayout/DataViewPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="DynamicListContainer" type="VBoxContainer" parent="MarginContainer/MainLayout/DataViewPanel/ScrollContainer/DataMarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="FooterPanel" type="PanelContainer" parent="MarginContainer/MainLayout"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="FooterMargin" type="MarginContainer" parent="MarginContainer/MainLayout/FooterPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="StatusLabel" type="Label" parent="MarginContainer/MainLayout/FooterPanel/FooterMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Элементов: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ParamsDrawerOverlay" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DrawerMargin" type="MarginContainer" parent="ParamsDrawerOverlay"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="DrawerVBox" type="VBoxContainer" parent="ParamsDrawerOverlay/DrawerMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="DrawerHeader" type="HBoxContainer" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox/DrawerHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Параметры и Опции"
+
+[node name="CloseParamsButton" type="Button" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox/DrawerHeader"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+text = "✕"
+
+[node name="HSeparator" type="HSeparator" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox"]
+layout_mode = 2
+
+[node name="FilterRow" type="VBoxContainer" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox/FilterRow"]
+layout_mode = 2
+text = "Фильтр категории:"
+
+[node name="OptionButton" type="OptionButton" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox/FilterRow"]
+layout_mode = 2
+
+[node name="SearchRow" type="VBoxContainer" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox/SearchRow"]
+layout_mode = 2
+text = "Поиск элементов:"
+
+[node name="LineEdit" type="LineEdit" parent="ParamsDrawerOverlay/DrawerMargin/DrawerVBox/SearchRow"]
+layout_mode = 2
+placeholder_text = "Введите название..."

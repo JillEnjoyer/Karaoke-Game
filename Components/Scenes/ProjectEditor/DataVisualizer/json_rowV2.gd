@@ -82,14 +82,20 @@ func add_new_word(word_text: String, start_t: float, end_t: float):
 	words_container.add_child(word_block)
 	word_block.apply_zoom(current_zoom)
 
+
 func init(phrase_data: Dictionary = {}, zoom: float = 1.0, use_conf: bool = true):
 	current_zoom = zoom
 	show_confidence = use_conf
-	if phrase_data.has("result"):
-		for word_dict in phrase_data["result"]:
-			var word_block = WordBlock.new(word_dict, self)
-			words_container.add_child(word_block)
+	
+	# УНИВЕРСАЛЬНО: ищем сначала новый ключ "words", если его нет — старый "result"
+	var words_array = phrase_data.get("words", phrase_data.get("result", []))
+	
+	for word_dict in words_array:
+		var word_block = WordBlock.new(word_dict, self)
+		words_container.add_child(word_block)
+		
 	apply_zoom(current_zoom)
+
 
 func apply_zoom(zoom_factor: float):
 	current_zoom = zoom_factor
@@ -131,8 +137,15 @@ class WordBlock extends PanelContainer:
 	var style_box: StyleBoxFlat
 	var word_menu: PopupMenu
 	
-	func _init(data, p_row):
-		word_data = data
+	func _init(data: Dictionary, p_row):
+		word_data = {
+			"word": data.get("word", ""),
+			"start_time": data.get("start_time", data.get("start", 0.0)),
+			"end_time": data.get("end_time", data.get("end", 0.0)),
+			"conf": data.get("conf", 1.0),
+			"character": data.get("character", "")
+		}
+		
 		row_node = p_row
 		mouse_filter = Control.MOUSE_FILTER_STOP
 		
@@ -161,8 +174,10 @@ class WordBlock extends PanelContainer:
 			return {"type": "word", "node": self}
 		return null
 
+
 	func _can_drop_data(_at_position, data):
 		return typeof(data) == TYPE_DICTIONARY and data.get("type") == "word"
+
 
 	func _drop_data(_at_position, data):
 		var source_word = data["node"]
@@ -173,11 +188,11 @@ class WordBlock extends PanelContainer:
 		target_container.add_child(source_word)
 		
 		target_container.move_child(source_word, get_index())
-		
 		source_word.row_node = self.row_node
 		
 		if old_row.words_container.get_child_count() == 0:
 			old_row.queue_free()
+
 
 	func _gui_input(event):
 		if event is InputEventMouseButton and event.pressed:
@@ -187,14 +202,11 @@ class WordBlock extends PanelContainer:
 					if visualizer.has_method("show_word_popup"):
 						visualizer.show_word_popup(self)
 						accept_event()
-				else:
-					#  _get_drag_data
-					pass
-					
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
 				word_menu.position = get_global_mouse_position()
 				word_menu.popup()
 				accept_event()
+
 
 	func _on_menu_pressed(id):
 		if id == 0:
@@ -204,12 +216,14 @@ class WordBlock extends PanelContainer:
 			if p.get_child_count() == 0:
 				row_node.queue_free()
 
+
 	func apply_zoom(zoom: float):
 		label.add_theme_font_size_override("font_size", int(16 * zoom))
 		style_box.content_margin_left = 8 * zoom
 		style_box.content_margin_right = 8 * zoom
 		style_box.content_margin_top = 4 * zoom
 		style_box.content_margin_bottom = 4 * zoom
+
 
 	func _update_color():
 		if not row_node.show_confidence:

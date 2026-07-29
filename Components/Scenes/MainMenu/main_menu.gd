@@ -4,7 +4,7 @@ extends Control
 @onready var media_player = $MediaPlayer
 
 func _ready():
-	pass#_test_init_highlight()
+	media_player.highlight_preinit()
 
 
 func _test_init_highlight():

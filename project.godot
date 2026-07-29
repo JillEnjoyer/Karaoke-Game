@@ -34,6 +34,9 @@ UIManager="*res://Components/CORE/Preloader/ui_manager.gd"
 Debugger="*res://Components/CORE/Debug/Debugger.gd"
 TextureLoader="*res://Components/CORE/Preloader/texture_loader.gd"
 VocatoolWatchdog="*res://Components/CORE/VocaTool/vocatool_watchdog.gd"
+SignalBus="*res://Components/CORE/SignalBus/signal_bus.gd"
+GlobalEnums="*res://Components/CORE/Enums/enums.gd"
+NetworkManager="*res://Components/CORE/NetworkManager/network_manager.gd"
 
 [display]
 
@@ -96,6 +99,11 @@ shift={
 expand={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":69,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+blur={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":66,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 

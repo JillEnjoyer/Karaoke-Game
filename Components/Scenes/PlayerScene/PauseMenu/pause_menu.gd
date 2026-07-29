@@ -10,7 +10,7 @@ signal MainMenu
 @onready var menu_btn = UIManager.default_parent.get_node("PauseMenu/VBoxContainer/MenuBtn")
 @onready var desktop_btn = UIManager.default_parent.get_node("PauseMenu/VBoxContainer/DesktopBtn")
 
-@onready var player_scene = UIManager.default_parent.get_node("MediaPlayer")
+#@onready var player_scene = UIManager.default_parent.get_node("MediaPlayer")
 
 
 func _ready() -> void:

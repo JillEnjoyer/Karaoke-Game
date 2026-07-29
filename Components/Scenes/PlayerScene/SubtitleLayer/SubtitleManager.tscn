@@ -12,6 +12,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0q5nd")
 
+[node name="SubtitlesContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.99600005
+anchor_bottom = 1.0
+offset_top = 197.0
+offset_right = 7.6799316
+offset_bottom = -195.0
+alignment = 1
+
 [node name="DeleteLineMarker" type="Marker2D" parent="."]
 position = Vector2(960, -150)
 
@@ -28,6 +38,7 @@ position = Vector2(960, 960)
 position = Vector2(960, 1081)
 
 [node name="WordJumper" parent="." instance=ExtResource("2_7xe5j")]
+visible = false
 layout_mode = 1
 anchor_top = 1.0
 anchor_bottom = 1.059

@@ -10,9 +10,20 @@ var texture: ImageTexture = null
 var speed_multiplier := 1.0 ## used for syncing video (during desync or between online players)
 var playing := false
 
+var blur_status := false
 
 func _ready() -> void:
 	pass
+
+
+func change_blur():
+	Debugger.debug(str(blur_status))
+	if blur_status:
+		video_texture.blur_from_center()
+	else:
+		video_texture.blur_to_center()
+	blur_status = !blur_status
+	
 
 
 func init(song_path: String, video_dict: Dictionary) -> void:

@@ -18,3 +18,5 @@ layout_mode = 2
 [node name="NameLbl" type="Label" parent="."]
 layout_mode = 2
 text = "Type"
+
+[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]

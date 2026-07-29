@@ -1,0 +1,78 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbk2ale5ha1rj"]
+
+[ext_resource type="Script" uid="uid://b864oqk00wwud" path="res://Components/Scenes/VocaLink/voca_link.gd" id="1_ddpfs"]
+
+[node name="VocaLink" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+script = ExtResource("1_ddpfs")
+
+[node name="ServerSidebar" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_type_variation = &"ServerSidebarPanel"
+
+[node name="ServerList" type="VBoxContainer" parent="ServerSidebar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ServerList#HomeButton" type="Button" parent="."]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "VL"
+
+[node name="ServerList#HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="ChatSidebar" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="ChatSidebar"]
+layout_mode = 2
+
+[node name="SearchBar" type="Button" parent="ChatSidebar/VBox"]
+layout_mode = 2
+text = "Найти или начать беседу"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatSidebar/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DirectChatsList" type="VBoxContainer" parent="ChatSidebar/VBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VoiceStatusPanel" type="PanelContainer" parent="ChatSidebar/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ChatSidebar_VBox_DirectChatsList#FriendButton" type="Button" parent="."]
+layout_mode = 2
+text = "Друзья"
+
+[node name="MainContent" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EmptyState" type="CenterContainer" parent="MainContent"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContent/EmptyState"]
+layout_mode = 2
+text = "Нет запросов дружбы, ожидающих подтверждения."
+
+[node name="ActiveContactsSidebar" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="ActiveContactsSidebar"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="ActiveContactsSidebar/VBox"]
+layout_mode = 2
+text = "Активные контакты"

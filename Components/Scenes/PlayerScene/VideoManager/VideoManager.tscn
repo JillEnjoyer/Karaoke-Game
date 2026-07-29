@@ -1,6 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://cw1llcn6p3wy"]
+[gd_scene load_steps=6 format=3 uid="uid://cw1llcn6p3wy"]
 
 [ext_resource type="Script" uid="uid://rkj880x5q8ah" path="res://Components/Scenes/PlayerScene/VideoManager/video_manager.gd" id="1_iaat2"]
+[ext_resource type="Script" uid="uid://l3i14rbjcvo1" path="res://Components/Scenes/PlayerScene/VideoManager/texture_rect.gd" id="2_4hae6"]
+[ext_resource type="Shader" uid="uid://75a36ewq2nxe" path="res://Components/Scenes/PlayerScene/VideoManager/video_blur.gdshader" id="2_m21c3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fwyf8"]
+shader = ExtResource("2_m21c3")
+shader_parameter/progress = 1.0
+shader_parameter/max_pixel_block = 12.0
+shader_parameter/target_brightness = 0.65
 
 [sub_resource type="ImageTexture" id="ImageTexture_iaat2"]
 
@@ -14,6 +22,8 @@ grow_vertical = 2
 script = ExtResource("1_iaat2")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 2
+material = SubResource("ShaderMaterial_fwyf8")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,3 +32,4 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("ImageTexture_iaat2")
 expand_mode = 1
+script = ExtResource("2_4hae6")

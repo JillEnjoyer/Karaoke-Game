@@ -53,6 +53,18 @@ func add_character(name: String) -> void:
 		data["Characters"].append(name)
 		Debugger.info("Character added:", name)
 
+
+func save_project_json(target_path: String) -> void:
+	var json_string = JSON.stringify(data, "\t")
+	var file = FileAccess.open(target_path, FileAccess.WRITE)
+	if file:
+		file.store_string(json_string)
+		file.close()
+		print("[ConfigGenerator] JSON успешно сохранен по пути: ", target_path)
+	else:
+		push_error("[ConfigGenerator] Ошибка записи JSON в: " + target_path)
+
+
 func save_json() -> void:
 	var json_string = JSON.stringify(data, "\t")
 	var file = FileAccess.open("user://data.json", FileAccess.WRITE)

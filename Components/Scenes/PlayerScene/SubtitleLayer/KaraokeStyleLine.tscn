@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dng1dkhsxwlrf"]
+[gd_scene load_steps=4 format=3 uid="uid://dng1dkhsxwlrf"]
 
 [ext_resource type="Script" uid="uid://c15m7yw2l6p6a" path="res://Components/Scenes/PlayerScene/SubtitleLayer/karaoke_style_line.gd" id="1_oo02j"]
 [ext_resource type="Texture2D" uid="uid://dsoogxlxhm6l4" path="res://icon.svg" id="2_geaww"]
+[ext_resource type="PackedScene" uid="uid://clgcgclwhoo1b" path="res://Components/Scenes/PlayerScene/SubtitleLayer/Components/WordJumper.tscn" id="3_6eiep"]
 
 [node name="KaraokeStyleLine" type="Control"]
+custom_minimum_size = Vector2(1400, 100)
 layout_mode = 3
 anchor_right = 0.729
 anchor_bottom = 0.093
@@ -19,6 +21,38 @@ anchors_preset = -1
 anchor_left = -0.214
 anchor_top = -1.0
 anchor_bottom = 2.0
-offset_left = -0.399963
+offset_left = 299.59998
+offset_top = 100.0
+offset_right = 299.99994
+offset_bottom = 100.0
 texture = ExtResource("2_geaww")
 expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(1400, 100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1360.0
+offset_bottom = -100.0
+alignment = 1
+
+[node name="LeftPanel" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="AvatarRect" type="TextureRect" parent="HBoxContainer/LeftPanel"]
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 4
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/LeftPanel"]
+layout_mode = 2
+text = "PlaceHolder"
+
+[node name="WordsContainer" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="WordJumper" parent="HBoxContainer/WordsContainer" instance=ExtResource("3_6eiep")]
+layout_mode = 1

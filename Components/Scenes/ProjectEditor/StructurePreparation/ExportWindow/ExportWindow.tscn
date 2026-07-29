@@ -1,0 +1,112 @@
+[gd_scene load_steps=2 format=3 uid="uid://bah5rmki3fhan"]
+
+[ext_resource type="Script" uid="uid://0l5fdnijomb" path="res://Components/Scenes/ProjectEditor/StructurePreparation/ExportWindow/export_window.gd" id="1_k1cei"]
+
+[node name="ExportWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k1cei")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.016
+anchor_top = 0.625
+anchor_right = 0.66700006
+anchor_bottom = 0.9760001
+offset_left = -0.7200012
+offset_right = -0.6401367
+offset_bottom = -0.080078125
+alignment = 1
+
+[node name="LanguageHBox" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PrjLanguageLbl" type="Label" parent="VBoxContainer/LanguageHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Project Language"
+
+[node name="LanguageOB" type="OptionButton" parent="VBoxContainer/LanguageHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+selected = 0
+item_count = 5
+popup/item_0/text = "ENG"
+popup/item_0/id = 0
+popup/item_1/text = "RUS"
+popup/item_1/id = 1
+popup/item_2/text = "JAP"
+popup/item_2/id = 2
+popup/item_3/text = "GER"
+popup/item_3/id = 3
+popup/item_4/text = "EST"
+popup/item_4/id = 4
+
+[node name="NameHBox" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PrjNameLbl" type="Label" parent="VBoxContainer/NameHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Project Name"
+
+[node name="PrjNameLE" type="LineEdit" parent="VBoxContainer/NameHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Name"
+
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 189)
+layout_mode = 2
+
+[node name="Lbl" type="Label" parent="VBoxContainer/Panel"]
+custom_minimum_size = Vector2(1000, 140)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.2750001
+offset_top = 4.0
+offset_bottom = -47.97502
+theme_override_font_sizes/font_size = 32
+text = "Are you sure You added all files to this project. Better check everyting twice.
+
+In any case you will be able to resave project after this window closing (by cancelling or saving)"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ControlHBox" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.68
+anchor_top = 0.88000005
+anchor_right = 0.68
+anchor_bottom = 0.88000005
+offset_left = -0.5999756
+offset_top = -0.40008545
+offset_right = 585.4
+offset_bottom = 101.599915
+alignment = 1
+
+[node name="CancelBtn" type="Button" parent="ControlHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cancel"
+
+[node name="ExportBtn" type="Button" parent="ControlHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Export"

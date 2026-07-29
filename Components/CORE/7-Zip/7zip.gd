@@ -1,7 +1,7 @@
 extends Control
 class_name zip_handler
 
-var exe_path = ProjectSettings.globalize_path("res://Extensions/7z.exe")
+var exe_path := PreferencesData.get_ext_path("7z")
 
 
 func _ready() -> void:

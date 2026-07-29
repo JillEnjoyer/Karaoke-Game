@@ -4,12 +4,19 @@
 
 [node name="MediaPool" type="Control"]
 layout_mode = 3
-anchor_right = 0.266
-anchor_bottom = 0.66700006
-offset_bottom = -0.3600464
+anchor_right = 0.33100003
+anchor_bottom = 0.60200006
+offset_right = -0.52008057
+offset_bottom = -0.16003418
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_advtc")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="ScrollContainerFM" type="ScrollContainer" parent="."]
 visible = false
@@ -31,5 +38,5 @@ anchor_bottom = 1.0
 offset_bottom = 6.1035156e-05
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainerCI"]
-custom_minimum_size = Vector2(320, 70)
+custom_minimum_size = Vector2(635, 70)
 layout_mode = 2

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bs16sf7vjh55t"]
+[gd_scene load_steps=6 format=3 uid="uid://bs16sf7vjh55t"]
 
 [ext_resource type="Script" uid="uid://vpqan8b0k40a" path="res://Components/Scenes/ProjectEditor/Timeline/timeline.gd" id="1_n2tlh"]
 [ext_resource type="PackedScene" uid="uid://cc6x5ow7djqim" path="res://Components/Scenes/ProjectEditor/Timeline/TimePointer/TimePointer.tscn" id="2_hl8mn"]
+[ext_resource type="Script" uid="uid://b661hm0s73428" path="res://Components/Scenes/ProjectEditor/Timeline/SelectionManager/selection_manager.gd" id="2_tu3fp"]
 [ext_resource type="Texture2D" uid="uid://14ycg87o7jxc" path="res://Defaults/Materials/Icons/drag-drop.svg" id="3_8sr3i"]
 [ext_resource type="Script" uid="uid://dqgqefbxfa0n5" path="res://Components/Scenes/ProjectEditor/Timeline/DropZone/timeline_drop_zone.gd" id="4_fo5su"]
 
@@ -13,6 +14,9 @@ offset_bottom = 0.359985
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n2tlh")
+
+[node name="SelectionManager" type="Node" parent="."]
+script = ExtResource("2_tu3fp")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 1
@@ -114,6 +118,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("3_8sr3i")
 expand_mode = 1
 stretch_mode = 5

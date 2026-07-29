@@ -43,7 +43,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.75),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(128, 0), Vector2(-640, 0)]
+"values": [Vector2(0, 50), Vector2(-640, 50)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -82,7 +82,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(128, 0)]
+"values": [Vector2(0, 50)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -157,40 +157,38 @@ libraries = {
 &"": SubResource("AnimationLibrary_icsjr")
 }
 
-[node name="ControlPanel" type="VBoxContainer" parent="."]
+[node name="ControlPanel" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.067
 anchor_bottom = 0.39600003
-offset_right = -0.6399994
-offset_bottom = 0.3199768
+offset_right = 507.36
+offset_bottom = -377.68002
 
 [node name="NewProjectBtn" type="Button" parent="ControlPanel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "New Project"
 
 [node name="OpenExistingBtn" type="Button" parent="ControlPanel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Open Existing"
-
-[node name="CloseProjectBtn" type="Button" parent="ControlPanel"]
-visible = false
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-text = "Close Project"
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="ControlPanel"]
 visible = false
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "CP"
 
 [node name="ColorPickerBtn" type="Button" parent="ControlPanel"]
 visible = false
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "CP"
 metadata/_edit_use_anchors_ = true
 
@@ -198,24 +196,19 @@ metadata/_edit_use_anchors_ = true
 visible = false
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "ML"
-
-[node name="SubtitleLayerBtn" type="Button" parent="ControlPanel"]
-visible = false
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-text = "SL"
 
 [node name="FMBtn" type="Button" parent="ControlPanel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "FM"
 
-[node name="VoskBtn" type="Button" parent="ControlPanel"]
-visible = false
-custom_minimum_size = Vector2(0, 50)
+[node name="ExportBtn" type="Button" parent="ControlPanel"]
 layout_mode = 2
-text = "Vosk"
+size_flags_horizontal = 3
+text = "Save & Export"
 
 [node name="MediaPlayer" parent="." instance=ExtResource("2_hmijh")]
 layout_mode = 1
@@ -223,16 +216,18 @@ anchors_preset = -1
 anchor_left = 0.333
 anchor_bottom = 0.667
 offset_left = 0.64001465
-offset_right = 640.001
+offset_right = 640.0012
 offset_bottom = 359.64
 scale = Vector2(0.667, 0.667)
 
 [node name="MediaPool" parent="." instance=ExtResource("3_hp7ux")]
 layout_mode = 1
-anchor_left = 0.067
+anchor_top = 0.047000002
 anchor_right = 0.33200002
-offset_left = -0.6399994
-offset_right = -0.6401367
+anchor_bottom = 0.648
+offset_top = -0.76000214
+offset_right = -2.4400635
+offset_bottom = 0.15997314
 
 [node name="Timeline" parent="." instance=ExtResource("4_mudmq")]
 layout_mode = 1
@@ -249,9 +244,6 @@ script = ExtResource("5_5wjyp")
 
 [connection signal="pressed" from="ControlPanel/NewProjectBtn" to="." method="_on_new_project_btn_pressed"]
 [connection signal="pressed" from="ControlPanel/OpenExistingBtn" to="." method="_on_open_existing_btn_pressed"]
-[connection signal="pressed" from="ControlPanel/CloseProjectBtn" to="." method="_on_close_project_btn_pressed"]
 [connection signal="pressed" from="ControlPanel/ColorPickerBtn" to="." method="_on_color_picker_btn_pressed"]
-[connection signal="pressed" from="ControlPanel/MaskingLayerBtn" to="." method="_on_masking_layer_btn_pressed"]
-[connection signal="pressed" from="ControlPanel/SubtitleLayerBtn" to="." method="_on_subtitle_layer_btn_pressed"]
 [connection signal="pressed" from="ControlPanel/FMBtn" to="." method="_on_fm_btn_pressed"]
-[connection signal="pressed" from="ControlPanel/VoskBtn" to="." method="_on_vosk_btn_pressed"]
+[connection signal="pressed" from="ControlPanel/ExportBtn" to="." method="_on_export_btn_pressed"]

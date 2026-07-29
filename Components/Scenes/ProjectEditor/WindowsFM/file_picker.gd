@@ -14,7 +14,7 @@ func open_file_picker(start_path: String = OS.get_executable_path().get_base_dir
 
 
 func open_windows_file_picker(start_path) -> PackedStringArray:
-	var script_path = ProjectSettings.globalize_path("res://Components/Scenes/ProjectEditor/WindowsFM/file_picker.ps1") # TODO: check
+	var script_path = ProjectSettings.globalize_path(PreferencesData.get_ext_path("WindowsFM"))
 	var output := []
 	var error := false
 	

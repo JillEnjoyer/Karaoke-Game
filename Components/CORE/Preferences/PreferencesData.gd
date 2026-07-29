@@ -4,9 +4,11 @@ extends Node
 const config_path = "user://SaveData/Config.cfg"
 const user_data_path = "user://SaveData/UserData.cfg"
 const ext_path = {
-	"VocaTool": "res://Extensions/VocaTool.exe",
 	"ffmpeg": "res://Extensions/ffmpeg.exe",
-	"7z": "res://Extensions/7z.exe"
+	"7z": "res://Extensions/7z.exe",
+	"VocaTool": "res://Extensions/VocaTool.exe",
+	"WhisperModelDir": "res://Extensions/Models/whisper_cache",
+	"WindowsFM": "res://Extensions/file_picker.ps1"
 }
 
 var BaseSettingsList = {
@@ -187,9 +189,26 @@ func set_user_data(key: String, value, force_add: bool = false) -> void:
 	if force_add or UserData.has(key):
 		UserData[key] = value
 
+
 ## Returns path to desired extension
-func get_ext_path(ext: String):
-	return ext_path.get(ext, null)
+func get_ext_path(ext: String) -> String:
+	var base_path: String = ext_path.get(ext, "")
+	if base_path.is_empty():
+		return ""
+		
+	# Если мы запустились из редактора (разработка)
+	if OS.has_feature("editor"):
+		return ProjectSettings.globalize_path(base_path) # Оставляем "res://Extensions/..."
+		
+	# Если это экспорт (сборка/релиз)
+	else:
+		# OS.get_executable_path().get_base_dir() возвращает путь к папке, где лежит exe игры
+		var exe_dir = OS.get_executable_path().get_base_dir()
+		
+		# Заменяем "res://" на реальный путь в файловой системе ОС
+		var relative_path = base_path.replace("res://", "")
+		return exe_dir.path_join(relative_path)
+
 
 ## Wipes current SettingsList with default values
 func restore_settings_data():

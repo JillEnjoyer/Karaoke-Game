@@ -1,0 +1,78 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq8tixddmhb6"]
+
+[ext_resource type="Script" uid="uid://bcw6s4ihu6vf1" path="res://Components/Scenes/VocaLink/voice_status_panel.gd" id="1_bhe3q"]
+[ext_resource type="Texture2D" uid="uid://dsoogxlxhm6l4" path="res://icon.svg" id="2_uklnn"]
+
+[node name="VoiceStatusPanel" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 52)
+anchors_preset = -1
+anchor_right = 0.11100001
+anchor_bottom = 0.048
+offset_right = 3.8799896
+offset_bottom = 0.15999985
+grow_horizontal = 2
+theme_override_constants/separation = 4
+script = ExtResource("1_bhe3q")
+
+[node name="UserProfile" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 5
+
+[node name="Avatar" type="TextureRect" parent="UserProfile"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_uklnn")
+expand_mode = 1
+
+[node name="StatusDot" type="ColorRect" parent="UserProfile/Avatar"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(0.64881116, 0.6630752, 0.6345472, 1)
+
+[node name="TextInfo" type="VBoxContainer" parent="UserProfile"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = -2
+
+[node name="Username" type="Label" parent="UserProfile/TextInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Jill Enjoyer"
+
+[node name="StatusText" type="Label" parent="UserProfile/TextInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Goddamn it..."
+
+[node name="ControlButtons" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="MuteButton" type="Button" parent="ControlButtons"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+toggle_mode = true
+text = "M"
+
+[node name="DeafenButton" type="Button" parent="ControlButtons"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+toggle_mode = true
+text = "D"
+
+[node name="SettingsButton" type="Button" parent="ControlButtons"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+text = "S"

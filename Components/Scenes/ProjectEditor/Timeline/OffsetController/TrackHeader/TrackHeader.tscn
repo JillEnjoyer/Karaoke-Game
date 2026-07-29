@@ -1,34 +1,39 @@
-[gd_scene format=3 uid="uid://comysa08wa2ci"]
+[gd_scene load_steps=2 format=3 uid="uid://comysa08wa2ci"]
 
-[node name="TrackHeader" type="Control"]
+[ext_resource type="Script" uid="uid://b72jfltyaujf5" path="res://Components/Scenes/ProjectEditor/Timeline/OffsetController/TrackHeader/track_header.gd" id="1_xsn0f"]
+
+[node name="TrackHeader" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 100)
-layout_mode = 3
-anchor_right = 0.016
+anchors_preset = -1
+anchor_right = 0.052
 anchor_bottom = 0.093
-offset_right = -0.7200012
+offset_right = 0.15999603
 offset_bottom = -0.44000244
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_xsn0f")
 
 [node name="HBox" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(30, 100)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 2
 
 [node name="Icon" type="TextureRect" parent="HBox"]
-custom_minimum_size = Vector2(100, 100)
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-stretch_mode = 2
+expand_mode = 1
+stretch_mode = 5
 
 [node name="VBox" type="VBoxContainer" parent="HBox"]
 layout_mode = 2
+alignment = 1
 
 [node name="NameLbl" type="Label" parent="HBox/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
 
 [node name="TypeLbl" type="Label" parent="HBox/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+vertical_alignment = 1

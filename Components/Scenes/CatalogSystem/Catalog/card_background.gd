@@ -42,6 +42,7 @@ func hide_texture() -> void:
 ## Highlight (video preview)
 func show_highlight(song_path: String) -> void:
 	media_player.playback_manager.wipe_managers()
+	media_player.highlight_preinit()
 
 	if song_path == "": return
 	Debugger.debug("song_path: " + song_path)

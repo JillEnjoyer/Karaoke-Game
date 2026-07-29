@@ -1,14 +1,10 @@
 # controller_wrapper.gd
 extends Control
-
-var time_pointer: Control = null
-var h_scroll: Control = null
-@onready var offset_controller = UIManager.get_desired_node("OffsetController")
+class_name ControllerWrapper
 
 var thumbnail_generator = ThumbnailGenerator.new()
-var waveform_generator = WaveformGenerator.new()
-var context_menu = ContextMenuManager.new()
-var dot_drawer = ""
+#var waveform_generator = WaveformGenerator.new()
+#var context_menu_manager = ContextMenuManager.new()
 var value_converter = ValueConverter.new()
 
 var ffmpeg_path = PreferencesData.get_ext_path("ffmpeg")
@@ -16,398 +12,440 @@ var ffmpeg_path = PreferencesData.get_ext_path("ffmpeg")
 var node_name := ""
 var initial_path := ""
 var node_type := ""
-var total_duration := 1.0
+var total_duration := 0.0
+var px_to_sec_ratio: float = 1.0
 
-var px_per_second := 1.0
-var _last_segment_id := 0
-var bind_threshold := 0.1
+var cached_textures: Array = []
 
-var segments := [] # only nodes of OffsetController
+@onready var offset_controller_scene = UIManager.get_desired_node("OffsetController")
 
-var px_to_sec_ratio: float = (70.0 * 16.0 / 9.0) / 5.0 # will be imported later
-
-## Role of this Audio: "Character Name"/ just "All" or "" if instrumental
-var role: String = ""
-## Subtitle language code: "en", "ru", "jp", etc.
-var subtitle_language: String = ""
-## Subtitles as user import
-var user_subtitles_data: Array = []
-## Subtitles as Vosk Output
-var vosk_subtitles_data: Array = []
-
-## As inside of vosk subtitles we need to add role for each line, for simplification future scene should have colorful button to assign role to vosk line/(-s)
+var selection_manager: SelectionManager
+var time_pointer: Control
+var context_menu_manager: ContextMenuManager
 
 
-var timecodes_for_export: Array = [
-	# {start_from: 0.0},
-	# {from_time: 26.4214, to_time: 45.1234},
-	# {from_time: 60.0, to_time: 75.0} # backwards it goes from "to_time" to "from_time"
-]
+## ACAPELLA ONLY ##
+var subtitles: Array = []
+var characters: Array = []
+##				##
+
+
+
+func import_managers(sm: SelectionManager, tp: Control, cm: ContextMenuManager) -> void:
+	selection_manager = sm
+	time_pointer = tp
+	context_menu_manager = cm
 
 
 func _ready() -> void:
-	pass
+	SignalBus.context_menu_command_triggered.connect(_on_global_menu_command)
+
+	# Перерисовка шкалы времени при динамическом изменении размера трека
+	item_rect_changed.connect(queue_redraw)
 
 
-func add_tree_objects(t_pointer, h_scroll_param):
-	self.time_pointer = t_pointer
-	self.h_scroll = h_scroll_param
-
-
-func init(obj_name: String, file_path: String, type: String, duration: float) -> void:
-	self.node_name = obj_name
-	self.initial_path = file_path
-	self.node_type = type
-	self.total_duration = duration
+func import_initial_data(type_str: String, path: String) -> bool:
+	node_type = type_str
+	initial_path = path
 	
-	add_segment(0, duration)
+	match node_type:
+		"video":
+			_setup_thumbnails(path, true)
+		"image":
+			_setup_thumbnails(path, false)
+		"instrumental", "acapella", "bass", "instruments", "drums":
+			_setup_waveform(path)
+		_:
+			Debugger.error("Unknown node type for import_initial_data: %s" % node_type)
+			return false
+
+	# Раздаем сгенерированный кэш картинок всем сегментам на треке
+	#for seg in get_segments():
+	#	seg.apply_visual_data(cached_textures, total_duration)
+	
+	handle_conflicts()
+	return true # <-- Добавь возврат true в самом конце функции
 
 
-func import_initial_data(type: String, path: String):
-	if type == "video":
-		create_thumbnails(path)
-	elif type == "audio":
-		create_waveform(path)
-	elif type == "subtitles": ## subtitles should be connected to acapella object(s)
-		draw_dots()
-	elif type == "mask": ## TODO: in the future it will be connected to subtitles object
-		pass
-	elif type == "ruler":
-		create_time_ruler(total_duration)
-	else:
-		Debugger.error("Unknown node type for import_initial_data: %s" % type)
-		return
+# Внутренний метод генерации миниатюр для видео/картинок
+func _setup_thumbnails(path: String, is_video: bool = true) -> bool:
+	if not is_video:
+		var texture: Texture2D = TextureLoader.load_texture_or_placeholder(path)
+		total_duration = 240.0
+		cached_textures.clear()
+		for i in range(int(240.0 / 5.0)):
+			cached_textures.append(texture)
+		return true
 
-
-## Onetime setup methods
-func create_thumbnails(path: String):
-	var data = thumbnail_generator.generate_thumbnails(path, value_converter.timestamp)
-	var textures = data.get("thumbnails", [])
+	# Генерируем пачку картинок (например, 5 штук или на основе таймстампов)
+	var data = thumbnail_generator.generate_thumbnails(path, 5)
+	cached_textures = data.get("thumbnails", [])
 	total_duration = data["metadata"].get("duration", 0.0)
-	segments[0].apply_thumbnail_data(textures, total_duration)
-func create_waveform(path: String):
-	self.size.x = 2100.0
-	self.size.y = 70.0
-	var texture = waveform_generator.load_waveform_image(path, ffmpeg_path, self.size.x, self.size.y, "black")
-	segments[0].apply_thumbnail_data([texture], total_duration)
-func draw_dots():
-	Debugger.warning("Not implemented yet")
-func create_time_ruler(total_duration: float):
-	h_scroll.connect("value_changed", Callable(self, "_on_h_scroll_changed"))
+	return true
 
-	var ruler_width = total_duration * px_to_sec_ratio * 1.5
-
-	var ruler = TextureRect.new()
-	#ruler.stretch_mode = TextureRect.STRETCH_SCALE_ON_EXPAND
-	ruler.custom_minimum_size = Vector2(ruler_width, 30)
-
-	# generate image
-	var img = Image.create(ruler_width, 30, false, Image.FORMAT_RGBA8)
-	var texture: Texture = ImageTexture.create_from_image(img)
-
-	segments[0].apply_thumbnail_data([texture], total_duration)
+# Внутренний метод генерации спектрограммы для аудио-треков
+func _setup_waveform(path: String) -> void:
+	# Фиксируем базовые размеры дорожки под аудио, как в твоем старом коде
+	#custom_minimum_size = Vector2(2100.0, 70.0)
+	#size = custom_minimum_size
+	
+	# Подгружаем сплошную текстуру волны через FFmpeg
+	var result = WaveformGenerator.load_waveform_image(path, ffmpeg_path, "black")
+	custom_minimum_size = Vector2(result.get("size_x", 2100.0), 100.0)
+	size = custom_minimum_size
+	cached_textures = [result.get("texture", ImageTexture)]
+	
+	# Если генератор аудио возвращает метаданные с длительностью, можно вытащить её здесь.
+	# Если нет, длительность должна передаваться в add_channel или браться из внешнего конфига.
 
 
 
-func _draw():
-	var px_to_sec_ratio = (70.0 * 16.0 / 9.0) / 5.0 # for now
-	var px_per_sec = px_to_sec_ratio
+func _on_global_menu_command(command_id: int, target_node: Control) -> void:
+	# Самая важная проверка: этот клип лежит на МНЕ (я его родитель)?
+	if target_node.get_parent() != self:
+		return # Если нет, просто игнорируем! Логику выполнит тот враппер, чей это клип.
 
-	var scroll_x = h_scroll.value
-	var screen_width = size.x
+	# Если клип наш, выполняем команду
+	match command_id:
+		0: # Разрезать
+			var cut_px = time_pointer.get_absolute_pointer_px() if time_pointer else 0.0
+			split_segment(target_node, cut_px)
+		1: # Дублировать
+			duplicate_segment(target_node)
+		2: # Удалить
+			delete_segment(target_node)
 
-	var start_sec = max(0, floor(scroll_x / px_per_sec))
-	var end_sec = ceil((scroll_x + screen_width) / px_per_sec)
+"""
+func init_visuals() -> void:
+	if node_type in ["video", "image"]:
+		var data = thumbnail_generator.generate_thumbnails(initial_path, 5)
+		cached_textures = data.get("thumbnails", [])
+		total_duration = data["metadata"].get("duration", 0.0)
+	elif node_type in ["instrumental", "acapella"]:
+		var tex = waveform_generator.load_waveform_image(initial_path, ffmpeg_path, 2100.0, 70.0, "black")
+		cached_textures = [tex]
+	
+	for seg in get_segments():
+		seg.apply_visual_data(cached_textures, total_duration)
+	
+	handle_conflicts()
+"""
 
-	for s in range(start_sec, end_sec + 1):
-		var x_pos = s * px_per_sec - scroll_x
+# Безопасное динамическое получение сегментов вместо статичного хранения в массиве
+func get_segments() -> Array:
+	var arr = []
+	for child in get_children():
+		if child is OffsetController and not child.is_queued_for_deletion():
+			arr.append(child)
+	return arr
+
+
+func spawn_segment(id: String, t_start: float, s_start: float, dur: float, total_dur: float) -> OffsetController:
+	var seg = offset_controller_scene.instantiate() as OffsetController
+	add_child(seg)
+	seg.import_managers(selection_manager, time_pointer, context_menu_manager)
+	
+	seg.setup_segment(id, node_type, t_start, s_start, dur, total_dur, px_to_sec_ratio)
+	
+	# ИСПРАВЛЕНО: передаем cached_textures вместо пустого массива []
+	seg.apply_visual_data(cached_textures, total_dur)
+	
+	seg.update_visual_position()
+	handle_conflicts()
+	return seg
+
+
+# controller_wrapper.gd
+func split_segment(node: OffsetController, absolute_cut_px: float) -> void:
+	Debugger.info("Продвинутый исправленный Segment split запущен")
+	
+	# 1. Считаем позицию разреза в секундах относительно таймлайна
+	var cut_time = absolute_cut_px / px_to_sec_ratio
+	
+	# Проверяем, попадает ли разрез внутрь нашего блока
+	if cut_time <= node.timeline_start + 0.1 or cut_time >= node.timeline_start + node.duration - 0.1:
+		Debugger.warning("Разрез слишком близко к краям клипа, отмена.")
+		return
+
+	# Сохраняем исходные данные оригинального блока (до изменений)
+	var orig_timeline_start = node.timeline_start
+	var orig_source_start = node.source_start
+	var orig_duration = node.duration
+
+	# --- ПЕРВЫЙ БЛОК (Левый кусок) ---
+	# Его новый duration — это расстояние от его старта до точки реза
+	var first_block_new_duration = cut_time - orig_timeline_start
+	
+	node.duration = first_block_new_duration
+	node.update_visual_position() # Корректируем правую границу первого блока
+
+
+	# --- ВТОРОЙ БЛОК (Правый кусок) ---
+	# Вычисляем, на сколько секунд вправо сместилась левая граница нового блока
+	var left_handle_delta = cut_time - orig_timeline_start
+	
+	# Сразу рассчитываем чистые финальные параметры для правой части:
+	var new_timeline_start = orig_timeline_start + left_handle_delta  # Стартует точно с места разреза
+	var new_source_start = orig_source_start + left_handle_delta      # Превью сдвигается на дельту
+	var new_duration = orig_duration - left_handle_delta              # Длина — оставшийся хвостик
+
+	# Спавним второй блок, передавая ему ИСПРАВЛЕННЫЕ параметры СРАЗУ!
+	var second_node = spawn_segment(
+		node.source_id, 
+		new_timeline_start, 
+		new_source_start, 
+		new_duration, 
+		total_duration
+	)
+
+	# Пересчитываем сетку трека и слои
+	handle_conflicts()
+
+
+
+# controller_wrapper.gd
+func split_segment_v2(node: OffsetController, absolute_cut_px: float) -> void:
+	Debugger.info("Продвинутый Segment split запущен")
+	
+	# 1. Считаем позицию разреза в секундах относительно начала таймлайна
+	var cut_time = absolute_cut_px / px_to_sec_ratio
+	
+	# Проверяем, попадает ли разрез вообще внутрь нашего блока
+	if cut_time <= node.timeline_start + 0.1 or cut_time >= node.timeline_start + node.duration - 0.1:
+		Debugger.warning("Разрез слишком близко к краям клипа, отмена.")
+		return
+
+	# Сохраняем исходные данные оригинального блока (до изменений)
+	var orig_timeline_start = node.timeline_start
+	var orig_source_start = node.source_start
+	var orig_duration = node.duration
+
+	# 2. Модифицируем ПЕРВЫЙ (оригинальный) блок -> сжимаем его ПРАВУЮ ручку
+	# Новый duration для первого блока — это расстояние от его старта до курсора
+	var first_block_new_duration = cut_time - orig_timeline_start
+	
+	node.duration = first_block_new_duration
+	node.update_visual_position() # Обновляем визуал (маска пересчитается сама!)
+
+	# 3. Спавним ВТОРОЙ блок (точную копию того, каким был первый)
+	var second_node = spawn_segment(
+		node.source_id, 
+		orig_timeline_start, 
+		orig_source_start, 
+		orig_duration, 
+		total_duration
+	)
+	
+	# 4. Модифицируем ВТОРУЙ блок -> сжимаем его ЛЕВУЮ ручку
+	# Нам нужно сымитировать, что левую ручку протащили вправо до cut_time.
+	# Вычисляем дельту в секундах, на которую сдвинулась левая граница:
+	var left_handle_delta = cut_time - orig_timeline_start
+	
+	# Применяем формулу "левой ручки" из твоего _apply_drag():
+	second_node.timeline_start = orig_timeline_start + left_handle_delta
+	second_node.source_start = orig_source_start + left_handle_delta
+	second_node.duration = orig_duration - left_handle_delta
+	
+	second_node.update_visual_position() # Маска идеального сдвига посчитается сама!
+
+	# Пересчитываем слои и сетку трека
+	handle_conflicts()
+
+
+# Упрощенный split_segment, использующий общую функцию спавна
+func split_segment_v1(node: OffsetController, absolute_cut_px: float) -> void:
+	Debugger.info("Segment split requested")
+	
+	# ТЕПЕРЬ ВСЁ В ОДНОЙ СИСТЕМЕ КООРДИНАТ ТАЙМЛАЙНА
+	var local_x = absolute_cut_px - node.position.x
+	
+	var time_delta = local_x / px_to_sec_ratio
+	if time_delta <= 0.1 or time_delta >= node.duration - 0.1:
+		Debugger.warning("Слишком близко к краю клипа, отмена. Delta: " + str(time_delta))
+		return
 		
-		if s % 10 == 0:
-			draw_line(Vector2(x_pos, 0), Vector2(x_pos, 25), Color.WHITE, 2.0, true)
-			# Format: 00:00
-			var time_str = "%02d:%02d" % [int(s / 60), int(s) % 60]
-			draw_string(get_theme_default_font(), Vector2(x_pos + 5, 20), time_str, HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
-
-		elif s % 5 == 0:
-			draw_line(Vector2(x_pos, 0), Vector2(x_pos, 15), Color.GRAY, 1.0, true)
-			
-		elif px_per_sec > 5: 
-			draw_line(Vector2(x_pos, 0), Vector2(x_pos, 7), Color.DARK_GRAY, 1.0, true)
-
-func _on_h_scroll_changed(value: float):
-	pass#queue_redraw()
-
-
-func _resolve_conflicts() -> void:
-	# 1. Sorting segments by X positions, to move from left to right
-	sort_segments()
-
-	for i in range(segments.size()):
-		var current = segments[i]
-
-		if i == 0:
-			if current.position.x < 0:
-				current.position.x = 0
-			continue
-			
-		var previous = segments[i-1]
-		var previous_end = previous.position.x + previous.size.x
-
-		if current.position.x < previous_end:
-			current.position.x = previous_end
-			
-	# Finally, update wrapper size and position
-	_on_size_changed()
-
-
-func add_segment(start_time: float, end_time: float) -> void:
-	Debugger.debug("Adding segment from %.2f to %.2f" % [start_time, end_time])
-	start_time = clamp(start_time, 0.0, total_duration)
-	end_time = clamp(end_time, 0.0, total_duration)
-	if end_time < start_time:
-		var tmp = start_time
-		start_time = end_time
-		end_time = tmp
-	var id = _last_segment_id
+	var new_timeline_start = node.timeline_start + time_delta
+	var new_source_start = node.source_start + time_delta
+	var new_duration = node.duration - time_delta
 	
-	var node = null
-	if segments.size() != 0 and is_instance_valid(segments[0]):
-		node = segments[0].duplicate()
-	else:
-		node = offset_controller.instantiate()
-		segments.append(node) # final solution
-
-	node.name = "Segment_%d" % id
-	node.segment_id = id
-
-	# check if node is valid
-	add_child(node)
+	node.duration = time_delta
+	node.update_visual_position()
 	
-	node.position.y = 30.0
-
-	import_initial_data(node_type, initial_path)
-
-	node.connect("request_go_to", Callable(self, "_on_request_go_to"))
-	node.connect("request_copy", Callable(self, "_on_request_copy"))
-	node.connect("request_split", Callable(self, "split_segment"))
-	node.connect("request_delete", Callable(self, "remove_segment"))
-	
-	node.connect("position_changed", Callable(self, "_on_position_changed")) # need to update wrapper size and conflicts
-	node.connect("size_changed", Callable(self, "_on_size_changed")) # need to update wrapper as well
-	
-	node.connect("segment_size_changed", Callable(self, "_on_segment_size_changed"))
-
-	segments.append(node)
-
-	_last_segment_id += 1
-
-	#_fix_all()
-
-# Creates a segment with preset Cutoff settings
-func add_segment_at(l_cutoff: float, r_cutoff: float) -> Control:
-	var id = _last_segment_id
-	var node = offset_controller.instantiate()
-
-	node.name = "Segment_%d" % id
-	node.segment_id = id
-	add_child(node)
-	
-	# Loading data (thumbnails/waveform) into the new node
-	# Important: import_initial_data should be able to work with a ready node,
-	# or we can duplicate data from segments[0] if it's a duplicate, to avoid reloading from disk.
-	# For simplicity, we'll keep your method:
-	import_initial_data(node_type, initial_path) 
-
-	# Apply cutoff settings
-	node.left_cutoff = l_cutoff
-	node.right_cutoff = r_cutoff
-
-	node.connect("request_go_to", Callable(self, "_on_request_go_to"))
-	node.connect("request_copy", Callable(self, "_on_request_copy"))
-	node.connect("request_split", Callable(self, "split_segment"))
-	node.connect("request_delete", Callable(self, "remove_segment"))
-	node.connect("position_changed", Callable(self, "_on_position_changed"))
-	node.connect("size_changed", Callable(self, "_on_size_changed"))
-
-	node.apply_thumbnail_data(segments[0].thumbnails_container.get_children().map(func(x): return x.texture), total_duration) # Hack to pass textures, better to optimize
-	node.update_range_rect()
-
-	segments.append(node)
-	_last_segment_id += 1
-	return node
+	var _new_seg = spawn_segment(node.source_id, new_timeline_start, new_source_start, new_duration, total_duration)
+	handle_conflicts()
 
 
-func remove_segment(node) -> void:
-	if is_instance_valid(node):
-		node.queue_free()
-	segments.erase(node)
+func duplicate_segment(node: OffsetController) -> void:
+	Debugger.info("Segment duplicate requested")
+	var new_timeline_start = node.timeline_start + node.duration
+	var _new_seg = spawn_segment(node.source_id, new_timeline_start, node.source_start, node.duration, total_duration)
+	handle_conflicts()
 
-"""
-func split_segment(node, time_point: float) -> void:
-	if time_point <= node.start_time or time_point >= node.end_time:
+func delete_segment(node: OffsetController) -> void:
+	Debugger.info("Segment delete requested")
+	node.queue_free()
+	await get_tree().process_frame
+	handle_conflicts()
+
+func handle_conflicts() -> void:
+	var segs = get_segments()
+	if segs.is_empty():
+		_update_wrapper_size()
 		return
-
-	# Split
-	node.end_time = time_point
-	add_segment(time_point, node.end_time)
-	#_fix_all()
-"""
-func split_segment(node: Control, global_pointer_x: float) -> void:
-	# global_pointer_x - pointer position inside ControllerWrapper (local X)
-
-	# if cutoff is inside of segment
-	if global_pointer_x <= node.position.x or global_pointer_x >= (node.position.x + node.size.x):
-		Debugger.warning("Split point is outside of the segment")
-		return
-
-	# position of splitting
-	var local_split_pos = global_pointer_x - node.position.x
-
-	# pixels to seconds
-	var split_seconds_delta = local_split_pos / node.px_to_sec_ratio 
-
-	var split_file_time = node.left_cutoff + split_seconds_delta
-
-	var old_right_cutoff = node.right_cutoff
-
-	# left segment ends on split point
-	node.right_cutoff = node.total_duration - split_file_time
-	node.update_range_rect()
-
-	# new right segment starts on split point and goes to old right cutoff
-	var new_node = add_segment_at(split_file_time, old_right_cutoff)
-	new_node.position.x = global_pointer_x
-
-	# Fixing potential misplacements
-	_resolve_conflicts()
-
-"""
-func merge_segments(left_id: int, right_id: int) -> int:
-	if not (segments.has(left_id) and segments.has(right_id)):
-		return -1
-	var left = segments[left_id]
-	var right = segments[right_id]
-	# Right ordering
-	if left["start"] > right["start"]:
-		var tmp = left_id
-		left_id = right_id
-		right_id = tmp
-		left = segments[left_id]
-		right = segments[right_id]
-	var new_start = left["start"]
-	var new_end = max(left["end"], right["end"])
-	remove_segment(right_id)
-	segments[left_id]["end"] = new_end
-	emit_signal("segment_updated", left_id, new_start, new_end)
-	#_fix_all() ## TODO: Change name and princple
-	return left_id
-"""
-
-
-func merge_segments(node_a: Control, node_b: Control) -> void:
-	# 1. Need to determine left and right segments
-	var left_seg = node_a
-	var right_seg = node_b
-
-	if node_a.position.x > node_b.position.x:
-		left_seg = node_b
-		right_seg = node_a
-
-	left_seg.right_cutoff = right_seg.right_cutoff
-
-	# Updating visuals of left segment
-	left_seg.update_range_rect()
-
-	remove_segment(right_seg)
-
-	_on_size_changed()
-
-
-func _on_request_go_to(node, position: float) -> void:
-	time_pointer.position.x = position
-
-"""
-func _on_request_copy(node) -> void:
-	add_segment(node.start_time, node.end_time)
-"""
-func _on_request_copy(node) -> void:
-	# create copy
-	var new_node = add_segment_at(node.left_cutoff, node.right_cutoff)
-
-	# Set it slightly to the right of the original to ensure _resolve_conflicts understands the order
-	new_node.position.x = node.position.x + node.size.x + 1.0 
-
-	_resolve_conflicts()
-
-
-func _on_position_changed() -> void:
-
-	var min_width := _get_minimal_width()
-	self.custom_minimum_size.x = min_width
-	self.size.x = self.custom_minimum_size.x
-
-	## handle_conflicts()
-
-
-func _on_size_changed():
-	"""
-	1. Get total size of all segments and gaps between them
-	2. calculate new size of controller_wrapper - self.size.x
-	3. update wrapper size
-	4. update wrapper position
-	"""
-	var min_width := _get_minimal_width()
-	self.custom_minimum_size.x = min_width
-	self.size.x = self.custom_minimum_size.x
-
-	#_fix_all()
-
-
-func _get_minimal_width() -> float:
-	var min_width := 0.0
-	for segment in segments:
-		min_width += segment.size.x + segment.global_offset - segment.left_cutoff - segment.right_cutoff
-	return min_width
-
-
-func _on_segment_size_changed(segment_id: int):
-	var seg = segments.get(segment_id)
-	if not seg:
-		return
+		
+	# Сортируем все элементы трека слева направо
+	segs.sort_custom(func(a, b): return a.timeline_start < b.timeline_start)
 	
-	var min_width := 0.0
-	for child in segments:
-		min_width += child.global_offset
-		min_width += child.size.x
+	# ConflictHandler: Если самый левый элемент в минусе, вычисляем разницу и сдвигаем ВСЁ вправо!
+	var first_seg = segs[0]
+	if first_seg.timeline_start < 0.0:
+		var shift = -first_seg.timeline_start
+		for seg in segs:
+			seg.timeline_start += shift
+			seg.update_visual_position()
+			seg.position_changed.emit()
+			
+	_update_wrapper_size()
 
-	self.size.x = min_width
-
-
-func sort_segments() -> void:
-	var sorted_segments = []
-	var segment_positions = {}
-	for seg in segments:
-		segment_positions[seg.position.x] = seg
-	
-	# Sorting
-	var keys = segment_positions.keys()
-	keys.sort()
-	for pos in keys:
-		sorted_segments.append(segment_positions[pos])
-	segments = sorted_segments
-
+func _update_wrapper_size() -> void:
+	var max_w = 0.0
+	for seg in get_segments():
+		max_w = max(max_w, seg.position.x + seg.size.x)
+	custom_minimum_size.x = max(max_w + 500.0, 1000.0)
+	size.x = custom_minimum_size.x
+	queue_redraw()
 
 func prepare_export_timecodes() -> Array:
-	var export_timecodes: Array = []
-	sort_segments()
-	for seg in segments:
-		# Make sure, that segments are sorted by start_time on timeline
-		export_timecodes.append({
-			"from_time": seg.start_time,
-			"to_time": seg.end_time
+	var data = []
+	var segs = get_segments()
+	segs.sort_custom(func(a, b): return a.timeline_start < b.timeline_start)
+	for seg in segs:
+		data.append({
+			"id": seg.source_id,
+			"start": seg.source_start,
+			"end": seg.source_start + seg.duration,
+			"timeline_at": seg.timeline_start
 		})
-	return export_timecodes
+	return data
+
+# Возвращенная отрисовка шкалы времени
+func _draw() -> void:
+	if px_to_sec_ratio <= 0:
+		return
+		
+	var width = size.x
+	var height = size.y
+	
+	# Горизонтальная линия основания
+	draw_line(Vector2(0, height - 1), Vector2(width, height - 1), Color(0.4, 0.4, 0.4, 0.4), 1.0)
+	
+	# Настройка шага шкалы в зависимости от масштаба
+	var step_sec = 5.0
+	if px_to_sec_ratio < 2.0:
+		step_sec = 10.0
+	if px_to_sec_ratio < 0.5:
+		step_sec = 30.0
+	if px_to_sec_ratio < 0.1:
+		step_sec = 60.0
+		
+	var font = get_theme_default_font()
+	var font_size = 10
+	
+	var current_t = 0.0
+	while current_t * px_to_sec_ratio < width:
+		var x = current_t * px_to_sec_ratio
+		var is_major = fmod(current_t, step_sec * 5.0) == 0.0 or current_t == 0.0
+		
+		var tick_height = 8.0 if is_major else 4.0
+		var tick_color = Color(0.6, 0.6, 0.6, 0.5) if is_major else Color(0.4, 0.4, 0.4, 0.2)
+		
+		draw_line(Vector2(x, height - tick_height), Vector2(x, height), tick_color, 1.0)
+		
+		if is_major and x + 40 < width:
+			var minutes = int(current_t) / 60
+			var seconds = int(current_t) % 60
+			var time_str = "%02d:%02d" % [minutes, seconds]
+			draw_string(font, Vector2(x + 4, height - 4), time_str, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(0.7, 0.7, 0.7, 0.4))
+			
+		current_t += step_sec
+
+# Прием Drag-and-Drop данных при переносе контроллера с других треков
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	return typeof(data) == TYPE_DICTIONARY and data.get("type") == "offset_controller"
 
 
-func _on_gui_input(event: InputEvent) -> void:
-	pass # Replace with function body.
+# Перенос клипа с другого трека (Drag-and-Drop) теперь тоже стал лаконичным
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	var target_node = data.get("node") as OffsetController
+	if is_instance_valid(target_node):
+		var old_wrapper = target_node.get_parent()
+		if old_wrapper != self:
+			# Пересчитываем время старта клипа на новом треке на основе позиции отпускания мыши
+			var dropped_timeline_start = at_position.x / px_to_sec_ratio
+			
+			# Вместо сложного ручного перемещения ноды и переподключения сигналов, 
+			# мы просто спавним клон на текущем треке с новыми координатами
+			spawn_segment(
+				target_node.source_id,
+				dropped_timeline_start,
+				target_node.source_start,
+				target_node.duration,
+				target_node.total_duration
+			)
+			
+			# Удаляем старый сегмент с предыдущего трека
+			if old_wrapper and old_wrapper.has_method("delete_segment"):
+				old_wrapper.delete_segment(target_node)
+			else:
+				target_node.queue_free()
+
+
+func receive_generated_subtitles(vosk_subtitles: Array = [], vosk_characters: Array = []) -> void:
+	subtitles = vosk_subtitles
+	characters = vosk_characters
+
+
+
+# Собираем данные трека для финального JSON конфига
+func export() -> Dictionary:
+	var segments_data: Array = []
+	
+	for child in get_segments():
+		var start_t = snappy_round(child.timeline_start)
+		var end_t = null
+		
+		# ПРОВЕРКА "ДО КОНЦА": Если сумма старта исходника и длительности
+		# меньше полной длины файла (с погрешностью 0.1с), значит файл обрезали!
+		if child.source_start + child.duration < child.file_total_duration - 0.1:
+			end_t = snappy_round(child.timeline_start + child.duration)
+			
+		segments_data.append({
+			"start": start_t,
+			"end": end_t
+		})
+		
+	# Сортируем сегменты в хронологическом порядке
+	segments_data.sort_custom(func(a, b): return a["start"] < b["start"])
+	
+	var export_data := {
+		"node_name": node_name,
+		"node_type": node_type,
+		"initial_path": initial_path,
+		"segments": segments_data
+	}
+	
+	# Добавляем специфичные ключи в зависимости от типа
+	if node_type == "acapella":
+		export_data["role"] = node_name
+		export_data["subtitles"] = subtitles
+		export_data["characters"] = characters
+	elif node_type in ["instrumental", "bass", "drums", "instruments"]:
+		export_data["instrument"] = node_name
+	elif node_type == "video":
+		export_data["id"] = node_name
+		
+	return export_data
+
+# Вспомогательная функция округления до сотых долей (например 15.32)
+func snappy_round(value: float) -> float:
+	return round(value * 100.0) / 100.0

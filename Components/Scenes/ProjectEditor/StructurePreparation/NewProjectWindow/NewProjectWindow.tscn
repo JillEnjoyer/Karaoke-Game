@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxf4et8h37byl"]
+
+[ext_resource type="Script" uid="uid://1q73u7dvp8xj" path="res://Components/Scenes/ProjectEditor/StructurePreparation/NewProjectWindow/new_project_window.gd" id="1_p1fs1"]
+[ext_resource type="PackedScene" uid="uid://dixim4rpkmlp8" path="res://Components/Scenes/ProjectEditor/StructurePreparation/NewProjectWindow/FolderSelector.tscn" id="2_iswmm"]
+
+[node name="NewProjectWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p1fs1")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.010000001
+anchor_top = 0.019000001
+anchor_right = 0.99000007
+anchor_bottom = 0.98100007
+offset_left = 0.79999924
+offset_top = -0.52000046
+offset_right = -0.8001709
+offset_bottom = 0.51989746
+
+[node name="BlockMenu" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.994
+offset_right = -1.0
+offset_bottom = 0.23999023
+alignment = 1
+
+[node name="FranchiseSelector" parent="Panel/BlockMenu" instance=ExtResource("2_iswmm")]
+layout_mode = 2
+
+[node name="AlbumSelector" parent="Panel/BlockMenu" instance=ExtResource("2_iswmm")]
+layout_mode = 2
+level = 2
+
+[node name="SongSelector" parent="Panel/BlockMenu" instance=ExtResource("2_iswmm")]
+layout_mode = 2
+level = 3
+
+[node name="VersionSelector" parent="Panel/BlockMenu" instance=ExtResource("2_iswmm")]
+layout_mode = 2
+level = 4
+
+[node name="ActionBtn" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.79300004
+anchor_top = 0.9110001
+anchor_right = 0.79300004
+anchor_bottom = 0.9110001
+offset_left = 0.15991211
+offset_top = -0.44006348
+offset_right = 374.1599
+offset_bottom = 75.55994
+text = "Accept"
+
+[connection signal="pressed" from="Panel/ActionBtn" to="." method="_on_action_btn_pressed"]

@@ -1,5 +1,7 @@
 extends Control
 
+signal save_json(result_arr: Array)
+
 @onready var json_row_scene = UIManager.get_desired_node("JsonRowV2")
 @onready var rows_container = $VBoxContainer/ScrollContainer/RowsContainer
 
@@ -13,29 +15,13 @@ var show_confidence: bool = true
 var add_word_popup: Window
 var target_row_for_new_word = null
 
+
+var l_data
+
+
 func _ready():
-	var test_data = [
-		{
-			"text": "welcome home my dear",
-			"result": [
-				{ "conf": 0.93, "start": 0.66, "end": 2.04, "word": "welcome" },
-				{ "conf": 0.99, "start": 2.04, "end": 2.93, "word": "home" },
-				{ "conf": 0.75, "start": 3.00, "end": 3.50, "word": "my" },
-				{ "conf": 0.50, "start": 3.55, "end": 4.10, "word": "dear" }
-			]
-		},
-		{
-			"text": "another phrase here",
-			"result": [
-				{ "conf": 0.88, "start": 4.5, "end": 5.0, "word": "another" }
-			]
-		}
-	]
-
-
 	_create_floating_popup()
 	_build_top_menu()
-	visualize(test_data)
 
 
 func _create_floating_popup():
@@ -89,11 +75,14 @@ func _create_floating_popup():
 
 func show_word_popup(word_block):
 	current_editing_word = word_block
-	for c in popup_edit_vbox.get_children(): c.queue_free()
+	for c in popup_edit_vbox.get_children(): 
+		c.queue_free()
 	
 	var data = word_block.word_data
-	_add_popup_field("start", data)
-	_add_popup_field("end", data)
+	
+	# Используем новые стандартизированные названия полей для отображения в UI
+	_add_popup_field("start_time", data)
+	_add_popup_field("end_time", data)
 	_add_popup_field("conf", data)
 	
 	var pos = word_block.global_position
@@ -144,10 +133,14 @@ func _on_save_pressed():
 	# file.store_string(JSON.stringify(data))
 
 
-
-func visualize(data):
+func visualize(data: Array):
 	for c in rows_container.get_children(): c.queue_free()
-	for d in data: _create_row(d, -1)
+	
+	l_data = data
+	if data.is_empty(): return
+		
+	for d in data: 
+		_create_row(d, -1)
 
 
 func _create_row(data, index):
@@ -183,14 +176,53 @@ func _apply_zoom(delta):
 	for r in rows_container.get_children(): r.apply_zoom(current_zoom)
 
 
-func get_final_json():
-	var result = []
+func get_final_json() -> Array:
+	var result_array = []
 	for r in rows_container.get_children():
 		if r.is_queued_for_deletion(): continue
-		var line = {"text": "", "result": []}
+		
+		# Безопасное получение персонажа из Узла (Node)
+		var row_char = "all"
+		if "character" in r and r.character != "":
+			row_char = r.character
+		
+		# Новая эталонная структура строки
+		var line = {
+			"character": row_char,
+			"is_extended": false,
+			"text": "", 
+			"start_time": 0.0, 
+			"end_time": 0.0, 
+			"words": []
+		}
+		
 		for w in r.words_container.get_children():
-			line.result.append(w.word_data)
-			line.text += w.word_data.word + " "
-		line.text = line.text.strip_edges()
-		if line.result.size() > 0: result.append(line)
-	return result
+			var wd = w.word_data
+			# ВАЖНО: wd - это Dictionary, поэтому здесь get с двумя аргументами работает отлично!
+			var final_word = {
+				"word": wd.get("word", ""),
+				"start_time": wd.get("start_time", wd.get("start", 0.0)),
+				"end_time": wd.get("end_time", wd.get("end", 0.0)),
+				"conf": wd.get("conf", 1.0),
+				"character": wd.get("character", "")
+			}
+			line["words"].append(final_word)
+			line["text"] += final_word["word"] + " "
+			
+		line["text"] = line["text"].strip_edges()
+		
+		# Фиксируем общее время строки
+		if line["words"].size() > 0: 
+			line["start_time"] = line["words"][0]["start_time"]
+			line["end_time"] = line["words"][-1]["end_time"]
+			result_array.append(line)
+			
+	return result_array
+
+
+func _on_save_btn_pressed() -> void:
+	save_json.emit(get_final_json())
+
+
+func _on_clipboard_btn_pressed() -> void:
+	DisplayServer.clipboard_set(str(get_final_json()))
